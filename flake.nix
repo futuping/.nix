@@ -13,12 +13,26 @@
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";  # Use same nixpkgs version
     };
+
+    # brew-nix for Homebrew integration
+    brew-nix = {
+      url = "github:BatteredBunny/brew-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-darwin.follows = "nix-darwin";
+      inputs.brew-api.follows = "brew-api";
+    };
+
+    # brew-api for Homebrew package definitions
+    brew-api = {
+      url = "github:BatteredBunny/brew-api";
+      flake = false;
+    };
   };
 
   # ============================================================================
   # OUTPUTS
   # ============================================================================
-  outputs = inputs@{ self, nixpkgs, nix-darwin, ... }: {
+  outputs = inputs@{ self, nixpkgs, nix-darwin, brew-nix, brew-api, ... }: {
     # Darwin system configuration for MacBook-Air
     darwinConfigurations."MacBook-Air" = nix-darwin.lib.darwinSystem {
       # System architecture
@@ -31,7 +45,8 @@
 
       # Configuration modules
       modules = [
-        ./flake-darwin.nix
+        ./flake-darwin.nix    # Main Darwin system configuration
+        ./flake-brew.nix      # Homebrew integration module
       ];
     };
   };
