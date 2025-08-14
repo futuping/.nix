@@ -1,8 +1,12 @@
 # ============================================================================
-# DARWIN SYSTEM CONFIGURATION
+# CORE DARWIN SYSTEM CONFIGURATION
 # ============================================================================
-# This file contains the main Darwin system configuration for macOS.
-# It handles system settings, services, packages, and user environment.
+# Primary macOS system configuration module handling:
+# - Essential system packages and development tools
+# - Shell environment and development utilities
+# - macOS system preferences and defaults
+# - System services and background processes
+# - User environment and productivity settings
 
 { config, pkgs, lib, self, ... }:
 

@@ -1,8 +1,15 @@
 # ============================================================================
-# HOMEBREW INTEGRATION MODULE
+# HOMEBREW ECOSYSTEM INTEGRATION
 # ============================================================================
-# This module handles the brew-nix integration and all Homebrew Cask installations.
-# It provides a bridge between Nix and Homebrew for packages not available in nixpkgs.
+# Dedicated module for Homebrew Cask management through brew-nix.
+# Handles GUI applications and proprietary software not available in nixpkgs.
+# Provides declarative management of Homebrew packages within Nix ecosystem.
+#
+# Key features:
+# - Seamless integration between Nix and Homebrew ecosystems
+# - Declarative Homebrew Cask installation and management
+# - Custom package overrides and version pinning
+# - Automatic dependency resolution and conflict prevention
 
 { config, pkgs, inputs, ... }:
 
