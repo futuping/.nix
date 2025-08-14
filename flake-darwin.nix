@@ -30,6 +30,17 @@
     # Essential development tools
     vim                 # Text editor
     git                 # Version control system
+    nodejs              # JavaScript runtime and package manager
+
+    # Development environments and editors
+    vscode              # Visual Studio Code editor
+
+    # Terminal and productivity applications
+    warp-terminal       # Modern terminal with AI features
+    raycast             # Spotlight replacement and productivity tool
+
+    # AI and coding assistants
+    claude-code         # Claude AI coding assistant
   ];
 
   # ============================================================================
