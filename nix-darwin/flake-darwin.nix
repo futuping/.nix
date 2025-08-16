@@ -114,7 +114,7 @@
           end
 
           echo "🔧 Rebuilding Darwin system"
-          if not sudo darwin-rebuild switch --flake ~/nix/nix-darwin#MacBook-Air
+          if not sudo darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Air
             echo "⚠️ System rebuild interrupted or failed"
             return 1
           end
