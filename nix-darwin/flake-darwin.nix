@@ -108,7 +108,7 @@
         # Function to rebuild Darwin system
         function nix-rebuild
           echo "🔄 Updating Nix flake"
-          if not nix flake update --flake ~/.nix
+          if not nix flake update --flake ~/.nix/nix-darwin
             echo "⚠️ Flake update interrupted or failed"
             return 1
           end

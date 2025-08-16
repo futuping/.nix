@@ -1,5 +1,7 @@
 # Darwin Nix Configuration
 
+[English](README.md) | [中文](README.zh.md)
+
 Comprehensive macOS system configuration using Nix flakes and nix-darwin with Fish shell integration.
 
 ## Overview

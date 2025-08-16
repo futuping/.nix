@@ -6,7 +6,7 @@
     {
       templates = {
         nix-darwin = {
-          path = ./nix;
+          path = ./nix-darwin;
           description = "A modular Darwin system configuration.";
         };
         rust = {
