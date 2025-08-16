@@ -81,7 +81,7 @@
           # Check if flake.nix exists in the current directory
           if not test -f "flake.nix"
             echo "🔧 Initializing new flake with template: $template"
-            if not nix flake init --template "https://flakehub.com/f/the-nix-way/dev-templates/*#$template"
+            if not nix flake init -t ~/.nix#$template
               echo "⚠️ Flake initialization interrupted or failed"
               return 1
             end
@@ -114,7 +114,7 @@
           end
 
           echo "🔧 Rebuilding Darwin system"
-          if not sudo darwin-rebuild switch --flake ~/.nix#MacBook-Air
+          if not sudo darwin-rebuild switch --flake ~/nix/nix-darwin#MacBook-Air
             echo "⚠️ System rebuild interrupted or failed"
             return 1
           end
