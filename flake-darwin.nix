@@ -8,7 +8,13 @@
 # - System services and background processes
 # - User environment and productivity settings
 
-{ config, pkgs, lib, self, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 
 {
   # ============================================================================
@@ -30,34 +36,104 @@
   # ============================================================================
   # SYSTEM PACKAGES
   # ============================================================================
-  environment.systemPackages = with pkgs; [
-    # Essential development tools
-    vim                 # Text editor
-    git                 # Version control system
-    nodejs              # JavaScript runtime and package manager
+  environment = {
+    # System-wide packages available to all users
+    systemPackages = with pkgs; [
+      # Essential development tools
+      nixfmt-rfc-style # Official formatter for Nix
+      vim # Text editor
+      git # Version control system
+      nodejs # JavaScript runtime and package manager
 
-    # Development environments and editors
-    vscode              # Visual Studio Code editor
+      # Development environments and editors
+      vscode # Visual Studio Code editor
 
-    # Terminal and productivity applications
-    warp-terminal       # Modern terminal with AI features
-    raycast             # Spotlight replacement and productivity tool
+      # Terminal and productivity applications
+      warp-terminal # Modern terminal with AI features
+      raycast # Spotlight replacement and productivity tool
 
-    # AI and coding assistants
-    claude-code         # Claude AI coding assistant
-  ];
+      # AI and coding assistants
+      claude-code # Claude AI coding assistant
+    ];
+
+    # Available shells for users
+    shells = with pkgs; [ fish ];
+  };
 
   # ============================================================================
   # PROGRAMS CONFIGURATION
   # ============================================================================
   programs = {
-    # Enable Zsh shell system-wide
-    zsh.enable = true;
+    # Enable Fish shell system-wide
+    fish = {
+      enable = true;
+
+      # Fish shell initialization with custom functions
+      interactiveShellInit = ''
+        # Function to initialize a direnv flake environment, with optional template
+        function nix-direnv
+          # Use the first argument as template with defaults
+          set template $argv[1]
+          if test -z "$template"
+            set template "empty"
+          end
+
+          # Check if flake.nix exists in the current directory
+          if not test -f "flake.nix"
+            echo "🔧 Initializing new flake with template: $template"
+            if not nix flake init --template "https://flakehub.com/f/the-nix-way/dev-templates/*#$template"
+              echo "⚠️ Flake initialization interrupted or failed"
+              return 1
+            end
+          end
+
+          # Create .envrc file if it doesn't exist
+          if not test -f ".envrc"
+            echo "📝 Creating new .envrc with: use flake"
+            if not echo "use flake" > .envrc
+              echo "⚠️ .envrc creation interrupted or failed"
+              return 1
+            end
+          end
+
+          echo "📁 Setting up direnv environment"
+          if not direnv allow
+            echo "⚠️ Direnv setup interrupted or failed"
+            return 1
+          end
+
+          echo "🔄 Loading direnv environment"
+        end
+
+        # Function to rebuild Darwin system
+        function nix-rebuild
+          echo "🔄 Updating Nix flake"
+          if not nix flake update --flake ~/.nix
+            echo "⚠️ Flake update interrupted or failed"
+            return 1
+          end
+
+          echo "🔧 Rebuilding Darwin system"
+          if not sudo darwin-rebuild switch --flake ~/.nix#MacBook-Air
+            echo "⚠️ System rebuild interrupted or failed"
+            return 1
+          end
+
+          echo "🗑️ Collecting garbage"
+          if not nix-collect-garbage -d
+            echo "⚠️ Garbage collection interrupted or failed"
+            return 1
+          end
+
+          echo "✅ Nix system rebuild complete"
+        end
+      '';
+    };
 
     # Enable direnv for automatic environment loading
     direnv = {
       enable = true;
-      nix-direnv.enable = true;  # Better Nix integration
+      nix-direnv.enable = true; # Better Nix integration
     };
   };
 
@@ -96,20 +172,20 @@
     defaults = {
       # Dock configuration
       dock = {
-        autohide = true;  # Auto-hide dock when not in use
+        autohide = true; # Auto-hide dock when not in use
         persistent-apps = [
-          "/System/Applications/Notes.app"  # Keep Notes app in dock
+          "/System/Applications/Notes.app" # Keep Notes app in dock
         ];
       };
 
       # Finder configuration
       finder = {
-        FXPreferredViewStyle = "clmv";  # Use column view by default
+        FXPreferredViewStyle = "clmv"; # Use column view by default
       };
 
       # Login window configuration
       loginwindow = {
-        GuestEnabled = false;  # Disable guest user account
+        GuestEnabled = false; # Disable guest user account
       };
     };
   };
