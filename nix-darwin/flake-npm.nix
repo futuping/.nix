@@ -2,7 +2,7 @@
 # NODE.JS ECOSYSTEM INTEGRATION
 # ============================================================================
 # Specialized module for Node.js and JavaScript package management.
-# Integrates npm packages into Nix ecosystem through npm-nix bridge.
+# Integrates npm packages into Nix ecosystem through npmpackages bridge.
 #
 # Key features:
 # - Declarative npm package management through Nix
@@ -11,12 +11,18 @@
 # - Consistent package versioning and dependency resolution
 # - Environment-specific configuration management
 
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 let
-  # Import npm-nix package set with pkgs context
-  # npm-nix is a non-flake input providing npm package definitions
-  npmPackages = import (inputs.npm-nix + "/npmPackages") {
+  # Import npmpackages package set with pkgs context
+  # npmpackages is a non-flake input providing npm package definitions
+  npmPackages = import (inputs.npmpackages + "/npmPackages") {
     inherit pkgs;
     # Provides access to stdenv, nodejs, and other build dependencies
   };
@@ -28,7 +34,7 @@ in
   # Declarative npm package management integrated with system packages
   environment.systemPackages = [
     # Utility libraries
-    npmPackages.async-foreach                       # Asynchronous iteration utility
+    npmPackages.async-foreach # Asynchronous iteration utility
 
     # Development and build tools (uncomment as needed)
     # npmPackages.musistudio-claude-code-router     # Claude AI code routing

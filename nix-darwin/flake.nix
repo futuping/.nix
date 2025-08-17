@@ -40,8 +40,8 @@
     };
 
     # Node.js ecosystem integration
-    npm-nix = {
-      url = "github:futuping/npm.nix";
+    npmpackages = {
+      url = "github:futuping/npmpackages";
       flake = false;
       # Non-flake input for npm package management through Nix
     };
@@ -50,27 +50,37 @@
   # ============================================================================
   # SYSTEM OUTPUTS
   # ============================================================================
-  outputs = inputs@{ self, nixpkgs, nix-darwin, brew-nix, brew-api, npm-nix, ... }: {
-    # Darwin system configurations
-    darwinConfigurations = {
-      # Primary system configuration for MacBook-Air
-      "MacBook-Air" = nix-darwin.lib.darwinSystem {
-        # Target system architecture
-        system = "x86_64-darwin";
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      nix-darwin,
+      brew-nix,
+      brew-api,
+      npmpackages,
+      ...
+    }:
+    {
+      # Darwin system configurations
+      darwinConfigurations = {
+        # Primary system configuration for MacBook-Air
+        "MacBook-Air" = nix-darwin.lib.darwinSystem {
+          # Target system architecture
+          system = "x86_64-darwin";
 
-        # Special arguments passed to all modules
-        specialArgs = {
-          inherit inputs self;
-          # Provides access to flake inputs and self-reference in modules
+          # Special arguments passed to all modules
+          specialArgs = {
+            inherit inputs self;
+            # Provides access to flake inputs and self-reference in modules
+          };
+
+          # Modular configuration structure
+          modules = [
+            ./flake-darwin.nix # Core Darwin system configuration
+            ./flake-brew.nix # Homebrew Cask integration
+            ./flake-npm.nix # Node.js/npm package management
+          ];
         };
-
-        # Modular configuration structure
-        modules = [
-          ./flake-darwin.nix    # Core Darwin system configuration
-          ./flake-brew.nix      # Homebrew Cask integration
-          ./flake-npm.nix       # Node.js/npm package management
-        ];
       };
     };
-  };
 }
