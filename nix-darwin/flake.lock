@@ -81,11 +81,11 @@
     "npmpackages": {
       "flake": false,
       "locked": {
-        "lastModified": 1755444374,
-        "narHash": "sha256-P1VQOf3VkfYAbuBkE5EX/QcVLoByKjvF24pdTGidcU0=",
+        "lastModified": 1755446313,
+        "narHash": "sha256-rhIUkISIrlbRzHUYPdhgxCuwOPN8qn4lcXNg0eCi4aM=",
         "owner": "futuping",
         "repo": "npmpackages",
-        "rev": "2fec3750257f35577cefebff4fc4a2bf2768bb07",
+        "rev": "65fd3a0d891250172fb9de342b9880c6e7d68de3",
         "type": "github"
       },
       "original": {

@@ -34,7 +34,7 @@ in
   # Declarative npm package management integrated with system packages
   environment.systemPackages = [
     # Utility libraries
-    npmPackages.async-foreach # Asynchronous iteration utility
+    # npmPackages.async-foreach # Asynchronous iteration utility
 
     # Development and build tools (uncomment as needed)
     # npmPackages.musistudio-claude-code-router # Claude AI code routing
