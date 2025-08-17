@@ -37,7 +37,7 @@ in
     npmPackages.async-foreach # Asynchronous iteration utility
 
     # Development and build tools (uncomment as needed)
-    # npmPackages.musistudio-claude-code-router     # Claude AI code routing
+    # npmPackages.musistudio-claude-code-router # Claude AI code routing
     # npmPackages.npm4nix                           # npm to Nix converter
 
     # Common JavaScript utilities (examples)
