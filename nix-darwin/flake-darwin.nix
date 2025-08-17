@@ -75,7 +75,7 @@
           # Use the first argument as template with defaults
           set template $argv[1]
           if test -z "$template"
-            set template "empty"
+            set template "hello"
           end
 
           # Check if flake.nix exists in the current directory

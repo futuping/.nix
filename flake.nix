@@ -13,13 +13,13 @@
           path = ./rust;
           description = "A template for rust development setup.";
         };
-        empty = {
-          path = ./empty;
+        hello = {
+          path = ./hello;
           description = "A very basic flake.";
         };
       };
 
       # Optional: Set a default template
-      defaultTemplate = self.templates.empty;
+      defaultTemplate = self.templates.hello;
     };
 }
