@@ -50,6 +50,7 @@
       vim # Text editor
       git # Version control system
       nodejs # JavaScript runtime and package manager
+      go # Go programming language
 
       # Development environments and editors
       vscode # Visual Studio Code editor
