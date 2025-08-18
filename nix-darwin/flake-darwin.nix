@@ -30,7 +30,13 @@
   # ============================================================================
   nix.settings = {
     # Enable experimental features for flakes and new nix command
-    experimental-features = "nix-command flakes";
+    experimental-features = [
+      "nix-command"
+      "flakes"
+      "dynamic-derivations"
+      "ca-derivations"
+      "recursive-nix"
+    ];
   };
 
   # ============================================================================
