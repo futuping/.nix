@@ -11,7 +11,12 @@
 # - Custom package overrides and version pinning
 # - Automatic dependency resolution and conflict prevention
 
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   # ============================================================================
@@ -44,8 +49,26 @@
     #    };
     #  })
     #)
-    
+
     # Add your Homebrew Cask packages here
     # Example: pkgs.brewCasks.package-name
+
+    # qBittorrent with custom hash override
+    (pkgs.brewCasks."c0re100-qbittorrent".overrideAttrs (oldAttrs: {
+      src = pkgs.fetchurl {
+        url = builtins.head oldAttrs.src.urls;
+        # This is the converted hash for version 5.1.2.10
+        hash = "sha256-S9fKsdUdn7uNfphyg4GCcjKyj/SXVgvl7JSid0ZrClM=";
+      };
+    }))
+
+    # Elmedia Player with fake hash to discover the real one
+    (pkgs.brewCasks."elmedia-player".overrideAttrs (oldAttrs: {
+      src = pkgs.fetchurl {
+        url = builtins.head oldAttrs.src.urls;
+        # We use a fake hash to discover the real one
+        hash = "sha256-DygvNHS5pp+mp0Fjh5EC0FkIbPPhu+BzYHZf3hL7ZYY=";
+      };
+    }))
   ];
 }

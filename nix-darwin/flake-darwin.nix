@@ -52,9 +52,6 @@
       warp-terminal # Modern terminal with AI features
       raycast # Spotlight replacement and productivity tool
 
-      # File sharing and torrent clients
-      qbittorrent-enhanced # Enhanced BitTorrent client with additional features
-
       # AI and coding assistants
       claude-code # Claude AI coding assistant
     ];
