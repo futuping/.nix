@@ -6,7 +6,7 @@ A collection of Nix flake templates for different development environments and s
 
 This repository provides a collection of Nix flake templates for different development environments:
 
-- **nix-darwin** - Comprehensive macOS system configuration with nix-darwin, Fish shell, Homebrew integration, and npm packages
+- **nix-darwin** - Comprehensive macOS system configuration with nix-darwin, Fish shell, Homebrew integration, and Mac App Store support
 - **rust** - Rust development environment with stable and nightly toolchains, including WebAssembly support
 - **hello** - Basic flake template for simple projects
 
@@ -18,7 +18,7 @@ This repository provides a collection of Nix flake templates for different devel
 │   ├── flake.nix       # Main Darwin system flake
 │   ├── flake-darwin.nix # Core system settings and packages
 │   ├── flake-brew.nix  # Homebrew Cask integration
-│   └── flake-npm.nix   # Node.js/npm package management
+│   └── flake-mas.nix   # Mac App Store integration
 ├── rust/               # Rust development template
 │   └── flake.nix       # Rust toolchain with stable/nightly shells
 └── hello/              # Basic template
@@ -58,7 +58,7 @@ A comprehensive macOS system configuration with:
 - **Core system settings** - macOS defaults, services, and essential packages
 - **Fish shell environment** - Custom functions and interactive shell configuration
 - **Homebrew integration** - GUI applications via brew-nix
-- **Node.js ecosystem** - npm packages through npm-nix
+- **Mac App Store integration** - Automated installation of App Store applications
 - **Development tools** - Editors, terminals, and productivity applications
 
 #### Custom Fish Functions
@@ -92,10 +92,10 @@ The nix-darwin template includes two custom Fish shell functions:
 - Homebrew Cask management through brew-nix
 - Custom package overrides and configurations
 
-**Node.js Ecosystem (flake-npm.nix)**
-- npm packages via npm-nix integration
-- JavaScript development environment
-- Node.js-specific configurations
+**Mac App Store Integration (flake-mas.nix)**
+- Automated installation of Mac App Store applications
+- Uses `mas` command-line tool for App Store management
+- Configurable list of App Store application IDs
 
 ### rust Template
 
@@ -117,7 +117,7 @@ A minimal flake template with:
 ### nix-darwin Template Packages
 
 **Development Tools**
-- nixfmt-rfc-style, vim, git, nodejs
+- nixfmt-rfc-style, vim, git, nodejs, go
 
 **Editors & IDEs**
 - Visual Studio Code
@@ -127,6 +127,14 @@ A minimal flake template with:
 
 **AI & Coding Assistants**
 - Claude Code
+
+**Homebrew Applications**
+- Custom GUI applications via Homebrew Casks
+- Configurable package overrides
+
+**Mac App Store Applications**
+- Automated installation via `mas` tool
+- Configurable App Store application IDs
 
 **Shell Environment**
 - Fish shell with syntax highlighting
@@ -220,7 +228,7 @@ A minimal flake template with:
 ### nix-darwin Template
 - **Add packages**: Edit `environment.systemPackages` in `flake-darwin.nix`
 - **Homebrew apps**: Add casks to `flake-brew.nix`
-- **npm packages**: Add to `flake-npm.nix`
+- **Mac App Store apps**: Add application IDs to `flake-mas.nix`
 - **Fish functions**: Modify `programs.fish.interactiveShellInit` in `flake-darwin.nix`
 - **macOS settings**: Adjust `system.defaults` in `flake-darwin.nix`
 

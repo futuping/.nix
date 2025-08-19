@@ -19,7 +19,6 @@
         };
       };
 
-      # Optional: Set a default template
       defaultTemplate = self.templates.hello;
     };
 }

@@ -3,11 +3,11 @@
     "brew-api": {
       "flake": false,
       "locked": {
-        "lastModified": 1755580350,
-        "narHash": "sha256-fZ9WN57R+lyyyIPevb8+zPhHYvOPQf3VBj27dih6PPA=",
+        "lastModified": 1755603318,
+        "narHash": "sha256-FuCKs356ZeIkM8voJ2D5gpkOLNe5qzQfFLFyTgF+Nng=",
         "owner": "BatteredBunny",
         "repo": "brew-api",
-        "rev": "1fc61f78c0a0a8cb739cee3be0ec6adf2a6f775d",
+        "rev": "76cda6cc9672d102b5446747588eaacec5e8c3fb",
         "type": "github"
       },
       "original": {
@@ -78,29 +78,12 @@
         "type": "github"
       }
     },
-    "npmpackages": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1755446313,
-        "narHash": "sha256-rhIUkISIrlbRzHUYPdhgxCuwOPN8qn4lcXNg0eCi4aM=",
-        "owner": "futuping",
-        "repo": "npmpackages",
-        "rev": "65fd3a0d891250172fb9de342b9880c6e7d68de3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "futuping",
-        "repo": "npmpackages",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "brew-api": "brew-api",
         "brew-nix": "brew-nix",
         "nix-darwin": "nix-darwin",
-        "nixpkgs": "nixpkgs",
-        "npmpackages": "npmpackages"
+        "nixpkgs": "nixpkgs"
       }
     }
   },

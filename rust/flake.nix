@@ -25,7 +25,6 @@
           overlays = [ (import rust-overlay) ];
         };
 
-        # Common components for both Rust toolchains to avoid repetition.
         commonRustComponents = {
           extensions = [
             "rust-src"
@@ -38,12 +37,9 @@
           ];
         };
 
-        # Define the specific toolchains.
         stableToolchain = pkgs.rust-bin.stable."1.88.0".default.override commonRustComponents;
         nightlyToolchain = pkgs.rust-bin.nightly."2025-05-09".default.override commonRustComponents;
 
-        # Helper function to create a consistent shell environment.
-        # This now uses `with pkgs;` for conciseness.
         mkRustShell =
           { toolchain, name }:
           with pkgs;
