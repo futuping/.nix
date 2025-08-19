@@ -79,6 +79,7 @@
             ./flake-darwin.nix # Core Darwin system configuration
             ./flake-brew.nix # Homebrew Cask integration
             ./flake-npm.nix # Node.js/npm package management
+            ./flake-mas.nix # Mac App Store integration
           ];
         };
       };
