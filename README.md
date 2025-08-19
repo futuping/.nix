@@ -1,28 +1,35 @@
-# Nix Flake Templates
+# Nix Configuration Repository
 
-A collection of Nix flake templates for different development environments and system configurations.
+A modular Nix configuration repository containing system configuration and development environment templates.
 
 ## Overview
 
-This repository provides a collection of Nix flake templates for different development environments:
+This repository is organized into two main parts:
 
-- **nix-darwin** - Comprehensive macOS system configuration with nix-darwin, Fish shell, Homebrew integration, and Mac App Store support
+### nix-darwin - System Configuration
+Comprehensive macOS system configuration with nix-darwin, Fish shell, Homebrew integration, and Mac App Store support.
+
+### nix-dev - Development Templates
+A collection of development environment templates:
 - **rust** - Rust development environment with stable and nightly toolchains, including WebAssembly support
 - **hello** - Basic flake template for simple projects
 
-## Templates
+## Repository Structure
 
 ```
 ├── flake.nix           # Main flake defining all templates
-├── nix-darwin/         # macOS system configuration template
+├── nix-darwin/         # macOS system configuration
 │   ├── flake.nix       # Main Darwin system flake
+│   ├── flake.lock      # Locked dependency versions
 │   ├── flake-darwin.nix # Core system settings and packages
 │   ├── flake-brew.nix  # Homebrew Cask integration
 │   └── flake-mas.nix   # Mac App Store integration
-├── rust/               # Rust development template
-│   └── flake.nix       # Rust toolchain with stable/nightly shells
-└── hello/              # Basic template
-    └── flake.nix       # Simple development shell
+└── nix-dev/            # Development environment templates
+    ├── flake.nix       # Development templates flake
+    ├── rust/           # Rust development template
+    │   └── flake.nix   # Rust toolchain with stable/nightly shells
+    └── hello/          # Basic template
+        └── flake.nix   # Simple development shell
 ```
 
 ## Quick Start
@@ -48,6 +55,10 @@ nix-direnv [template-name]
 nix flake init --template .nix#nix-darwin
 nix flake init --template .nix#rust
 nix flake init --template .nix#hello
+
+# Or use development templates directly
+nix flake init --template .nix/nix-dev#rust
+nix flake init --template .nix/nix-dev#hello
 ```
 
 ## Template Details
@@ -90,17 +101,17 @@ The nix-darwin template includes two custom Fish shell functions:
 **Homebrew Integration (flake-brew.nix)**
 - GUI applications not available in nixpkgs
 - Homebrew Cask management through brew-nix
-- Custom package overrides and configurations
+- Custom package overrides with specific hash configurations for compatibility
 
 **Mac App Store Integration (flake-mas.nix)**
-- Automated installation of Mac App Store applications
+- Framework for automated installation of Mac App Store applications
 - Uses `mas` command-line tool for App Store management
-- Configurable list of App Store application IDs
+- Currently configured but no applications installed (empty applications array)
 
 ### rust Template
 
 A Rust development environment featuring:
-- **Stable and nightly toolchains** - Rust 1.88.0 stable and nightly 2025-05-09
+- **Stable and nightly toolchains** - Rust 1.88.0 stable and nightly (pinned to 2025-05-09)
 - **WebAssembly support** - wasm32-unknown-unknown target included
 - **Development tools** - rust-analyzer, clippy, rustfmt, cargo-nextest
 - **System dependencies** - OpenSSL and pkg-config for native development
@@ -129,12 +140,14 @@ A minimal flake template with:
 - Claude Code
 
 **Homebrew Applications**
-- Custom GUI applications via Homebrew Casks
-- Configurable package overrides
+- qBittorrent (c0re100 fork) with custom hash override
+- Elmedia Player with custom hash override
+- Configurable package overrides for compatibility
 
 **Mac App Store Applications**
-- Automated installation via `mas` tool
-- Configurable App Store application IDs
+- Framework configured with `mas` tool
+- Currently no applications installed (empty configuration)
+- Ready for App Store application IDs when needed
 
 **Shell Environment**
 - Fish shell with syntax highlighting
@@ -143,7 +156,7 @@ A minimal flake template with:
 ### rust Template Packages
 
 **Rust Toolchains**
-- Stable 1.88.0 and Nightly 2025-05-09
+- Stable 1.88.0 and Nightly (pinned to 2025-05-09)
 - rust-analyzer, clippy, rustfmt
 - cargo-nextest for enhanced testing
 
@@ -227,8 +240,8 @@ A minimal flake template with:
 
 ### nix-darwin Template
 - **Add packages**: Edit `environment.systemPackages` in `flake-darwin.nix`
-- **Homebrew apps**: Add casks to `flake-brew.nix`
-- **Mac App Store apps**: Add application IDs to `flake-mas.nix`
+- **Homebrew apps**: Add casks to `flake-brew.nix` (may require custom hash overrides)
+- **Mac App Store apps**: Add application IDs to the `applications` array in `flake-mas.nix`
 - **Fish functions**: Modify `programs.fish.interactiveShellInit` in `flake-darwin.nix`
 - **macOS settings**: Adjust `system.defaults` in `flake-darwin.nix`
 

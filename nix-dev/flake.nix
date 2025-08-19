@@ -1,20 +1,16 @@
 {
-  description = "My Personal Nix Flake Templates";
+  description = "Development Environment Templates";
 
   outputs =
     { self, ... }:
     {
       templates = {
-        nix-darwin = {
-          path = ./nix-darwin;
-          description = "A modular Darwin system configuration.";
-        };
         rust = {
-          path = ./nix-dev/rust;
+          path = ./rust;
           description = "A template for rust development setup.";
         };
         hello = {
-          path = ./nix-dev/hello;
+          path = ./hello;
           description = "A very basic flake.";
         };
       };
