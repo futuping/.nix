@@ -8,7 +8,7 @@ A modular Nix configuration repository containing system configuration and devel
 
 ```bash
 # Apply system configuration (nix-darwin)
-sudo darwin-rebuild switch --flake .nix/nix-darwin#MacBook-Air
+sudo darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Air
 
 # Update system and rebuild (using custom Fish function)
 nix-rebuild
@@ -17,7 +17,7 @@ nix-rebuild
 nix-direnv [template-name]
 
 # Initialize project from template
-nix flake init --template .nix#[template-name]
+nix flake init --template ~/.nix#[template-name]
 ```
 
 ### Available Templates
@@ -32,7 +32,7 @@ nix flake init --template .nix#[template-name]
 This repository is organized into two main parts:
 
 ### nix-darwin - System Configuration
-Comprehensive macOS system configuration with nix-darwin, Fish shell, Homebrew integration, and Mac App Store support.
+Comprehensive macOS system configuration with nix-darwin, Fish shell, Emacs integration, Homebrew integration, and Mac App Store support.
 
 ### nix-dev - Development Templates
 A collection of development environment templates:
@@ -70,7 +70,7 @@ A collection of development environment templates:
 ```bash
 # Clone and apply system configuration
 git clone https://github.com/futuping/.nix.git
-sudo darwin-rebuild switch --flake .nix/nix-darwin#MacBook-Air
+sudo darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Air
 
 # Update flake inputs and rebuild (using custom function)
 nix-rebuild
@@ -83,17 +83,17 @@ nix-direnv [template-name]
 
 ```bash
 # Initialize a new project with a template (using local cloned repo)
-nix flake init --template .nix#nix-darwin
-nix flake init --template .nix#rust
-nix flake init --template .nix#python
-nix flake init --template .nix#node
-nix flake init --template .nix#hello
+nix flake init --template ~/.nix#nix-darwin
+nix flake init --template ~/.nix#rust
+nix flake init --template ~/.nix#python
+nix flake init --template ~/.nix#node
+nix flake init --template ~/.nix#hello
 
 # Or use development templates directly
-nix flake init --template .nix/nix-dev#rust
-nix flake init --template .nix/nix-dev#python
-nix flake init --template .nix/nix-dev#node
-nix flake init --template .nix/nix-dev#hello
+nix flake init --template ~/.nix/nix-dev#rust
+nix flake init --template ~/.nix/nix-dev#python
+nix flake init --template ~/.nix/nix-dev#node
+nix flake init --template ~/.nix/nix-dev#hello
 ```
 
 ## Template Details
@@ -103,6 +103,7 @@ nix flake init --template .nix/nix-dev#hello
 A comprehensive macOS system configuration with:
 - **Core system settings** - macOS defaults, services, and essential packages
 - **Fish shell environment** - Custom functions and interactive shell configuration
+- **Emacs integration** - Native macOS Emacs with daemon service and convenient aliases
 - **Homebrew integration** - GUI applications via brew-nix
 - **Mac App Store integration** - Automated installation of App Store applications
 - **Development tools** - Editors, terminals, and productivity applications
@@ -113,25 +114,26 @@ The nix-darwin template includes two custom Fish shell functions:
 
 **`nix-direnv [template]`**
 - Initializes a direnv flake environment with optional template support
-- Creates `flake.nix` from FlakeHub templates (defaults to "empty")
+- Creates `flake.nix` from local templates (defaults to "hello")
 - Sets up `.envrc` with `use flake`
 - Automatically allows direnv and loads the environment
+- Includes error handling and status feedback with emojis
 
 **`nix-rebuild`**
 - Streamlined system rebuild process
-- Updates Nix flake inputs
+- Updates Nix flake inputs for ~/.nix/nix-darwin
 - Rebuilds Darwin system configuration
-- Performs garbage collection
-- Provides clear status feedback with emojis
+- Performs garbage collection with `nix-collect-garbage -d`
+- Includes error handling and status feedback with emojis
 
 #### Module Structure
 
 **Core System (flake-darwin.nix)**
 - System packages and development tools
-- Fish shell configuration with custom functions
+- Fish shell configuration with custom functions and Emacs aliases
 - direnv integration for automatic environment loading
 - macOS system defaults and preferences
-- Services (Karabiner Elements keyboard customization)
+- Services (Karabiner Elements keyboard customization, Emacs daemon)
 
 **System Defaults Configuration:**
 - **Dock**: Auto-hide enabled, Notes app in persistent apps
@@ -148,6 +150,14 @@ The nix-darwin template includes two custom Fish shell functions:
 - Framework for automated installation of Mac App Store applications
 - Uses `mas` command-line tool for App Store management
 - Currently configured but no applications installed (empty applications array)
+
+**Emacs Integration**
+- **Emacs Package**: Uses emacs-macport for native macOS integration
+- **Emacs Service**: Daemon automatically started for fast client connections
+- **Convenient Aliases**:
+  - `emacs`, `e`, `ec` - Open GUI Emacs client (`emacsclient -c -a 'emacs'`)
+  - `et` - Open terminal Emacs client (`emacsclient -t -a 'emacs -nw'`)
+- **Fallback Support**: Aliases include fallback to standalone Emacs if daemon unavailable
 
 **Services Configuration**
 - **Karabiner Elements**: Advanced keyboard customization service
@@ -175,7 +185,7 @@ A Python development environment featuring:
 
 A Node.js development environment featuring:
 - **Node.js 22** - Latest LTS Node.js version
-- **Package managers** - pnpm, npm, and yarn support
+- **Package manager** - pnpm (npm is included with Node.js)
 - **TypeScript support** - TypeScript compiler and ts-node
 - **Testing frameworks** - Jest and Mocha for comprehensive testing
 - **Native compilation support** - gcc and pkg-config for native modules
@@ -192,9 +202,10 @@ A minimal flake template with:
 ### nix-darwin Template Packages
 
 **Development Tools**
-- nixfmt-rfc-style, vim, git, python312, nodejs_22, go
+- nixfmt-rfc-style, git
 
 **Editors & IDEs**
+- Emacs (emacs-macport with daemon service)
 - Visual Studio Code
 
 **Terminal & Productivity**
@@ -214,8 +225,9 @@ A minimal flake template with:
 - Ready for App Store application IDs when needed
 
 **Shell Environment**
-- Fish shell with syntax highlighting
+- Fish shell with syntax highlighting and custom functions
 - direnv for automatic environment loading
+- Emacs aliases for quick editor access
 
 ### rust Template Packages
 
@@ -247,7 +259,7 @@ A minimal flake template with:
 
 **Node.js Environment**
 - Node.js 22 runtime
-- pnpm package manager (primary)
+- pnpm package manager
 - TypeScript compiler and ts-node
 
 **Testing Tools**
@@ -297,7 +309,7 @@ A minimal flake template with:
 
 1. **Apply the system configuration**:
    ```bash
-   sudo darwin-rebuild switch --flake .nix/nix-darwin#MacBook-Air
+   sudo darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Air
    ```
 
 2. **Set Fish as default shell**:
@@ -305,13 +317,18 @@ A minimal flake template with:
    chsh -s /run/current-system/sw/bin/fish
    ```
 
+3. **Emacs Setup** (automatically configured):
+   - Emacs daemon service starts automatically
+   - Use aliases: `emacs`, `e`, `ec` for GUI, `et` for terminal
+   - Emacs server provides fast startup for subsequent sessions
+
 
 
 ### Using rust Template
 
 1. **Initialize from template**:
    ```bash
-   nix flake init --template .nix#rust
+   nix flake init --template ~/.nix#rust
    ```
 
 2. **Setup direnv environment**:
@@ -324,7 +341,7 @@ A minimal flake template with:
 
 1. **Initialize from template**:
    ```bash
-   nix flake init --template .nix#python
+   nix flake init --template ~/.nix#python
    ```
 
 2. **Setup direnv environment**:
@@ -336,7 +353,7 @@ A minimal flake template with:
 
 1. **Initialize from template**:
    ```bash
-   nix flake init --template .nix#node
+   nix flake init --template ~/.nix#node
    ```
 
 2. **Setup direnv environment**:
@@ -348,7 +365,7 @@ A minimal flake template with:
 
 1. **Initialize from template**:
    ```bash
-   nix flake init --template .nix#hello
+   nix flake init --template ~/.nix#hello
    ```
 
 2. **Setup direnv environment**:
@@ -363,7 +380,9 @@ A minimal flake template with:
 - **Homebrew apps**: Add casks to `flake-brew.nix` (may require custom hash overrides)
 - **Mac App Store apps**: Add application IDs to the `applications` array in `flake-mas.nix`
 - **Fish functions**: Modify `programs.fish.interactiveShellInit` in `flake-darwin.nix`
+- **Emacs aliases**: Customize Emacs aliases in Fish shell configuration
 - **macOS settings**: Adjust `system.defaults` in `flake-darwin.nix`
+- **Services**: Enable/disable services like Karabiner Elements or Emacs daemon
 
 ### rust Template
 - **Change toolchain versions**: Edit `stableToolchain` and `nightlyToolchain` in `flake.nix`
@@ -394,10 +413,10 @@ A minimal flake template with:
 **Flake Lock Issues**
 ```bash
 # Update all flake inputs
-nix flake update --flake .nix/nix-darwin
+nix flake update --flake ~/.nix/nix-darwin
 
 # Update specific input
-nix flake lock --update-input nixpkgs --flake .nix/nix-darwin
+nix flake lock --update-input nixpkgs --flake ~/.nix/nix-darwin
 ```
 
 **Homebrew Cask Hash Mismatches**
@@ -407,7 +426,7 @@ nix flake lock --update-input nixpkgs --flake .nix/nix-darwin
 **Darwin Rebuild Failures**
 ```bash
 # Clean rebuild
-sudo darwin-rebuild switch --flake .nix/nix-darwin#MacBook-Air --show-trace
+sudo darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Air --show-trace
 
 # Check for conflicting processes
 sudo launchctl list | grep nix
@@ -420,6 +439,19 @@ direnv allow
 
 # Check direnv status
 direnv status
+```
+
+**Emacs Issues**
+```bash
+# Restart Emacs daemon
+sudo launchctl stop org.nixos.emacs
+sudo launchctl start org.nixos.emacs
+
+# Check Emacs daemon status
+launchctl list | grep emacs
+
+# Start Emacs manually if daemon fails
+/run/current-system/sw/bin/emacs --daemon
 ```
 
 ### Dependency Management

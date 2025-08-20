@@ -21,11 +21,8 @@
   environment = {
     systemPackages = with pkgs; [
       nixfmt-rfc-style
-      vim
+      emacs-macport
       git
-      python312
-      nodejs_22
-      go
       vscode
       warp-terminal
       raycast
@@ -45,6 +42,11 @@
           hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
         };
       });
+    };
+
+    emacs = {
+      enable = true;
+      package = pkgs.emacs-macport;
     };
   };
 
@@ -131,6 +133,12 @@
 
           echo "✅ Nix system rebuild complete"
         end
+
+        # Emacs aliases
+        alias emacs="emacsclient -c -a 'emacs'"
+        alias e="emacsclient -c -a 'emacs'"
+        alias ec="emacsclient -c -a 'emacs'"
+        alias et="emacsclient -t -a 'emacs -nw'"
       '';
     };
   };
