@@ -13,6 +13,14 @@
           path = ./nix-dev/rust;
           description = "A template for rust development setup.";
         };
+        python = {
+          path = ./nix-dev/python;
+          description = "A Python 3.12 development environment with Pixi package manager.";
+        };
+        node = {
+          path = ./nix-dev/node;
+          description = "A Node.js 22 development environment with TypeScript and testing tools.";
+        };
         hello = {
           path = ./nix-dev/hello;
           description = "A very basic flake.";

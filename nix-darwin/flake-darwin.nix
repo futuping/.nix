@@ -23,7 +23,8 @@
       nixfmt-rfc-style
       vim
       git
-      nodejs
+      python312
+      nodejs_22
       go
       vscode
       warp-terminal
