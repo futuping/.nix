@@ -21,7 +21,6 @@
   environment = {
     systemPackages = with pkgs; [
       nixfmt-rfc-style
-      emacs-macport
       git
       vscode
       warp-terminal
@@ -44,10 +43,18 @@
       });
     };
 
-    emacs = {
-      enable = true;
-      package = pkgs.emacs-macport;
-    };
+    # emacs = {
+    #   enable = true;
+    #   package = pkgs.emacs.overrideAttrs (old: {
+    #     buildInputs = old.buildInputs ++ [ pkgs.imagemagick ];
+    #     configureFlags = old.configureFlags ++ [
+    #       "--with-modules"
+    #       "--with-dbus"
+    #       "--with-xwidgets"
+    #       "--with-imagemagick"
+    #     ];
+    #   });
+    # };
   };
 
   system = {
@@ -125,6 +132,12 @@
             return 1
           end
 
+          echo "🧹 Deleting old system generations"
+          if not sudo nix-env --delete-generations old --profile /nix/var/nix/profiles/system
+            echo "⚠️ Old generation deletion interrupted or failed"
+            return 1
+          end
+
           echo "🗑️ Collecting garbage"
           if not nix-collect-garbage -d
             echo "⚠️ Garbage collection interrupted or failed"
@@ -134,11 +147,7 @@
           echo "✅ Nix system rebuild complete"
         end
 
-        # Emacs aliases
-        alias emacs="emacsclient -c -a 'emacs'"
-        alias e="emacsclient -c -a 'emacs'"
-        alias ec="emacsclient -c -a 'emacs'"
-        alias et="emacsclient -t -a 'emacs -nw'"
+
       '';
     };
   };

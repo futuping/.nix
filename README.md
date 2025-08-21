@@ -2,6 +2,12 @@
 
 A modular Nix configuration repository containing system configuration and development environment templates.
 
+## Recent Updates
+
+- **Improved `nix-rebuild` function**: Now includes automatic cleanup of old system generations to prevent storage bloat and ensure proper garbage collection of removed packages
+- **Streamlined system configuration**: Removed Emacs integration for a cleaner, more focused setup
+- **Enhanced maintenance**: Better storage management and cleanup processes
+
 ## Quick Reference
 
 ### Essential Commands
@@ -32,7 +38,7 @@ nix flake init --template ~/.nix#[template-name]
 This repository is organized into two main parts:
 
 ### nix-darwin - System Configuration
-Comprehensive macOS system configuration with nix-darwin, Fish shell, Emacs integration, Homebrew integration, and Mac App Store support.
+Comprehensive macOS system configuration with nix-darwin, Fish shell, Homebrew integration, and Mac App Store support.
 
 ### nix-dev - Development Templates
 A collection of development environment templates:
@@ -49,7 +55,7 @@ A collection of development environment templates:
 ├── nix-darwin/         # macOS system configuration
 │   ├── flake.nix       # Main Darwin system flake
 │   ├── flake.lock      # Locked dependency versions
-│   ├── flake-darwin.nix # Core system settings, packages, and Fish functions
+│   ├── flake-darwin.nix # Core system settings, packages, Fish functions with improved nix-rebuild
 │   ├── flake-brew.nix  # Homebrew Cask integration with custom overrides
 │   └── flake-mas.nix   # Mac App Store integration framework
 └── nix-dev/            # Development environment templates
@@ -103,7 +109,6 @@ nix flake init --template ~/.nix/nix-dev#hello
 A comprehensive macOS system configuration with:
 - **Core system settings** - macOS defaults, services, and essential packages
 - **Fish shell environment** - Custom functions and interactive shell configuration
-- **Emacs integration** - Native macOS Emacs with daemon service and convenient aliases
 - **Homebrew integration** - GUI applications via brew-nix
 - **Mac App Store integration** - Automated installation of App Store applications
 - **Development tools** - Editors, terminals, and productivity applications
@@ -120,20 +125,22 @@ The nix-darwin template includes two custom Fish shell functions:
 - Includes error handling and status feedback with emojis
 
 **`nix-rebuild`**
-- Streamlined system rebuild process
+- Streamlined system rebuild process with comprehensive cleanup
 - Updates Nix flake inputs for ~/.nix/nix-darwin
 - Rebuilds Darwin system configuration
-- Performs garbage collection with `nix-collect-garbage -d`
+- **Automatically deletes old system generations** to prevent storage bloat and enable proper garbage collection
+- Performs thorough garbage collection with `nix-collect-garbage -d`
 - Includes error handling and status feedback with emojis
+- **Key improvement**: Generation cleanup ensures unused packages (like removed software) are properly cleaned up
 
 #### Module Structure
 
 **Core System (flake-darwin.nix)**
 - System packages and development tools
-- Fish shell configuration with custom functions and Emacs aliases
+- Fish shell configuration with custom functions
 - direnv integration for automatic environment loading
 - macOS system defaults and preferences
-- Services (Karabiner Elements keyboard customization, Emacs daemon)
+- Services (Karabiner Elements keyboard customization)
 
 **System Defaults Configuration:**
 - **Dock**: Auto-hide enabled, Notes app in persistent apps
@@ -150,14 +157,6 @@ The nix-darwin template includes two custom Fish shell functions:
 - Framework for automated installation of Mac App Store applications
 - Uses `mas` command-line tool for App Store management
 - Currently configured but no applications installed (empty applications array)
-
-**Emacs Integration**
-- **Emacs Package**: Uses emacs-macport for native macOS integration
-- **Emacs Service**: Daemon automatically started for fast client connections
-- **Convenient Aliases**:
-  - `emacs`, `e`, `ec` - Open GUI Emacs client (`emacsclient -c -a 'emacs'`)
-  - `et` - Open terminal Emacs client (`emacsclient -t -a 'emacs -nw'`)
-- **Fallback Support**: Aliases include fallback to standalone Emacs if daemon unavailable
 
 **Services Configuration**
 - **Karabiner Elements**: Advanced keyboard customization service
@@ -205,7 +204,6 @@ A minimal flake template with:
 - nixfmt-rfc-style, git
 
 **Editors & IDEs**
-- Emacs (emacs-macport with daemon service)
 - Visual Studio Code
 
 **Terminal & Productivity**
@@ -227,7 +225,6 @@ A minimal flake template with:
 **Shell Environment**
 - Fish shell with syntax highlighting and custom functions
 - direnv for automatic environment loading
-- Emacs aliases for quick editor access
 
 ### rust Template Packages
 
@@ -317,10 +314,7 @@ A minimal flake template with:
    chsh -s /run/current-system/sw/bin/fish
    ```
 
-3. **Emacs Setup** (automatically configured):
-   - Emacs daemon service starts automatically
-   - Use aliases: `emacs`, `e`, `ec` for GUI, `et` for terminal
-   - Emacs server provides fast startup for subsequent sessions
+
 
 
 
@@ -380,9 +374,8 @@ A minimal flake template with:
 - **Homebrew apps**: Add casks to `flake-brew.nix` (may require custom hash overrides)
 - **Mac App Store apps**: Add application IDs to the `applications` array in `flake-mas.nix`
 - **Fish functions**: Modify `programs.fish.interactiveShellInit` in `flake-darwin.nix`
-- **Emacs aliases**: Customize Emacs aliases in Fish shell configuration
 - **macOS settings**: Adjust `system.defaults` in `flake-darwin.nix`
-- **Services**: Enable/disable services like Karabiner Elements or Emacs daemon
+- **Services**: Enable/disable services like Karabiner Elements
 
 ### rust Template
 - **Change toolchain versions**: Edit `stableToolchain` and `nightlyToolchain` in `flake.nix`
@@ -432,6 +425,21 @@ sudo darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Air --show-trace
 sudo launchctl list | grep nix
 ```
 
+**Storage Cleanup and Generation Management**
+```bash
+# Manual cleanup of old generations (automatically done by nix-rebuild function)
+sudo nix-env --delete-generations old --profile /nix/var/nix/profiles/system
+
+# List current generations
+sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
+
+# Force garbage collection
+nix-collect-garbage -d
+
+# Check Nix store size
+du -sh /nix/store
+```
+
 **direnv Not Loading**
 ```bash
 # Manually allow direnv
@@ -441,18 +449,7 @@ direnv allow
 direnv status
 ```
 
-**Emacs Issues**
-```bash
-# Restart Emacs daemon
-sudo launchctl stop org.nixos.emacs
-sudo launchctl start org.nixos.emacs
 
-# Check Emacs daemon status
-launchctl list | grep emacs
-
-# Start Emacs manually if daemon fails
-/run/current-system/sw/bin/emacs --daemon
-```
 
 ### Dependency Management
 
@@ -473,8 +470,9 @@ launchctl list | grep emacs
 ### System Configuration
 - Test nix-darwin changes in a virtual machine first if possible
 - Keep backups of working configurations before major updates
-- Use the `nix-rebuild` function for streamlined system updates
+- Use the `nix-rebuild` function for streamlined system updates with automatic cleanup
 - Monitor system resources after adding new packages or services
+- **Storage Management**: The improved `nix-rebuild` function automatically cleans up old generations, preventing storage bloat and ensuring removed packages are properly garbage collected
 
 ### Development Workflow
 1. Initialize project with appropriate template
