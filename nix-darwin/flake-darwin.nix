@@ -26,6 +26,7 @@
       warp-terminal
       raycast
       claude-code
+      emacs
     ];
 
     shells = with pkgs; [ fish ];
@@ -43,18 +44,19 @@
       });
     };
 
-    # emacs = {
-    #   enable = true;
-    #   package = pkgs.emacs.overrideAttrs (old: {
-    #     buildInputs = old.buildInputs ++ [ pkgs.imagemagick ];
-    #     configureFlags = old.configureFlags ++ [
-    #       "--with-modules"
-    #       "--with-dbus"
-    #       "--with-xwidgets"
-    #       "--with-imagemagick"
-    #     ];
-    #   });
-    # };
+    emacs = {
+      enable = true;
+      package = pkgs.emacs;
+      #   package = pkgs.emacs.overrideAttrs (old: {
+      #     buildInputs = old.buildInputs ++ [ pkgs.imagemagick ];
+      #     configureFlags = old.configureFlags ++ [
+      #       "--with-modules"
+      #       "--with-dbus"
+      #       "--with-xwidgets"
+      #       "--with-imagemagick"
+      #     ];
+      #   });
+    };
   };
 
   system = {
