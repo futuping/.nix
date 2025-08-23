@@ -78,6 +78,10 @@
       loginwindow = {
         GuestEnabled = false;
       };
+
+      NSGlobalDomain = {
+        _HIHideMenuBar = true;
+      };
     };
   };
 

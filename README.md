@@ -4,6 +4,8 @@ A modular Nix configuration repository containing system configuration and devel
 
 ## Recent Updates
 
+- **Enhanced macOS UI configuration**: Added menu bar auto-hide functionality for a cleaner desktop experience
+- **Updated dependencies**: Refreshed flake.lock with latest brew-api and nixpkgs versions for improved package availability and security
 - **Improved `nix-rebuild` function**: Now includes automatic cleanup of old system generations to prevent storage bloat and ensure proper garbage collection of removed packages
 - **Streamlined system configuration**: Removed Emacs integration for a cleaner, more focused setup
 - **Enhanced maintenance**: Better storage management and cleanup processes
@@ -146,6 +148,7 @@ The nix-darwin template includes two custom Fish shell functions:
 - **Dock**: Auto-hide enabled, Notes app in persistent apps
 - **Finder**: Column view (clmv) as preferred view style
 - **Login Window**: Guest account disabled for security
+- **Menu Bar**: Auto-hide enabled for cleaner desktop experience
 - **Primary User**: Configured as "admin"
 
 **Homebrew Integration (flake-brew.nix)**
