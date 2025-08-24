@@ -22,7 +22,6 @@
       url = "github:BatteredBunny/brew-api";
       flake = false;
     };
-
   };
 
   outputs =
@@ -47,6 +46,7 @@
             ./flake-darwin.nix
             ./flake-brew.nix
             ./flake-mas.nix
+            ./flake-fonts.nix
           ];
         };
       };

@@ -7,7 +7,8 @@ A modular Nix configuration repository containing system configuration and devel
 - **Enhanced macOS UI configuration**: Added menu bar auto-hide functionality for a cleaner desktop experience
 - **Updated dependencies**: Refreshed flake.lock with latest brew-api and nixpkgs versions for improved package availability and security
 - **Improved `nix-rebuild` function**: Now includes automatic cleanup of old system generations to prevent storage bloat and ensure proper garbage collection of removed packages
-- **Streamlined system configuration**: Removed Emacs integration for a cleaner, more focused setup
+- **Enhanced Emacs integration**: Added Emacs service configuration with proper package management
+- **Enhanced font support**: Added local font installation with MonoLisa and Noto Sans Mono CJK fonts
 - **Enhanced maintenance**: Better storage management and cleanup processes
 
 ## Quick Reference
@@ -59,7 +60,9 @@ A collection of development environment templates:
 │   ├── flake.lock      # Locked dependency versions
 │   ├── flake-darwin.nix # Core system settings, packages, Fish functions with improved nix-rebuild
 │   ├── flake-brew.nix  # Homebrew Cask integration with custom overrides
-│   └── flake-mas.nix   # Mac App Store integration framework
+│   ├── flake-mas.nix   # Mac App Store integration framework
+│   ├── flake-fonts.nix # Local font installation configuration
+│   └── fonts/          # Local font files (MonoLisa, Noto Sans Mono CJK)
 └── nix-dev/            # Development environment templates
     ├── rust/           # Rust development template
     │   └── flake.nix   # Rust toolchain with stable/nightly shells + WebAssembly
@@ -142,7 +145,7 @@ The nix-darwin template includes two custom Fish shell functions:
 - Fish shell configuration with custom functions
 - direnv integration for automatic environment loading
 - macOS system defaults and preferences
-- Services (Karabiner Elements keyboard customization)
+- Services (Karabiner Elements keyboard customization, Emacs service)
 
 **System Defaults Configuration:**
 - **Dock**: Auto-hide enabled, Notes app in persistent apps
@@ -155,17 +158,28 @@ The nix-darwin template includes two custom Fish shell functions:
 - GUI applications not available in nixpkgs
 - Homebrew Cask management through brew-nix
 - Custom package overrides with specific hash configurations for compatibility
+- Includes c0re100-qbittorrent, hammerspoon, baidunetdisk, and elmedia-player
 
 **Mac App Store Integration (flake-mas.nix)**
 - Framework for automated installation of Mac App Store applications
 - Uses `mas` command-line tool for App Store management
 - Currently configured but no applications installed (empty applications array)
 
+**Font Management (flake-fonts.nix)**
+- Local font installation system for custom fonts
+- Includes MonoLisa font family (Regular, Bold, Italic, Bold Italic)
+- Includes Noto Sans Mono CJK SC Variable Font for Chinese character support
+- Fonts are automatically installed to system font directory
+
 **Services Configuration**
 - **Karabiner Elements**: Advanced keyboard customization service
   - Version pinned to 14.13.0 for stability
   - Enables complex key remapping and shortcuts
   - Automatically started as a system service
+- **Emacs Service**: Integrated Emacs editor service
+  - Automatically starts Emacs daemon for faster startup
+  - Uses standard Emacs package from nixpkgs
+  - Ready for custom configuration and package extensions
 
 ### rust Template
 
@@ -207,7 +221,7 @@ A minimal flake template with:
 - nixfmt-rfc-style, git
 
 **Editors & IDEs**
-- Visual Studio Code
+- Visual Studio Code, Emacs
 
 **Terminal & Productivity**
 - Warp Terminal, Raycast
@@ -218,6 +232,8 @@ A minimal flake template with:
 **Homebrew Applications**
 - qBittorrent (c0re100 fork) with custom hash override
 - Elmedia Player with custom hash override
+- Hammerspoon (automation and window management)
+- Baidu NetDisk (Sonoma variation)
 - Configurable package overrides for compatibility
 
 **Mac App Store Applications**
@@ -228,6 +244,11 @@ A minimal flake template with:
 **Shell Environment**
 - Fish shell with syntax highlighting and custom functions
 - direnv for automatic environment loading
+
+**Font Support**
+- MonoLisa font family (Regular, Bold, Italic, Bold Italic)
+- Noto Sans Mono CJK SC Variable Font for comprehensive language support
+- Automatic system-wide font installation
 
 ### rust Template Packages
 
@@ -378,7 +399,8 @@ A minimal flake template with:
 - **Mac App Store apps**: Add application IDs to the `applications` array in `flake-mas.nix`
 - **Fish functions**: Modify `programs.fish.interactiveShellInit` in `flake-darwin.nix`
 - **macOS settings**: Adjust `system.defaults` in `flake-darwin.nix`
-- **Services**: Enable/disable services like Karabiner Elements
+- **Services**: Enable/disable services like Karabiner Elements and Emacs
+- **Fonts**: Add custom fonts to `fonts/` directory and they'll be automatically installed
 
 ### rust Template
 - **Change toolchain versions**: Edit `stableToolchain` and `nightlyToolchain` in `flake.nix`
