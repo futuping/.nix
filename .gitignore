@@ -42,4 +42,5 @@ Thumbs.db
 
 
 # Fonts
-nix-darwin/fonts/
+nix-darwin/fonts/*
+!nix-darwin/fonts/.gitkeep
