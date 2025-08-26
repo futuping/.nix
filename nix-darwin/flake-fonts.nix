@@ -1,34 +1,33 @@
-{ pkgs, ... }:
-
 {
-  fonts = {
-    packages = with pkgs; [
-      # System fonts from nixpkgs
-      nerd-fonts.jetbrains-mono
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
-      # Local fonts from the fonts/ directory
-      (pkgs.stdenv.mkDerivation {
-        name = "local-fonts";
-        src = ./fonts;
-        installPhase = ''
-          mkdir -p $out/share/fonts/opentype
-          mkdir -p $out/share/fonts/truetype
+let
+  fonts-programming = pkgs.stdenvNoCC.mkDerivation {
+    name = "fonts-programming";
+    dontConfigure = true;
+    src = pkgs.fetchzip {
+      url = "https://github.com/futuping/fonts/releases/download/0.1.0/fonts-programming.zip";
+      sha256 = "sha256-2axY/XD8f94VTPIq5U8vpCshrTko5cPeMKhbuRSfHtM=";
+      stripRoot = false;
+    };
 
-          # Copy OTF fonts
-          for otf in *.otf; do
-            if [ -f "$otf" ]; then
-              cp "$otf" $out/share/fonts/opentype/
-            fi
-          done
-
-          # Copy TTF fonts
-          for ttf in *.ttf; do
-            if [ -f "$ttf" ]; then
-              cp "$ttf" $out/share/fonts/truetype/
-            fi
-          done
-        '';
-      })
-    ];
+    installPhase = ''
+      mkdir -p $out/share/fonts
+      cp -R $src/* $out/share/fonts/
+    '';
   };
+in
+{
+  # Install font packages
+  fonts.packages = with pkgs; [
+    # Custom programming fonts (MonoLisa, Noto Sans Mono CJK)
+    fonts-programming
+
+    # Popular programming fonts from nixpkgs
+    nerd-fonts.jetbrains-mono
+  ];
 }
