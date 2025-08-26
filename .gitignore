@@ -41,5 +41,8 @@ Thumbs.db
 .env.local
 
 
-# Fonts
-nix-darwin/fonts/*
+# Fonts - ignore font files but keep directory structure
+nix-darwin/fonts/*.otf
+nix-darwin/fonts/*.ttf
+nix-darwin/fonts/*.woff
+nix-darwin/fonts/*.woff2
