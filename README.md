@@ -4,12 +4,12 @@ A modular Nix configuration repository containing system configuration and devel
 
 ## Recent Updates
 
-- **Enhanced macOS UI configuration**: Added menu bar auto-hide functionality for a cleaner desktop experience
+- **Expanded application suite**: Added Codex (AI coding assistant), Zotero (reference manager), AFFiNE (knowledge base), Cursor IDE, Wireshark (network analyzer), and rclone (cloud storage sync)
+- **Enhanced Homebrew packages**: Added Thunder (download manager), Typora (markdown editor), Logseq (knowledge management), and Keyboard Maestro (automation tool)
+- **Streamlined font management**: Migrated to GitHub-hosted font releases (v0.2.0) for easier updates and version control, includes MonoLisa and Noto Sans Mono CJK fonts plus JetBrains Mono Nerd Font
 - **Updated dependencies**: Refreshed flake.lock with latest brew-api and nixpkgs versions for improved package availability and security
+- **Enhanced macOS UI configuration**: Added menu bar auto-hide functionality for a cleaner desktop experience
 - **Improved `nix-rebuild` function**: Now includes automatic cleanup of old system generations to prevent storage bloat and ensure proper garbage collection of removed packages
-- **Enhanced Emacs integration**: Added Emacs service configuration with proper package management
-- **Enhanced font support**: Added local font installation with MonoLisa and Noto Sans Mono CJK fonts
-- **Enhanced maintenance**: Better storage management and cleanup processes
 
 ## Quick Reference
 
@@ -61,8 +61,7 @@ A collection of development environment templates:
 │   ├── flake-darwin.nix # Core system settings, packages, Fish functions with improved nix-rebuild
 │   ├── flake-brew.nix  # Homebrew Cask integration with custom overrides
 │   ├── flake-mas.nix   # Mac App Store integration framework
-│   ├── flake-fonts.nix # Local font installation configuration
-│   └── fonts/          # Local font files (MonoLisa, Noto Sans Mono CJK)
+│   └── flake-fonts.nix # Font configuration using GitHub releases
 └── nix-dev/            # Development environment templates
     ├── rust/           # Rust development template
     │   └── flake.nix   # Rust toolchain with stable/nightly shells + WebAssembly
@@ -166,10 +165,18 @@ The nix-darwin template includes two custom Fish shell functions:
 - Currently configured but no applications installed (empty applications array)
 
 **Font Management (flake-fonts.nix)**
-- Local font installation system for custom fonts
-- Includes MonoLisa font family (Regular, Bold, Italic, Bold Italic)
-- Includes Noto Sans Mono CJK SC Variable Font for Chinese character support
+- GitHub-hosted font releases for easier version control and updates
+- Uses fonts-programming package (v0.2.0) from GitHub releases
+- Includes MonoLisa font family for premium programming typography
+- Includes Noto Sans Mono CJK for comprehensive Chinese character support
+- Includes JetBrains Mono Nerd Font with additional glyphs and icons
 - Fonts are automatically installed to system font directory
+
+**Environment Configuration**
+- **SSL Key Logging**: SSLKEYLOGFILE environment variable configured for network debugging with Wireshark
+  - Logs SSL/TLS keys to `~/.sslkeylog/sslkeylog.log`
+  - Useful for decrypting HTTPS traffic in Wireshark
+  - Requires creating the `.sslkeylog` directory manually
 
 **Services Configuration**
 - **Karabiner Elements**: Advanced keyboard customization service
@@ -218,22 +225,33 @@ A minimal flake template with:
 ### nix-darwin Template Packages
 
 **Development Tools**
-- nixfmt-rfc-style, git
+- nixfmt-rfc-style, git, rclone
 
 **Editors & IDEs**
-- Visual Studio Code, Emacs
+- Visual Studio Code, Emacs, Cursor IDE
+
+**AI & Coding Assistants**
+- Claude Code, Codex
 
 **Terminal & Productivity**
 - Warp Terminal, Raycast
 
-**AI & Coding Assistants**
-- Claude Code
+**Knowledge Management & Research**
+- Zotero (reference manager)
+- AFFiNE (all-in-one knowledge base)
+
+**Network & System Tools**
+- Wireshark (network protocol analyzer, requires ChmodBPF installation from official DMG)
 
 **Homebrew Applications**
-- qBittorrent (c0re100 fork) with custom hash override
+- qBittorrent (c0re100 fork)
 - Elmedia Player with custom hash override
 - Hammerspoon (automation and window management)
 - Baidu NetDisk (Sonoma variation)
+- Thunder (download manager)
+- Typora (markdown editor)
+- Logseq (knowledge management, Sonoma variation)
+- Keyboard Maestro (automation tool) with custom hash override
 - Configurable package overrides for compatibility
 
 **Mac App Store Applications**
@@ -246,8 +264,10 @@ A minimal flake template with:
 - direnv for automatic environment loading
 
 **Font Support**
-- MonoLisa font family (Regular, Bold, Italic, Bold Italic)
-- Noto Sans Mono CJK SC Variable Font for comprehensive language support
+- MonoLisa font family (premium programming font)
+- Noto Sans Mono CJK SC for comprehensive CJK language support
+- JetBrains Mono Nerd Font with additional glyphs and icons
+- GitHub-hosted releases (v0.2.0) for version control and easy updates
 - Automatic system-wide font installation
 
 ### rust Template Packages
@@ -400,7 +420,7 @@ A minimal flake template with:
 - **Fish functions**: Modify `programs.fish.interactiveShellInit` in `flake-darwin.nix`
 - **macOS settings**: Adjust `system.defaults` in `flake-darwin.nix`
 - **Services**: Enable/disable services like Karabiner Elements and Emacs
-- **Fonts**: Add custom fonts to `fonts/` directory and they'll be automatically installed
+- **Fonts**: Add font packages to `fonts.packages` in `flake-fonts.nix`, or update the fonts-programming GitHub release URL and version
 
 ### rust Template
 - **Change toolchain versions**: Edit `stableToolchain` and `nightlyToolchain` in `flake.nix`
@@ -438,8 +458,10 @@ nix flake lock --update-input nixpkgs --flake ~/.nix/nix-darwin
 ```
 
 **Homebrew Cask Hash Mismatches**
-- Custom hash overrides are provided for qBittorrent and Elmedia Player
+- Custom hash overrides are provided for Elmedia Player and Keyboard Maestro
+- Sonoma variations are used for Logseq and Baidu NetDisk
 - If you encounter hash mismatches with other casks, add similar overrides in `flake-brew.nix`
+- Use `overrideAttrs` to specify custom source URLs and hash values
 
 **Darwin Rebuild Failures**
 ```bash

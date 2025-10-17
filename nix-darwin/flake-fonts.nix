@@ -10,8 +10,8 @@ let
     name = "fonts-programming";
     dontConfigure = true;
     src = pkgs.fetchzip {
-      url = "https://github.com/futuping/fonts/releases/download/0.1.0/fonts-programming.zip";
-      sha256 = "sha256-2axY/XD8f94VTPIq5U8vpCshrTko5cPeMKhbuRSfHtM=";
+      url = "https://github.com/futuping/fonts/releases/download/v0.2.0/fonts-programming.zip";
+      sha256 = "sha256-D/hZh/ClNPQFQglGruRxitmpAfXyEhzT8Fip/YIusVY=";
       stripRoot = false;
     };
 

@@ -11,12 +11,13 @@
     allowUnfree = true;
   };
 
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-  };
+  nix.enable = false;
+  # nix.settings = {
+  #   experimental-features = [
+  #     "nix-command"
+  #     "flakes"
+  #   ];
+  # };
 
   environment = {
     systemPackages = with pkgs; [
@@ -27,9 +28,23 @@
       raycast
       claude-code
       emacs
+      codex
+      zotero
+      affine-bin
+      rclone
+      code-cursor
+      wireshark # 要在官方 dmg 里安装 ChmodBPF
+      # comet
+      # sparkle
+      # google-drive
+      # kuake-drive 要删除软件目录里的 update json
     ];
 
     shells = with pkgs; [ fish ];
+
+    variables = {
+      SSLKEYLOGFILE = "$HOME/.sslkeylog/sslkeylog.log";
+    };
   };
 
   services = {
@@ -152,7 +167,6 @@
 
           echo "✅ Nix system rebuild complete"
         end
-
 
       '';
     };
