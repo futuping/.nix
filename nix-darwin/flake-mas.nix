@@ -7,6 +7,7 @@
     let
       applications = [
         # "808501572" # Backgrounds Dynamic Wallpapers
+        # "1334702542" # Cake Wallet (iosUniversal; mas does not support iOS/iPadOS apps on macOS)
       ];
     in
     lib.optionalString (applications != [ ]) ''

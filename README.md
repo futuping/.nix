@@ -4,12 +4,10 @@ A modular Nix configuration repository containing system configuration and devel
 
 ## Recent Updates
 
-- **Expanded application suite**: Added Codex (AI coding assistant), Zotero (reference manager), AFFiNE (knowledge base), Cursor IDE, Wireshark (network analyzer), and rclone (cloud storage sync)
-- **Enhanced Homebrew packages**: Added Thunder (download manager), Typora (markdown editor), Logseq (knowledge management), and Keyboard Maestro (automation tool)
-- **Streamlined font management**: Migrated to GitHub-hosted font releases (v0.2.0) for easier updates and version control, includes MonoLisa and Noto Sans Mono CJK fonts plus JetBrains Mono Nerd Font
-- **Updated dependencies**: Refreshed flake.lock with latest brew-api and nixpkgs versions for improved package availability and security
-- **Enhanced macOS UI configuration**: Added menu bar auto-hide functionality for a cleaner desktop experience
-- **Improved `nix-rebuild` function**: Now includes automatic cleanup of old system generations to prevent storage bloat and ensure proper garbage collection of removed packages
+- **Homebrew casks refreshed**: Added Ayugram and WeChat, introduced a Sonoma antigravity build, and pinned Google Chrome for reproducible installs; Thunder moved to optional
+- **System packages tuned**: Added OpenConnect VPN; Cursor IDE removed from defaults; Wireshark kept as an optional tool with install notes in comments
+- **Mac App Store template note**: Added a commented Cake Wallet ID example to the MAS setup for future installs
+- **Updated dependencies**: Flake lock files refreshed for brew-api, nix-darwin, and nixpkgs
 
 ## Quick Reference
 
@@ -156,13 +154,13 @@ The nix-darwin template includes two custom Fish shell functions:
 **Homebrew Integration (flake-brew.nix)**
 - GUI applications not available in nixpkgs
 - Homebrew Cask management through brew-nix
-- Custom package overrides with specific hash configurations for compatibility
-- Includes c0re100-qbittorrent, hammerspoon, baidunetdisk, and elmedia-player
+- Custom package overrides with pinned hashes for compatibility (Elmedia Player, Google Chrome, Keyboard Maestro)
+- Includes c0re100-qbittorrent, Hammerspoon, Typora, Ayugram, WeChat, Logseq/Baidu NetDisk/Antigravity Sonoma builds (Thunder is optional)
 
 **Mac App Store Integration (flake-mas.nix)**
 - Framework for automated installation of Mac App Store applications
 - Uses `mas` command-line tool for App Store management
-- Currently configured but no applications installed (empty applications array)
+- Includes commented application IDs (e.g., Cake Wallet) and is ready for future installs while remaining empty by default
 
 **Font Management (flake-fonts.nix)**
 - GitHub-hosted font releases for easier version control and updates
@@ -228,7 +226,7 @@ A minimal flake template with:
 - nixfmt-rfc-style, git, rclone
 
 **Editors & IDEs**
-- Visual Studio Code, Emacs, Cursor IDE
+- Visual Studio Code, Emacs
 
 **AI & Coding Assistants**
 - Claude Code, Codex
@@ -241,16 +239,20 @@ A minimal flake template with:
 - AFFiNE (all-in-one knowledge base)
 
 **Network & System Tools**
-- Wireshark (network protocol analyzer, requires ChmodBPF installation from official DMG)
+- OpenConnect VPN client
+- Wireshark (optional; install ChmodBPF from the official DMG if enabled)
 
 **Homebrew Applications**
 - qBittorrent (c0re100 fork)
-- Elmedia Player with custom hash override
 - Hammerspoon (automation and window management)
-- Baidu NetDisk (Sonoma variation)
-- Thunder (download manager)
 - Typora (markdown editor)
+- Ayugram (Telegram client)
+- WeChat
 - Logseq (knowledge management, Sonoma variation)
+- Antigravity (Sonoma variation)
+- Baidu NetDisk (Sonoma variation)
+- Elmedia Player with custom hash override
+- Google Chrome with pinned source hash override
 - Keyboard Maestro (automation tool) with custom hash override
 - Configurable package overrides for compatibility
 

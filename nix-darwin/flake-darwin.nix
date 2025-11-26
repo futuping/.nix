@@ -32,12 +32,15 @@
       zotero
       affine-bin
       rclone
-      code-cursor
-      wireshark # 要在官方 dmg 里安装 ChmodBPF
-      # comet
+      openconnect
+      # OpenCore-Patcher
       # sparkle
+      # comet
+      # kuake-drive # Remove the update JSON file in the app directory
       # google-drive
-      # kuake-drive 要删除软件目录里的 update json
+      # heptabase https://dub.sh/heptabase 7D25-C5E6-61C7-0535 https://dub.sh/hepta_doc
+      # Noteey
+      # wireshark # Install ChmodBPF from the official DMG
     ];
 
     shells = with pkgs; [ fish ];
