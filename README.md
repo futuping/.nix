@@ -207,7 +207,7 @@ A Python development environment featuring:
 A Node.js development environment featuring:
 - **Node.js 22** - Latest LTS Node.js version
 - **Package manager** - pnpm (npm is included with Node.js)
-- **TypeScript support** - TypeScript compiler and ts-node
+- **TypeScript support** - TypeScript compiler; run TS via Node 22's built-in support (`node --experimental-strip-types`) or a project-local runner
 - **Testing frameworks** - Jest and Mocha for comprehensive testing
 - **Native compilation support** - gcc and pkg-config for native modules
 
@@ -303,7 +303,7 @@ A minimal flake template with:
 **Node.js Environment**
 - Node.js 22 runtime
 - pnpm package manager
-- TypeScript compiler and ts-node
+- TypeScript compiler; run TypeScript with Node 22's built-in support (`node --experimental-strip-types`) or a project-local runner (e.g., `pnpm dlx tsx`)
 
 **Testing Tools**
 - Jest testing framework

@@ -28,13 +28,13 @@
     (elmedia-player.overrideAttrs (oldAttrs: {
       src = pkgs.fetchurl {
         url = builtins.head oldAttrs.src.urls;
-        hash = "sha256-pVx9wowtYvxRVaQAd49b9tgjtcSK9M1ngZ8/2IFdi1I=";
+        hash = "sha256-b0khUyqKkkr02Umgi5vP4TMwZU10CLkPV/VgwbUlhJ8=";
       };
     }))
     (google-chrome.overrideAttrs (oldAttrs: {
       src = pkgs.fetchurl {
         url = builtins.head oldAttrs.src.urls;
-        hash = "sha256-3tGFRcWoAu8EUMRpKWBfKRBsBuJtVl2mZurujkmiUcA=";
+        hash = "sha256-4lf5x1Gg+TsMI86tj32EjCgI9V1l8oSQmuJJC3VOHTw=";
       };
     }))
     # ((antigravity.override { variation = "sonoma"; }).overrideAttrs (oldAttrs: {

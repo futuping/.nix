@@ -32,7 +32,7 @@
       zotero
       affine-bin
       rclone
-      openconnect
+      mtr
       # OpenCore-Patcher
       # sparkle
       # comet

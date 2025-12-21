@@ -27,7 +27,6 @@
               nodejs
               nodePackages.pnpm
               nodePackages.typescript
-              nodePackages.ts-node
             ];
 
             nativeBuildInputs = [
