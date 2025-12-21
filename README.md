@@ -31,6 +31,7 @@ nix flake init --template ~/.nix#[template-name]
 - `nix-darwin` - Complete macOS system configuration
 - `rust` - Rust development with stable/nightly toolchains
 - `python` - Python 3.12 with Pixi package manager
+- `bun` - Bun runtime with TypeScript support
 - `node` - Node.js 22 with TypeScript and testing tools
 - `hello` - Basic development template
 
@@ -45,6 +46,7 @@ Comprehensive macOS system configuration with nix-darwin, Fish shell, Homebrew i
 A collection of development environment templates:
 - **rust** - Rust development environment with stable and nightly toolchains, including WebAssembly support
 - **python** - Python 3.12 development environment with Pixi package manager and testing tools
+- **bun** - Bun runtime with built-in package manager and TypeScript support
 - **node** - Node.js 22 development environment with TypeScript, pnpm, and testing frameworks
 - **hello** - Basic flake template for simple projects
 
@@ -65,6 +67,8 @@ A collection of development environment templates:
     │   └── flake.nix   # Rust toolchain with stable/nightly shells + WebAssembly
     ├── python/         # Python development template
     │   └── flake.nix   # Python 3.12 with Pixi package manager and testing
+    ├── bun/            # Bun development template
+    │   └── flake.nix   # Bun runtime with TypeScript support
     ├── node/           # Node.js development template
     │   └── flake.nix   # Node.js 22 with TypeScript, pnpm, and testing tools
     └── hello/          # Basic template
@@ -94,12 +98,14 @@ nix-direnv [template-name]
 nix flake init --template ~/.nix#nix-darwin
 nix flake init --template ~/.nix#rust
 nix flake init --template ~/.nix#python
+nix flake init --template ~/.nix#bun
 nix flake init --template ~/.nix#node
 nix flake init --template ~/.nix#hello
 
 # Or use development templates directly
 nix flake init --template ~/.nix/nix-dev#rust
 nix flake init --template ~/.nix/nix-dev#python
+nix flake init --template ~/.nix/nix-dev#bun
 nix flake init --template ~/.nix/nix-dev#node
 nix flake init --template ~/.nix/nix-dev#hello
 ```
@@ -202,6 +208,14 @@ A Python development environment featuring:
 - **Testing framework** - pytest and pytest-cov for comprehensive testing
 - **Native compilation support** - gcc and pkg-config for building native extensions
 
+### bun Template
+
+A Bun development environment featuring:
+- **Bun runtime** - Bun with bundled package manager and `bunx` for running project CLIs
+- **TypeScript support** - TypeScript-aware runtime plus `tsc` for type checking
+- **Testing** - Ready for `bun test` without extra setup
+- **Native compilation support** - gcc and pkg-config for native modules
+
 ### node Template
 
 A Node.js development environment featuring:
@@ -298,6 +312,20 @@ A minimal flake template with:
 - gcc compiler for native extensions
 - pkg-config for library configuration
 
+### bun Template Packages
+
+**Bun Environment**
+- Bun runtime and package manager
+- TypeScript compiler available for `tsc` checks
+- `bunx` for running project-local CLIs
+
+**Testing Tools**
+- Built-in `bun test` ready to use
+
+**Build Tools**
+- gcc compiler for native modules
+- pkg-config for library configuration
+
 ### node Template Packages
 
 **Node.js Environment**
@@ -325,6 +353,7 @@ A minimal flake template with:
 - For nix-darwin template: macOS system
 - For rust template: Any system supported by Nix
 - For python template: Any system supported by Nix
+- For bun template: Any system supported by Nix
 - For node template: Any system supported by Nix
 - For hello template: Any system supported by Nix
 
@@ -389,6 +418,18 @@ A minimal flake template with:
    nix-direnv
    ```
 
+### Using bun Template
+
+1. **Initialize from template**:
+   ```bash
+   nix flake init --template ~/.nix#bun
+   ```
+
+2. **Setup direnv environment**:
+   ```bash
+   nix-direnv
+   ```
+
 ### Using node Template
 
 1. **Initialize from template**:
@@ -433,6 +474,12 @@ A minimal flake template with:
 ### python Template
 - **Change Python version**: Update `python312` to desired version in `flake.nix`
 - **Add Python packages**: Include additional packages in `checkInputs` array
+- **Add system dependencies**: Include native libraries in `buildInputs`
+- **Modify shell hook**: Update the welcome message and add initialization commands
+
+### bun Template
+- **Pin Bun version**: Update `pkgs.bun` (or a specific derivation) in `flake.nix`
+- **Add JavaScript tooling**: Include additional packages in the `packages` array
 - **Add system dependencies**: Include native libraries in `buildInputs`
 - **Modify shell hook**: Update the welcome message and add initialization commands
 

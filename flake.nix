@@ -17,6 +17,10 @@
           path = ./nix-dev/python;
           description = "A Python 3.12 development environment with Pixi package manager.";
         };
+        bun = {
+          path = ./nix-dev/bun;
+          description = "A Bun development environment with TypeScript support.";
+        };
         node = {
           path = ./nix-dev/node;
           description = "A Node.js 22 development environment with TypeScript and testing tools.";
