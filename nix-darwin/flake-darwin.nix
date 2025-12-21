@@ -33,6 +33,7 @@
       affine-bin
       rclone
       mtr
+      iperf3
       # OpenCore-Patcher
       # sparkle
       # comet

@@ -4,6 +4,8 @@ A modular Nix configuration repository containing system configuration and devel
 
 ## Recent Updates
 
+- **Network tools expanded**: Added iperf3 throughput testing to nix-darwin system packages
+- **Google Chrome override refreshed**: Updated pinned hash for reproducible Homebrew installs
 - **Homebrew casks refreshed**: Added Ayugram and WeChat, introduced a Sonoma antigravity build, and pinned Google Chrome for reproducible installs; Thunder moved to optional
 - **System packages tuned**: Added OpenConnect VPN; Cursor IDE removed from defaults; Wireshark kept as an optional tool with install notes in comments
 - **Mac App Store template note**: Added a commented Cake Wallet ID example to the MAS setup for future installs
@@ -254,6 +256,7 @@ A minimal flake template with:
 
 **Network & System Tools**
 - OpenConnect VPN client
+- iperf3 throughput tester
 - Wireshark (optional; install ChmodBPF from the official DMG if enabled)
 
 **Homebrew Applications**

@@ -34,7 +34,7 @@
     (google-chrome.overrideAttrs (oldAttrs: {
       src = pkgs.fetchurl {
         url = builtins.head oldAttrs.src.urls;
-        hash = "sha256-4lf5x1Gg+TsMI86tj32EjCgI9V1l8oSQmuJJC3VOHTw=";
+        hash = "sha256-LduaQRkQHPNUIIjg86sPnzOSU1ckl61s4nQUzMSlgvY=";
       };
     }))
     # ((antigravity.override { variation = "sonoma"; }).overrideAttrs (oldAttrs: {
