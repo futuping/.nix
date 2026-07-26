@@ -12,28 +12,30 @@
   };
 
   nix.enable = false;
-  # nix.settings = {
-  #   experimental-features = [
-  #     "nix-command"
-  #     "flakes"
-  #   ];
-  # };
+  nix.settings = {
+    # experimental-features = [
+    #   "nix-command"
+    #   "flakes"
+    # ];
+    download-buffer-size = 524288000;
+  };
 
   environment = {
     systemPackages = with pkgs; [
-      nixfmt-rfc-style
+      nodejs_24
+      nixfmt
       git
       vscode
-      warp-terminal
       raycast
       claude-code
       emacs
       codex
-      zotero
       affine-bin
       rclone
       mtr
       iperf3
+      # zotero
+      # warp-terminal
       # OpenCore-Patcher
       # sparkle
       # comet
@@ -42,6 +44,10 @@
       # heptabase https://dub.sh/heptabase 7D25-C5E6-61C7-0535 https://dub.sh/hepta_doc
       # Noteey
       # wireshark # Install ChmodBPF from the official DMG
+      # thunder
+      # 比特浏览器
+      # 闲管家-闲鱼工作台
+      # FLClash
     ];
 
     shells = with pkgs; [ fish ];

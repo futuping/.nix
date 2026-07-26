@@ -2,7 +2,7 @@
   description = "Node.js development environment with common packages";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -16,41 +16,29 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        nodejs = pkgs.nodejs_22;
-
+        nodejs = pkgs.nodejs_24;
       in
       {
-        devShells.default =
-          with pkgs;
-          mkShell {
-            packages = [
-              nodejs
-              nodePackages.pnpm
-              nodePackages.typescript
-            ];
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [
+            nodejs
+            pnpm
+            pkg-config
+            gcc
+          ];
 
-            nativeBuildInputs = [
-              pkg-config
-            ];
-
-            buildInputs = [
-              gcc
-            ];
-
-            checkInputs = [
-              nodePackages.jest
-              nodePackages.mocha
-            ];
-
-            shellHook = ''
-              echo "🟢 Node.js development environment activated!"
-              echo "Node.js: $(node --version)"
-              echo "npm: $(npm --version)"
-              echo "yarn: $(yarn --version)"
-              echo "pnpm: $(pnpm --version)"
+          shellHook = ''
+            echo "🟢 Node.js development environment activated!"
+            echo "Node.js: $(node --version)"
+            echo "npm: $(npm --version)"
+            echo "pnpm: $(pnpm --version)"
+            if command -v tsc >/dev/null 2>&1; then
               echo "TypeScript: $(tsc --version)"
-            '';
-          };
+            else
+              echo "TypeScript: not installed (use pnpm add -D typescript)"
+            fi
+          '';
+        };
       }
     );
 }

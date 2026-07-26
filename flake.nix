@@ -23,7 +23,7 @@
         };
         node = {
           path = ./nix-dev/node;
-          description = "A Node.js 22 development environment with TypeScript and testing tools.";
+          description = "A Node.js 24 development environment with TypeScript and testing tools.";
         };
         hello = {
           path = ./nix-dev/hello;
