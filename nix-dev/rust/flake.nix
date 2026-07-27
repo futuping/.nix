@@ -48,6 +48,7 @@
           mkShell {
             packages = [
               toolchain
+              cargo-nextest
             ];
 
             nativeBuildInputs = [
@@ -56,10 +57,6 @@
 
             buildInputs = [
               openssl.dev
-            ];
-
-            checkInputs = [
-              cargo-nextest
             ];
 
             shellHook = ''

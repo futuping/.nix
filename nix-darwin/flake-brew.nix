@@ -16,9 +16,9 @@
   environment.systemPackages = with pkgs.brewCasks; [
     # Communication and input
     wechat
-    telegram
     ayugram
     wetype
+    # telegram
 
     # AI and development
     claude
@@ -28,11 +28,10 @@
     # Web, files, and media
     google-chrome
     # google-drive
-    c0re100-qbittorrent
-    elmedia-player
+    # c0re100-qbittorrent
 
     # Productivity and automation
-    # typora
+    typora
     # keyboard-maestro
     # hammerspoon
   ];

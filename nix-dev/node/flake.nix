@@ -24,7 +24,6 @@
             nodejs
             pnpm
             pkg-config
-            gcc
           ];
 
           shellHook = ''

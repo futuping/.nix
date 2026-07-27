@@ -17,10 +17,10 @@ The current Darwin configuration contains these personal defaults:
 
 | Setting | Current value | Source |
 | --- | --- | --- |
-| Configuration name | `MacBook-Pro` | `nix-darwin/flake.nix` |
+| Configuration and host name | `MacBook-Pro` | `nix-darwin/flake.nix` |
 | Platform | `aarch64-darwin` | `nix-darwin/flake.nix` |
-| Primary user | `level` | `nix-darwin/flake-darwin.nix` |
-| Repository path used by Zsh helpers | `~/.nix` | `nix-darwin/flake-darwin.nix` |
+| Primary user | `level` | `nix-darwin/flake.nix` |
+| Repository path used by Zsh helpers | `/Users/level/.nix` | `nix-darwin/flake.nix` |
 
 Change these values for the target machine. Also review the enabled packages,
 services, macOS defaults, casks, App Store applications, and fonts.
@@ -28,20 +28,23 @@ services, macOS defaults, casks, App Store applications, and fonts.
 Other important assumptions:
 
 - Nix or Lix must already be installed with flakes enabled.
-- `nix.enable = false`, so nix-darwin does not manage the Nix installation or
-  daemon lifecycle.
+- `nix.enable = true`, so nix-darwin manages the Nix installation, daemon, and
+  `/etc/nix/nix.conf` after the first activation.
 - Unfree packages are allowed.
-- The configuration expects the repository at `~/.nix` unless the Zsh helper
-  paths are changed.
+- The configuration expects the repository at `/Users/level/.nix` unless
+  `machine.configurationDirectory` is changed.
 
 ### Safety notes
 
-- `SSLKEYLOGFILE` is set to `~/.sslkeylog/sslkeylog.log`. Applications that
-  support it may write TLS session keys there. Treat the file as sensitive,
-  remove it after debugging, or disable the variable when it is not needed.
+- TLS key logging is disabled by default. Run `tls-debug command [arg ...]` to
+  enable it for one child process. The command prints the generated key-log
+  path; treat that file as sensitive and delete it after debugging.
 - The custom `nix-rebuild` Zsh function updates inputs, activates the system,
   deletes old system generations, and runs garbage collection. The cleanup
   reduces rollback options; it is not equivalent to a normal rebuild.
+- `programs.mas.cleanup = true` removes installed Mac App Store applications
+  that are absent from both `programs.mas.packages` and `homebrew.masApps`.
+  Keep every desired App Store application in one of those lists.
 - Custom Homebrew casks and fonts may have their own license and redistribution
   terms. Verify them before reusing or redistributing this configuration.
 
@@ -50,12 +53,13 @@ Other important assumptions:
 ```text
 .
 ├── flake.nix                    # Template registry; defaults to hello
+├── scripts/check                # Unified repository validation
 ├── nix-darwin/
 │   ├── flake.nix                # Host, platform, inputs, and module wiring
 │   ├── flake.lock               # Locked Darwin dependencies
-│   ├── flake-darwin.nix         # Packages, services, defaults, and Zsh
+│   ├── flake-darwin.nix         # Packages, defaults, and Zsh
 │   ├── flake-brew.nix           # Homebrew casks
-│   ├── flake-mas.nix            # Mac App Store activation
+│   ├── flake-mas.nix            # Native Mac App Store management
 │   └── flake-fonts.nix          # System fonts
 └── nix-dev/
     ├── hello/flake.nix
@@ -65,8 +69,9 @@ Other important assumptions:
     └── node/flake.nix
 ```
 
-The Nix files are the source of truth for exact package versions and enabled
-applications; the README intentionally avoids duplicating volatile inventories.
+The Nix files select package and runtime version lines, while `flake.lock`
+records the exact Darwin input revisions. The README intentionally avoids
+duplicating volatile package inventories.
 
 ## Apply the macOS configuration
 
@@ -82,12 +87,12 @@ functions.
 
 ### 2. Adapt the machine-specific settings
 
-At minimum:
+The `machine` attribute set in `nix-darwin/flake.nix` is the single source of
+truth for machine-specific values. At minimum:
 
-1. Rename `darwinConfigurations."MacBook-Pro"` and update the rebuild command.
-2. Change `system` if the Mac is not `aarch64-darwin`.
-3. Change `system.primaryUser` from `level`.
-4. Review all modules under `nix-darwin/` before activation.
+1. Change `machine.hostName`, `machine.system`, and `machine.userName`.
+2. Review the derived home and configuration directories.
+3. Review all modules under `nix-darwin/` before activation.
 
 ### 3. Bootstrap and activate
 
@@ -103,6 +108,8 @@ Update inputs separately when desired:
 
 ```bash
 nix flake update --flake ~/.nix/nix-darwin
+~/.nix/scripts/check
+git -C ~/.nix diff -- nix-darwin/flake.lock
 sudo darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Pro
 ```
 
@@ -114,12 +121,17 @@ The root flake exposes these templates:
 | --- | --- |
 | `hello` | Minimal package and Git development shell; the default template |
 | `rust` | Latest stable and nightly Rust shells with WebAssembly tooling |
-| `python` | Python and Pixi development shell |
+| `python` | Python and pytest development shell |
 | `bun` | Bun and TypeScript development shell |
 | `node` | Node.js and pnpm development shell |
 | `nix-darwin` | Copy of the macOS configuration |
 
 Development templates expose only `aarch64-darwin`, matching this M1 setup.
+
+The system-level Node.js, Python, and Go installations are fallbacks for agents
+and temporary scripts. A project's flake or development template owns its
+runtime version; commit the project `flake.lock` and language dependency lock
+files.
 
 Initialize a project from the root template registry:
 
@@ -150,17 +162,21 @@ basic `.envrc` if needed, and allows direnv. Its argument selects a template,
 not a named development shell; use `use flake .#stable` for the stable Rust
 shell.
 
-Commit the `flake.lock` generated in each initialized project when
-reproducibility matters.
+Commit the `flake.lock` generated in each initialized project.
 
 ## Validate and maintain
 
-Inspect the template registry and evaluate the Darwin flake before activation:
+Run the unified check before activation:
 
 ```bash
-nix flake show ~/.nix
-nix flake check --no-build --no-write-lock-file ~/.nix/nix-darwin
+~/.nix/scripts/check
 ```
+
+It checks Git whitespace, Nix formatting, the template registry, the complete
+Darwin configuration, merged Zsh syntax, and every development template.
+Development templates currently have no lock files, so their first check needs
+network access to resolve inputs; the script does not write those temporary
+locks.
 
 For a rebuild with a trace:
 
@@ -189,9 +205,10 @@ If direnv does not activate, check the project's `.envrc`, then run
 | Change | File |
 | --- | --- |
 | Host, platform, inputs, modules | `nix-darwin/flake.nix` |
-| System packages, services, Zsh, macOS defaults | `nix-darwin/flake-darwin.nix` |
+| System packages, Zsh, macOS defaults | `nix-darwin/flake-darwin.nix` |
 | Homebrew casks | `nix-darwin/flake-brew.nix` |
 | Mac App Store application IDs | `nix-darwin/flake-mas.nix` |
 | Fonts | `nix-darwin/flake-fonts.nix` |
 | Template names and paths | `flake.nix` |
 | Development environments | `nix-dev/<template>/flake.nix` |
+| Repository validation | `scripts/check` |

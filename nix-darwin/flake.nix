@@ -27,19 +27,25 @@
   outputs =
     inputs@{
       self,
-      nixpkgs,
       nix-darwin,
-      brew-nix,
-      brew-api,
       ...
     }:
+    let
+      machine = rec {
+        hostName = "MacBook-Pro";
+        system = "aarch64-darwin";
+        userName = "level";
+        homeDirectory = "/Users/${userName}";
+        configurationDirectory = "${homeDirectory}/.nix";
+      };
+    in
     {
       darwinConfigurations = {
-        "MacBook-Pro" = nix-darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
+        ${machine.hostName} = nix-darwin.lib.darwinSystem {
+          system = machine.system;
 
           specialArgs = {
-            inherit inputs self;
+            inherit inputs machine self;
           };
 
           modules = [

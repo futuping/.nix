@@ -1,0 +1,68 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+readonly repository_root="${0:A:h:h}"
+readonly darwin_flake="$repository_root/nix-darwin"
+
+print -r -- "==> Checking Git whitespace"
+git -C "$repository_root" diff --check HEAD --
+
+print -r -- "==> Checking Nix formatting"
+find "$repository_root" \( -name .git -o -name .direnv \) -prune -o \
+  -type f -name '*.nix' -exec nixfmt --check {} +
+
+print -r -- "==> Checking template registry"
+nix flake check \
+  --no-build \
+  --all-systems \
+  --no-update-lock-file \
+  "path:$repository_root"
+
+print -r -- "==> Checking Darwin configuration"
+nix flake check \
+  --no-build \
+  --no-update-lock-file \
+  "path:$darwin_flake"
+
+nix eval \
+  --json \
+  --no-update-lock-file \
+  "path:$darwin_flake#darwinConfigurations" \
+  --apply \
+  'configurations:
+    builtins.mapAttrs
+      (_: configuration: configuration.config.system.build.toplevel.drvPath)
+      configurations' \
+  >/dev/null
+
+zsh_init_file="$(mktemp "${TMPDIR:-/tmp}/nix-check-zsh.XXXXXX")"
+readonly zsh_init_file
+trap 'rm -f -- "$zsh_init_file"' EXIT
+
+nix eval \
+  --raw \
+  --no-update-lock-file \
+  "path:$darwin_flake#darwinConfigurations" \
+  --apply \
+  'configurations:
+    builtins.concatStringsSep "\n\n" (
+      builtins.map
+        (configuration: configuration.config.programs.zsh.interactiveShellInit)
+        (builtins.attrValues configurations)
+    )' \
+  >"$zsh_init_file"
+
+/bin/zsh -n "$zsh_init_file"
+
+for template_flake in "$repository_root"/nix-dev/*/flake.nix; do
+  template_directory="${template_flake:h}"
+  print -r -- "==> Checking ${template_directory:t} template"
+  nix flake check \
+    --no-build \
+    --all-systems \
+    --no-write-lock-file \
+    "path:$template_directory"
+done
+
+print -r -- "All checks passed."

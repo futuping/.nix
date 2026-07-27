@@ -17,7 +17,7 @@
         };
         python = {
           path = ./nix-dev/python;
-          description = "A Python 3.12 development environment with Pixi package manager.";
+          description = "A Python 3.12 development environment with pytest tooling.";
         };
         bun = {
           path = ./nix-dev/bun;
@@ -25,7 +25,7 @@
         };
         node = {
           path = ./nix-dev/node;
-          description = "A Node.js 24 development environment with TypeScript and testing tools.";
+          description = "A Node.js 24 development environment with pnpm.";
         };
         hello = {
           path = ./nix-dev/hello;

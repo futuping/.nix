@@ -25,26 +25,18 @@
           mkShell {
             packages = [
               python
-              pixi
+              python312Packages.pytest
+              python312Packages.pytest-cov
             ];
 
             nativeBuildInputs = [
               pkg-config
             ];
 
-            buildInputs = [
-              gcc
-            ];
-
-            checkInputs = [
-              python312Packages.pytest
-              python312Packages.pytest-cov
-            ];
-
             shellHook = ''
-              echo "🐍 Python 3.12 + Pixi development environment activated!"
+              echo "🐍 Python 3.12 development environment activated!"
               echo "Python: $(python --version)"
-              echo "Pixi: $(pixi --version)"
+              echo "pytest: $(pytest --version)"
             '';
           };
       }

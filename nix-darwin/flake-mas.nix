@@ -1,17 +1,11 @@
-{ pkgs, lib, ... }:
-
 {
-  environment.systemPackages = [ pkgs.mas ];
+  programs.mas = {
+    enable = true;
+    cleanup = true;
 
-  system.activationScripts.mas.text =
-    let
-      applications = [
-        # "808501572" # Backgrounds Dynamic Wallpapers
-        # "1334702542" # Cake Wallet (iosUniversal; mas does not support iOS/iPadOS apps on macOS)
-      ];
-    in
-    lib.optionalString (applications != [ ]) ''
-      echo "setting up App Store applications..."
-      sudo -u level ${pkgs.mas}/bin/mas install ${lib.concatStringsSep " " applications}
-    '';
+    packages = {
+      Infuse = 1136220934;
+      # List every Mac App Store application that should be preserved.
+    };
+  };
 }

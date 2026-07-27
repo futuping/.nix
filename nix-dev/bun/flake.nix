@@ -31,10 +31,6 @@
               pkg-config
             ];
 
-            buildInputs = [
-              gcc
-            ];
-
             shellHook = ''
               echo "🍞 Bun development environment activated!"
               echo "Bun: $(bun --version)"
