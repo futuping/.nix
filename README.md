@@ -39,9 +39,11 @@ Other important assumptions:
 - TLS key logging is disabled by default. Run `tls-debug command [arg ...]` to
   enable it for one child process. The command prints the generated key-log
   path; treat that file as sensitive and delete it after debugging.
-- The custom `nix-rebuild` Zsh function updates inputs, activates the system,
-  deletes old system generations, and runs garbage collection. The cleanup
-  reduces rollback options; it is not equivalent to a normal rebuild.
+- The custom `nix-rebuild` Zsh function first checks Google Chrome Stable and
+  updates its pinned version/hash when a newer DMG is available. It then updates
+  inputs, activates the system, deletes old system generations, and runs
+  garbage collection. It requires network access, may modify
+  `nix-darwin/flake-brew.nix` and `flake.lock`, and reduces rollback options.
 - `programs.mas.cleanup = true` removes installed Mac App Store applications
   that are absent from both `programs.mas.packages` and `homebrew.masApps`.
   Keep every desired App Store application in one of those lists.
@@ -162,10 +164,6 @@ basic `.envrc` if needed, and allows direnv. Its argument selects a template,
 not a named development shell; use `use flake .#stable` for the stable Rust
 shell.
 
-Run `chrome-hash` after a Chrome update causes a hash mismatch. It downloads the
-current universal DMG and prints a copy-ready Nix assignment such as
-`hash = "sha256-…";`.
-
 Commit the `flake.lock` generated in each initialized project.
 
 ## Validate and maintain
@@ -190,13 +188,20 @@ sudo darwin-rebuild switch \
   --show-trace
 ```
 
-The custom `nix-rebuild` Zsh function is a convenience wrapper with four
+The custom `nix-rebuild` Zsh function is a convenience wrapper with five
 consecutive actions:
 
-1. `nix flake update --flake ~/.nix/nix-darwin`
-2. `sudo darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Pro`
-3. Delete old system generations.
-4. Run `nix-collect-garbage -d`.
+1. Query the fully rolled-out Apple Silicon Chrome Stable release. Only a newer
+   release triggers a refreshed DMG download and an atomic update of its pinned
+   version and hash.
+2. `nix flake update --flake ~/.nix/nix-darwin`
+3. `sudo darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Pro`
+4. Delete old system generations.
+5. Run `nix-collect-garbage -d`.
+
+If Google lists a new version before the stable DMG changes, the Chrome update
+is deferred and the remaining actions continue. Review and commit any resulting
+configuration and lock-file changes.
 
 Use the separate update and rebuild commands above when old generations must
 remain available for rollback.

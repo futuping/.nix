@@ -1,3 +1,9 @@
+let
+  # nix-rebuild updates these exact bindings together.
+  googleChromeUrl = "https://dl.google.com/chrome/mac/universal/stable/GGRO/googlechrome.dmg";
+  googleChromeVersion = "150.0.7871.187";
+  googleChromeHash = "sha256-NxBJKHUbVDaO8ltcDXRQpbfi9iJzH0VnHYubQnhXI0U=";
+in
 {
   config,
   pkgs,
@@ -26,10 +32,11 @@
     dbx
 
     # Web, files, and media
-    (google-chrome.overrideAttrs (oldAttrs: {
+    (google-chrome.overrideAttrs (_: {
+      version = googleChromeVersion;
       src = pkgs.fetchurl {
-        url = builtins.head oldAttrs.src.urls;
-        hash = "sha256-NxBJKHUbVDaO8ltcDXRQpbfi9iJzH0VnHYubQnhXI0U=";
+        url = googleChromeUrl;
+        hash = googleChromeHash;
       };
     }))
     # google-drive
