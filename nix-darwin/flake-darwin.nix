@@ -35,6 +35,8 @@
 
       # Language runtimes
       nodejs_24
+      python312
+      go
 
       # AI and development applications
       claude-code
