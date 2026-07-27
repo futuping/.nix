@@ -2,9 +2,11 @@
   description = "My Personal Nix Flake Templates";
 
   outputs =
-    { self, ... }:
+    { ... }:
     {
-      templates = {
+      templates = rec {
+        default = hello;
+
         nix-darwin = {
           path = ./nix-darwin;
           description = "A modular Darwin system configuration.";
@@ -30,7 +32,5 @@
           description = "A very basic flake.";
         };
       };
-
-      defaultTemplate = self.templates.hello;
     };
 }

@@ -12,6 +12,6 @@
     in
     lib.optionalString (applications != [ ]) ''
       echo "setting up App Store applications..."
-      sudo -u admin ${pkgs.mas}/bin/mas install ${lib.concatStringsSep " " applications}
+      sudo -u level ${pkgs.mas}/bin/mas install ${lib.concatStringsSep " " applications}
     '';
 }

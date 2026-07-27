@@ -2,7 +2,7 @@
   description = "Rust development environment with stable and nightly shells";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +17,7 @@
       rust-overlay,
       flake-utils,
     }:
-    flake-utils.lib.eachDefaultSystem (
+    flake-utils.lib.eachSystem [ "aarch64-darwin" ] (
       system:
       let
         pkgs = import nixpkgs {
@@ -37,8 +37,10 @@
           ];
         };
 
-        stableToolchain = pkgs.rust-bin.stable."1.88.0".default.override commonRustComponents;
-        nightlyToolchain = pkgs.rust-bin.nightly."2025-05-09".default.override commonRustComponents;
+        stableToolchain = pkgs.rust-bin.stable.latest.default.override commonRustComponents;
+        nightlyToolchain = pkgs.rust-bin.selectLatestNightlyWith (
+          toolchain: toolchain.default.override commonRustComponents
+        );
 
         mkRustShell =
           { toolchain, name }:

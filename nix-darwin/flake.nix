@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
+      url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     };
 
     nix-darwin = {
@@ -35,8 +35,8 @@
     }:
     {
       darwinConfigurations = {
-        "MacBook-Air" = nix-darwin.lib.darwinSystem {
-          system = "x86_64-darwin";
+        "MacBook-Pro" = nix-darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
 
           specialArgs = {
             inherit inputs self;
