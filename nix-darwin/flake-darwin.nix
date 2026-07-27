@@ -14,7 +14,7 @@ in
     allowUnfree = true;
   };
 
-  nix.enable = true;
+  nix.enable = false;
   nix.settings = {
     experimental-features = [
       "nix-command"
@@ -278,13 +278,13 @@ in
           fi
 
           echo "🔧 Rebuilding Darwin system"
-          if ! sudo darwin-rebuild switch --flake "${darwinFlakeReference}"; then
+          if ! sudo -H darwin-rebuild switch --flake "${darwinFlakeReference}"; then
             echo "⚠️ System rebuild interrupted or failed"
             return 1
           fi
 
           echo "🧹 Deleting old system generations"
-          if ! sudo nix-env --delete-generations old --profile /nix/var/nix/profiles/system; then
+          if ! sudo -H nix-env --delete-generations old --profile /nix/var/nix/profiles/system; then
             echo "⚠️ Old generation deletion interrupted or failed"
             return 1
           fi

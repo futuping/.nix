@@ -103,7 +103,7 @@ Follow the
 for the first installation. Once `darwin-rebuild` is available:
 
 ```bash
-sudo darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Pro
+sudo -H darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Pro
 ```
 
 Update inputs separately when desired:
@@ -112,7 +112,7 @@ Update inputs separately when desired:
 nix flake update --flake ~/.nix/nix-darwin
 ~/.nix/scripts/check
 git -C ~/.nix diff -- nix-darwin/flake.lock
-sudo darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Pro
+sudo -H darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Pro
 ```
 
 ## Use a development template
@@ -183,7 +183,7 @@ locks.
 For a rebuild with a trace:
 
 ```bash
-sudo darwin-rebuild switch \
+sudo -H darwin-rebuild switch \
   --flake ~/.nix/nix-darwin#MacBook-Pro \
   --show-trace
 ```
@@ -195,7 +195,7 @@ consecutive actions:
    release triggers a refreshed DMG download and an atomic update of its pinned
    version and hash.
 2. `nix flake update --flake ~/.nix/nix-darwin`
-3. `sudo darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Pro`
+3. `sudo -H darwin-rebuild switch --flake ~/.nix/nix-darwin#MacBook-Pro`
 4. Delete old system generations.
 5. Run `nix-collect-garbage -d`.
 

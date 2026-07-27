@@ -23,7 +23,7 @@ in
     # Communication and input
     wechat
     ayugram
-    wetype
+    # wetype
     # telegram
 
     # AI and development
