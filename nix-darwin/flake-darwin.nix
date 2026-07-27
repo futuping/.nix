@@ -51,25 +51,23 @@ in
     zotero
 
     # File synchronization
-    # rclone
+    rclone
 
     # Network diagnostics
     mtr
     iperf3
 
     # Optional applications
-    # affine-bin
-    # warp-terminal
-    # OpenCore-Patcher
-    # comet
-    # kuake-drive # Remove the update JSON file in the app directory
-    # heptabase https://dub.sh/heptabase 7D25-C5E6-61C7-0535 https://dub.sh/hepta_doc
-    # Noteey
-    # wireshark # Install ChmodBPF from the official DMG
     # thunder
+    # FlClash
+    # OpenCore-Patcher
+    # Noteey
+    # affine-bin
+    # heptabase https://dub.sh/heptabase 7D25-C5E6-61C7-0535 https://dub.sh/hepta_doc
+    # AdsPower
     # 比特浏览器
     # 闲管家-闲鱼工作台
-    # FLClash
+    # 夸克网盘 # Remove the update JSON file in the app directory
   ];
 
   system = {
