@@ -26,7 +26,12 @@
     dbx
 
     # Web, files, and media
-    google-chrome
+    (google-chrome.overrideAttrs (oldAttrs: {
+      src = pkgs.fetchurl {
+        url = builtins.head oldAttrs.src.urls;
+        hash = "sha256-NxBJKHUbVDaO8ltcDXRQpbfi9iJzH0VnHYubQnhXI0U=";
+      };
+    }))
     # google-drive
     # c0re100-qbittorrent
 
