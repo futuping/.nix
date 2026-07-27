@@ -34,6 +34,7 @@ in
     jq
     yq-go
     nixfmt
+    docker
 
     # Language runtimes
     nodejs_24
@@ -51,7 +52,7 @@ in
     zotero
 
     # File synchronization
-    rclone
+    # rclone
 
     # Network diagnostics
     mtr

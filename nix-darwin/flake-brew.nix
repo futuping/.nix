@@ -32,6 +32,7 @@ in
     dbx
 
     # Web, files, and media
+    motrix
     (google-chrome.overrideAttrs (_: {
       version = googleChromeVersion;
       src = pkgs.fetchurl {
