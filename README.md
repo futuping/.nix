@@ -162,6 +162,10 @@ basic `.envrc` if needed, and allows direnv. Its argument selects a template,
 not a named development shell; use `use flake .#stable` for the stable Rust
 shell.
 
+Run `chrome-hash` after a Chrome update causes a hash mismatch. It downloads the
+current universal DMG and prints a copy-ready Nix assignment such as
+`hash = "sha256-…";`.
+
 Commit the `flake.lock` generated in each initialized project.
 
 ## Validate and maintain

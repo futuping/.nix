@@ -131,6 +131,17 @@ in
           SSLKEYLOGFILE="$keylog_file" "$@"
         )
 
+        chrome-hash() {
+          setopt local_options pipe_fail
+          local hash
+          hash="$(
+            nix store prefetch-file --json \
+              "https://dl.google.com/chrome/mac/universal/stable/GGRO/googlechrome.dmg" |
+              /usr/bin/plutil -extract hash raw -
+          )" || return 1
+          print -r -- "hash = \"$hash\";"
+        }
+
         nix-direnv() {
           local template="$1"
           if [[ -z "$template" ]]; then
