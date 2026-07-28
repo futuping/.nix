@@ -46,7 +46,11 @@ in
 
     # Language runtimes
     nodejs_24
-    python312
+    (python312.withPackages (
+      pythonPackages: with pythonPackages; [
+        pyyaml
+      ]
+    ))
     go
 
     # AI and development applications
