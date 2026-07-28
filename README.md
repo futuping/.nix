@@ -49,6 +49,9 @@ Other important assumptions:
   Keep every desired App Store application in one of those lists.
 - Custom Homebrew casks and fonts may have their own license and redistribution
   terms. Verify them before reusing or redistributing this configuration.
+- Third-party cask metadata is pinned separately through
+  [`futuping/brew-api-extra`](https://github.com/futuping/brew-api-extra) and
+  converted with the same brew-nix packaging logic as official casks.
 
 ## Repository layout
 

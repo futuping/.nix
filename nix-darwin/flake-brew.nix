@@ -9,6 +9,20 @@ in
   inputs,
   ...
 }:
+let
+  thirdPartyBrewCasks = import "${inputs.brew-nix}/casks.nix" {
+    inherit pkgs;
+    brew-api = inputs.brew-api-extra.outPath;
+  };
+  # The upstream app is not Developer ID signed. Normalize its linker-generated
+  # ad-hoc signature into a valid signature for the complete application bundle.
+  motrixNext = thirdPartyBrewCasks."motrix-next".overrideAttrs (oldAttrs: {
+    installPhase = oldAttrs.installPhase + ''
+      /usr/bin/codesign --force --deep --sign - \
+        "$out/Applications/MotrixNext.app"
+    '';
+  });
+in
 {
   imports = [
     inputs.brew-nix.darwinModules.default
@@ -28,7 +42,7 @@ in
     dbx
 
     # Web, files, and media
-    motrix
+    motrixNext
     (google-chrome.overrideAttrs (_: {
       version = googleChromeVersion;
       src = pkgs.fetchurl {

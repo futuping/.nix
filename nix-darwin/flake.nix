@@ -22,6 +22,11 @@
       url = "github:BatteredBunny/brew-api";
       flake = false;
     };
+
+    brew-api-extra = {
+      url = "github:futuping/brew-api-extra";
+      flake = false;
+    };
   };
 
   outputs =

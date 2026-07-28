@@ -16,6 +16,22 @@
         "type": "github"
       }
     },
+    "brew-api-extra": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785261859,
+        "narHash": "sha256-OkTco7H7tKysMe6bjD1KYPKvYwIq3juoUBOv6A/EFMU=",
+        "owner": "futuping",
+        "repo": "brew-api-extra",
+        "rev": "57eaa1eda3a81744254c35f646eb9695ca6b3234",
+        "type": "github"
+      },
+      "original": {
+        "owner": "futuping",
+        "repo": "brew-api-extra",
+        "type": "github"
+      }
+    },
     "brew-nix": {
       "inputs": {
         "brew-api": [
@@ -81,6 +97,7 @@
     "root": {
       "inputs": {
         "brew-api": "brew-api",
+        "brew-api-extra": "brew-api-extra",
         "brew-nix": "brew-nix",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs"

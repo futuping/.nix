@@ -25,6 +25,8 @@ in
 
   networking.hostName = machine.hostName;
 
+  time.timeZone = "Pacific/Honolulu";
+
   security.pam.services.sudo_local = {
     touchIdAuth = true;
     reattach = true;
@@ -98,7 +100,15 @@ in
       };
 
       NSGlobalDomain = {
-        _HIHideMenuBar = true;
+        _HIHideMenuBar = false;
+        AppleMeasurementUnits = "Centimeters";
+        AppleMetricUnits = 1;
+        AppleTemperatureUnit = "Celsius";
+      };
+
+      CustomUserPreferences.NSGlobalDomain = {
+        AppleLanguages = [ "en-GB" ];
+        AppleLocale = "en_GB@rg=USzzzz";
       };
     };
   };
