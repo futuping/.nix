@@ -25,6 +25,11 @@ in
 
   networking.hostName = machine.hostName;
 
+  security.pam.services.sudo_local = {
+    touchIdAuth = true;
+    reattach = true;
+  };
+
   environment.systemPackages = with pkgs; [
     # Agent and development CLI tools
     git
