@@ -43,7 +43,7 @@ in
     go
 
     # AI and development applications
-    cmux
+    ghostty-bin
     # claude-code
     # codex
     # vscode

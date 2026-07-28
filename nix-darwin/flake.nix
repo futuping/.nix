@@ -51,6 +51,7 @@
           modules = [
             ./flake-darwin.nix
             ./flake-brew.nix
+            ./flake-wetype.nix
             ./flake-mas.nix
             ./flake-fonts.nix
           ];

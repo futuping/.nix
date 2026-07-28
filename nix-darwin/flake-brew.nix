@@ -5,13 +5,10 @@ let
   googleChromeHash = "sha256-NxBJKHUbVDaO8ltcDXRQpbfi9iJzH0VnHYubQnhXI0U=";
 in
 {
-  config,
   pkgs,
-  lib,
   inputs,
   ...
 }:
-
 {
   imports = [
     inputs.brew-nix.darwinModules.default
@@ -20,10 +17,9 @@ in
   brew-nix.enable = true;
 
   environment.systemPackages = with pkgs.brewCasks; [
-    # Communication and input
+    # Communication
     wechat
     ayugram
-    # wetype
     # telegram
 
     # AI and development
