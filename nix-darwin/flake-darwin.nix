@@ -110,9 +110,13 @@ in
         AppleTemperatureUnit = "Celsius";
       };
 
-      CustomUserPreferences.NSGlobalDomain = {
-        AppleLanguages = [ "en-GB" ];
-        AppleLocale = "en_GB@rg=USzzzz";
+      CustomUserPreferences = {
+        NSGlobalDomain = {
+          AppleLanguages = [ "en-GB" ];
+          AppleLocale = "en_GB@rg=USzzzz";
+        };
+
+        "com.apple.commerce".AutoUpdate = false;
       };
     };
   };
