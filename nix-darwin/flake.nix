@@ -38,6 +38,11 @@
       url = "github:futuping/brew-api-extra";
       flake = false;
     };
+
+    nix-packages = {
+      url = "github:futuping/nix-packages";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -66,6 +71,7 @@
           };
 
           modules = [
+            inputs.nix-packages.darwinModules.lite-xl-app
             ./flake-darwin.nix
             home-manager.darwinModules.home-manager
             ./flake-home.nix

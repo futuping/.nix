@@ -59,6 +59,10 @@ Other important assumptions:
   Package-specific normalization and system lifecycle modules are pinned
   through
   [`futuping/brew-nix-extra`](https://github.com/futuping/brew-nix-extra).
+- Non-Homebrew application packages are pinned through
+  [`futuping/nix-packages`](https://github.com/futuping/nix-packages). Its
+  updater follows official upstream releases, while the local rebuild wrapper
+  receives published revisions through the existing full flake update.
 
 ## Repository layout
 
@@ -73,9 +77,7 @@ Other important assumptions:
 │   ├── flake-home.nix           # Home Manager and per-user Git configuration
 │   ├── flake-brew.nix           # Homebrew casks
 │   ├── flake-mas.nix            # Native Mac App Store management
-│   ├── flake-fonts.nix          # System fonts
-│   └── packages/
-│       └── lite-xl-app.nix      # Official Lite XL macOS application
+│   └── flake-fonts.nix          # System fonts
 └── nix-dev/
     ├── hello/
     │   ├── flake.nix
@@ -411,6 +413,7 @@ If direnv does not activate, check the project's `.envrc`, then run
 | Motrix Next package selection | `nix-darwin/flake-brew.nix` |
 | WeType enablement | `nix-darwin/flake-brew.nix` |
 | Cask normalization and lifecycle | [`futuping/brew-nix-extra`](https://github.com/futuping/brew-nix-extra) |
+| Non-Homebrew packages and updates | [`futuping/nix-packages`](https://github.com/futuping/nix-packages) |
 | Mac App Store application IDs | `nix-darwin/flake-mas.nix` |
 | Fonts | `nix-darwin/flake-fonts.nix` |
 | Template names and paths | `flake.nix` |

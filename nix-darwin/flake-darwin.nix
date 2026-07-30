@@ -8,7 +8,6 @@
 let
   darwinFlakeDirectory = "${machine.configurationDirectory}/nix-darwin";
   darwinFlakeReference = "${darwinFlakeDirectory}#${machine.hostName}";
-  liteXlApp = pkgs.callPackage ./packages/lite-xl-app.nix { };
 in
 {
   nixpkgs.config = {
@@ -58,7 +57,7 @@ in
 
     # AI and development applications
     ghostty-bin
-    liteXlApp
+    lite-xl-app
     # claude-code
     # codex
     # vscode
