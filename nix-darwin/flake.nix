@@ -23,7 +23,11 @@
       inputs.brew-api.follows = "brew-api";
     };
 
-    brew-nix-extra.url = "github:futuping/brew-nix-extra";
+    brew-nix-extra = {
+      url = "github:futuping/brew-nix-extra";
+      inputs.brew-nix.follows = "brew-nix";
+      inputs.brew-api-extra.follows = "brew-api-extra";
+    };
 
     brew-api = {
       url = "github:BatteredBunny/brew-api";
@@ -65,6 +69,7 @@
             ./flake-darwin.nix
             home-manager.darwinModules.home-manager
             ./flake-home.nix
+            inputs.brew-nix-extra.darwinModules.motrix-next
             inputs.brew-nix-extra.darwinModules.wetype
             ./flake-brew.nix
             ./flake-mas.nix

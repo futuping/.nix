@@ -59,12 +59,20 @@
       }
     },
     "brew-nix-extra": {
+      "inputs": {
+        "brew-api-extra": [
+          "brew-api-extra"
+        ],
+        "brew-nix": [
+          "brew-nix"
+        ]
+      },
       "locked": {
-        "lastModified": 1785441586,
-        "narHash": "sha256-Mj3bZAt4O7AdZMd8NJoySopzsXHz6vQJQxRXW6SgITA=",
+        "lastModified": 1785442792,
+        "narHash": "sha256-mIwFvt0W8EReIhD3SuOyDr/K9mcPJySHbP7V7taqMVY=",
         "owner": "futuping",
         "repo": "brew-nix-extra",
-        "rev": "3922cc67f9d29628cbe6136931c7c7b3843c57f1",
+        "rev": "487dd1e212c972f35b3bb98aac94263103a194b4",
         "type": "github"
       },
       "original": {
