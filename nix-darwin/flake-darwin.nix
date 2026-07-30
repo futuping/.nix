@@ -25,6 +25,8 @@ in
 
   networking.hostName = machine.hostName;
 
+  users.users.${machine.userName}.home = machine.homeDirectory;
+
   time.timeZone = "Pacific/Honolulu";
 
   security.pam.services.sudo_local = {
@@ -341,12 +343,19 @@ in
             envrc_line+=" .#$dev_shell"
           fi
 
+          local initialized_flake=0
+          local initialized_envrc=0
+          local initialized_repository=0
+          local gitignore_was_present=0
+          [[ -f ".gitignore" ]] && gitignore_was_present=1
+
           if [[ ! -f "flake.nix" ]]; then
             echo "🔧 Initializing new flake with template: $template"
             if ! nix flake init -t "${machine.configurationDirectory}#$template"; then
               echo "⚠️ Flake initialization interrupted or failed"
               return 1
             fi
+            initialized_flake=1
           fi
 
           if [[ ! -f ".envrc" ]]; then
@@ -354,6 +363,55 @@ in
             if ! printf '%s\n' "$envrc_line" > .envrc; then
               echo "⚠️ .envrc creation interrupted or failed"
               return 1
+            fi
+            initialized_envrc=1
+          fi
+
+          if (( initialized_flake )); then
+            if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+              echo "🌱 Initializing Git repository"
+              if ! git init; then
+                echo "⚠️ Git initialization interrupted or failed"
+                return 1
+              fi
+              initialized_repository=1
+            fi
+
+            local -a environment_files
+            environment_files=(flake.nix)
+            if (( ! gitignore_was_present )) && [[ -f ".gitignore" ]]; then
+              environment_files+=(.gitignore)
+            fi
+            if (( initialized_envrc )) && ! git check-ignore -q -- .envrc 2>/dev/null; then
+              environment_files+=(.envrc)
+            fi
+
+            echo "📌 Staging generated environment files"
+            if ! git add -- "''${environment_files[@]}"; then
+              echo "⚠️ Unable to stage generated environment files"
+              return 1
+            fi
+
+            echo "🔒 Locking flake inputs"
+            if ! nix flake lock; then
+              echo "⚠️ Flake input locking interrupted or failed"
+              return 1
+            fi
+            if ! git add -- flake.lock; then
+              echo "⚠️ Unable to stage flake.lock"
+              return 1
+            fi
+
+            if (( initialized_repository )); then
+              if [[ -n "$(git config user.name)" && -n "$(git config user.email)" ]]; then
+                echo "🧾 Creating initial Git commit"
+                if ! git commit -m "Initialize $template development environment"; then
+                  echo "⚠️ Initial Git commit failed; generated files remain staged"
+                fi
+              else
+                echo "⚠️ Git identity is not configured; initial commit skipped"
+                echo "   Generated environment files remain staged."
+              fi
             fi
           fi
 

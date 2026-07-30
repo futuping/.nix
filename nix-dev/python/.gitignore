@@ -1,0 +1,20 @@
+# Nix
+/.direnv/
+/result
+/result-*
+
+# Python and uv
+/.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+/.coverage
+/.pytest_cache/
+/htmlcov/
+/build/
+/dist/
+
+# macOS and editors
+.DS_Store
+.idea/
+.vscode/

@@ -21,6 +21,8 @@ The current Darwin configuration contains these personal defaults:
 | Platform | `aarch64-darwin` | `nix-darwin/flake.nix` |
 | Primary user | `level` | `nix-darwin/flake.nix` |
 | Repository path used by Zsh helpers | `/Users/level/.nix` | `nix-darwin/flake.nix` |
+| Git commit identity | `Tuping Fu <45912467+futuping@users.noreply.github.com>` | `nix-darwin/flake-home.nix` |
+| Home Manager state version | `26.05` | `nix-darwin/flake-home.nix` |
 
 Change these values for the target machine. Also review the enabled packages,
 services, macOS defaults, casks, App Store applications, and fonts.
@@ -33,6 +35,8 @@ Other important assumptions:
 - Unfree packages are allowed.
 - The configuration expects the repository at `/Users/level/.nix` unless
   `machine.configurationDirectory` is changed.
+- Home Manager is integrated as a nix-darwin module and owns the primary
+  user's global Git configuration.
 
 ### Safety notes
 
@@ -63,7 +67,9 @@ Other important assumptions:
 │   ├── flake.nix                # Host, platform, inputs, and module wiring
 │   ├── flake.lock               # Locked Darwin dependencies
 │   ├── flake-darwin.nix         # Packages, defaults, and Zsh
+│   ├── flake-home.nix           # Home Manager and per-user Git configuration
 │   ├── flake-brew.nix           # Homebrew casks
+│   ├── flake-wetype.nix         # WeType input method
 │   ├── flake-mas.nix            # Native Mac App Store management
 │   └── flake-fonts.nix          # System fonts
 └── nix-dev/
@@ -132,7 +138,7 @@ The root flake exposes these templates:
 | --- | --- |
 | `hello` | GNU Hello package, smoke check, formatter, and Git shell; the default template |
 | `rust` | Stable-by-default Rust shell, optional nightly, and target examples |
-| `python` | Python and pytest development shell |
+| `python` | Nix-managed Python 3.12 and uv development shell |
 | `bun` | Bun and TypeScript development shell |
 | `node` | Node.js 24 and pnpm 11 shell for frontend and browser-extension development |
 | `nix-darwin` | Copy of the macOS configuration |
@@ -195,6 +201,53 @@ crate actually needs them, add build tools such as `pkgs.pkg-config` to
 `nativeBuildInputs` and linked libraries such as `pkgs.openssl` to
 `buildInputs` in that project's shell.
 
+The Python template follows the same boundary as the Rust template: the
+project flake owns the interpreter and native dependencies, while the language
+package manager owns project dependencies. Initialize a new environment with
+the custom helper:
+
+```bash
+mkdir my-python-project
+cd my-python-project
+nix-direnv python
+```
+
+When creating a template, the helper also creates `.envrc` and `flake.lock`,
+stages the generated environment files, and allows direnv. In a new directory
+it initializes Git and creates the initial commit when a Git name and email are
+configured; otherwise it leaves the files staged and continues. It never
+automatically commits in an existing repository.
+
+For a new uv project, initialize it without a `.python-version` file because
+the interpreter is already selected and pinned by Nix:
+
+```bash
+uv init --no-pin-python
+uv add --dev pytest pytest-cov
+uv sync
+uv run pytest
+```
+
+The shell sets `UV_PYTHON` to the exact Nix store interpreter, restricts uv to
+non-uv-managed Python installations, and disables Python downloads. Do not use
+`uv python install` or `uv python pin` in these projects. Declare supported
+Python versions with `requires-python` in `pyproject.toml`, and commit both
+`flake.lock` and `uv.lock`.
+
+Use `uv sync --locked` and `uv run --locked ...` in CI so an outdated or
+missing lock file fails instead of being changed. Development dependencies
+belong in the standard `dependency-groups.dev` group and are synced by default.
+These behaviors follow uv's official documentation for
+[Python discovery and managed versions](https://docs.astral.sh/uv/concepts/python-versions/),
+[project initialization](https://docs.astral.sh/uv/reference/cli/#uv-init), and
+[locking and syncing](https://docs.astral.sh/uv/concepts/projects/sync/).
+
+Like the Rust template, the generic Python shell deliberately omits native
+libraries. Add build tools such as `pkgs.pkg-config` to `nativeBuildInputs` and
+linked libraries such as `pkgs.openssl` to `buildInputs` only when a project
+requires them. Add Python runtime and development packages with `uv add`, not
+`python.withPackages`.
+
 The Node template uses the same shell for conventional frontend and Chrome
 Extension development. Both workflows use Node.js and pnpm at build time;
 Vite, WXT, TypeScript, ESLint, framework integrations, and application
@@ -241,12 +294,13 @@ direnv allow
 After the Darwin configuration has installed the custom Zsh functions,
 `nix-direnv [template]` combines those steps. In a directory without
 `flake.nix`, it initializes `~/.nix#<template>` (default: `hello`), creates a
-basic `.envrc` if needed, and allows direnv. Use `nix-direnv rust` for the
-default stable shell. The convenience selector `nix-direnv rust-nightly`
-initializes the same Rust template but writes `use flake .#nightly` to a new
-`.envrc`. An existing `.envrc` is never overwritten.
-
-Commit the `flake.lock` generated in each initialized project.
+basic `.envrc` and `flake.lock`, stages those generated files, and allows
+direnv. If it also initializes Git, it creates an initial commit when Git
+identity is configured; an existing repository is never automatically
+committed. Use `nix-direnv rust` for the default stable shell. The convenience
+selector `nix-direnv rust-nightly` initializes the same Rust template but writes
+`use flake .#nightly` to a new `.envrc`. An existing `.envrc` is never
+overwritten.
 
 ## Validate and maintain
 
@@ -298,7 +352,9 @@ If direnv does not activate, check the project's `.envrc`, then run
 | --- | --- |
 | Host, platform, inputs, modules | `nix-darwin/flake.nix` |
 | System packages, Zsh, macOS defaults | `nix-darwin/flake-darwin.nix` |
+| Home Manager and per-user Git settings | `nix-darwin/flake-home.nix` |
 | Homebrew casks | `nix-darwin/flake-brew.nix` |
+| WeType input method | `nix-darwin/flake-wetype.nix` |
 | Mac App Store application IDs | `nix-darwin/flake-mas.nix` |
 | Fonts | `nix-darwin/flake-fonts.nix` |
 | Template names and paths | `flake.nix` |

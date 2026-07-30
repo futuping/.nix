@@ -1,8 +1,8 @@
 let
   # nix-rebuild updates these exact bindings together.
   googleChromeUrl = "https://dl.google.com/chrome/mac/universal/stable/GGRO/googlechrome.dmg";
-  googleChromeVersion = "150.0.7871.187";
-  googleChromeHash = "sha256-NxBJKHUbVDaO8ltcDXRQpbfi9iJzH0VnHYubQnhXI0U=";
+  googleChromeVersion = "151.0.7922.72";
+  googleChromeHash = "sha256-yDcYj9H4chDcr+weFyVypet13SHNzYqFLHr7ZLfrJUo=";
 in
 {
   pkgs,

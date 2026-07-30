@@ -11,6 +11,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     brew-nix = {
       url = "github:BatteredBunny/brew-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,6 +38,7 @@
     inputs@{
       self,
       nix-darwin,
+      home-manager,
       ...
     }:
     let
@@ -55,6 +61,8 @@
 
           modules = [
             ./flake-darwin.nix
+            home-manager.darwinModules.home-manager
+            ./flake-home.nix
             ./flake-brew.nix
             ./flake-wetype.nix
             ./flake-mas.nix

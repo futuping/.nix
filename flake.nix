@@ -41,7 +41,18 @@
         };
         python = {
           path = ./nix-dev/python;
-          description = "A Python 3.12 development environment with pytest tooling.";
+          description = "Nix-managed Python 3.12 and uv development environment.";
+          welcomeText = ''
+            # Getting started
+
+            - In a new directory, run the custom `nix-direnv python` helper.
+            - The helper initializes the template, `flake.lock`, Git baseline, and direnv.
+            - For a new project, enter the shell and run `uv init --no-pin-python`.
+            - Add runtime dependencies with `uv add` and development dependencies with `uv add --dev`.
+            - Commit `pyproject.toml` and `uv.lock`; use `uv sync --locked` in CI.
+            - Keep Python in `flake.nix`; do not use `uv python install` or `uv python pin`.
+            - Add native tools and libraries to `flake.nix` only when the project needs them.
+          '';
         };
         bun = {
           path = ./nix-dev/bun;
