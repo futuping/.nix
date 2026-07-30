@@ -75,7 +75,9 @@ Other important assumptions:
     │   └── .gitignore
     ├── python/flake.nix
     ├── bun/flake.nix
-    └── node/flake.nix
+    └── node/
+        ├── flake.nix
+        └── .gitignore
 ```
 
 The Nix files select package and runtime version lines, while `flake.lock`
@@ -132,7 +134,7 @@ The root flake exposes these templates:
 | `rust` | Stable-by-default Rust shell, optional nightly, and target examples |
 | `python` | Python and pytest development shell |
 | `bun` | Bun and TypeScript development shell |
-| `node` | Node.js and pnpm development shell |
+| `node` | Node.js 24 and pnpm 11 shell for frontend and browser-extension development |
 | `nix-darwin` | Copy of the macOS configuration |
 
 Development templates expose only `aarch64-darwin`, matching this M1 setup.
@@ -192,6 +194,42 @@ The generic template deliberately does not inject native libraries. When a
 crate actually needs them, add build tools such as `pkgs.pkg-config` to
 `nativeBuildInputs` and linked libraries such as `pkgs.openssl` to
 `buildInputs` in that project's shell.
+
+The Node template uses the same shell for conventional frontend and Chrome
+Extension development. Both workflows use Node.js and pnpm at build time;
+Vite, WXT, TypeScript, ESLint, framework integrations, and application
+dependencies belong in `package.json` and `pnpm-lock.yaml`.
+
+Initialize the shared Node environment with:
+
+```bash
+nix-direnv node
+```
+
+Then choose the project scaffold:
+
+```bash
+# Conventional frontend; choose React, Vue, Svelte, or another offered template.
+pnpm create vite .
+
+# Chrome Extension; choose Vanilla, React, Vue, Svelte, or Solid.
+pnpm dlx wxt@latest init . --pm pnpm
+```
+
+Commit the generated `package.json` and `pnpm-lock.yaml`. Keep the project
+tooling local and run it through package scripts or `pnpm exec`. The flake owns
+Node.js, pnpm, and any required native tools or libraries. The lock file owns
+the JavaScript dependency graph. This follows the
+[Nixpkgs JavaScript guidance](https://nixos.org/manual/nixpkgs/unstable/#javascript)
+to preserve the upstream package manager and lock file.
+[Vite documents `pnpm create vite`](https://vite.dev/guide/), while
+[WXT documents `pnpm dlx wxt@latest init`](https://wxt.dev/guide/installation.html)
+and [uses Vite internally](https://wxt.dev/guide/essentials/config/vite).
+
+There is no `node-extension` selector analogous to `rust-nightly`: Rust nightly
+changes the compiler toolchain, whereas Vite and WXT are project dependencies
+running on the same Node.js shell. Add another Node dev shell only when a
+project genuinely needs a different Node major version or platform SDK.
 
 For direnv:
 

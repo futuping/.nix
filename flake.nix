@@ -49,7 +49,18 @@
         };
         node = {
           path = ./nix-dev/node;
-          description = "A Node.js 24 development environment with pnpm.";
+          description = "A Node.js 24 and pnpm 11 environment for frontend and browser-extension development.";
+          welcomeText = ''
+            # Getting started
+
+            - Run `nix flake lock` and commit `flake.lock`.
+            - Run `nix develop`, or initialize with the custom `nix-direnv node` helper.
+            - For a Vite frontend, run `pnpm create vite .` and follow the prompts.
+            - For a WXT browser extension, run `pnpm dlx wxt@latest init . --pm pnpm`.
+            - Keep TypeScript, ESLint, Vite, WXT, and framework plugins in `package.json`.
+            - Commit `pnpm-lock.yaml`; use `pnpm install --frozen-lockfile` in CI.
+            - Add native tools and libraries to `flake.nix` only when the project needs them.
+          '';
         };
         hello = helloTemplate;
       };
