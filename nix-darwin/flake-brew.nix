@@ -1,9 +1,3 @@
-let
-  # nix-rebuild updates these exact bindings together.
-  googleChromeUrl = "https://dl.google.com/chrome/mac/universal/stable/GGRO/googlechrome.dmg";
-  googleChromeVersion = "151.0.7922.72";
-  googleChromeHash = "sha256-yDcYj9H4chDcr+weFyVypet13SHNzYqFLHr7ZLfrJUo=";
-in
 {
   pkgs,
   inputs,
@@ -31,13 +25,7 @@ in
 
     # Web, files, and media
     motrix-next
-    (google-chrome.overrideAttrs (_: {
-      version = googleChromeVersion;
-      src = pkgs.fetchurl {
-        url = googleChromeUrl;
-        hash = googleChromeHash;
-      };
-    }))
+    google-chrome
     # google-drive
     # c0re100-qbittorrent
 
