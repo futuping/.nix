@@ -67,7 +67,9 @@ Other important assumptions:
 │   ├── flake-mas.nix            # Native Mac App Store management
 │   └── flake-fonts.nix          # System fonts
 └── nix-dev/
-    ├── hello/flake.nix
+    ├── hello/
+    │   ├── flake.nix
+    │   └── .gitignore
     ├── rust/flake.nix
     ├── python/flake.nix
     ├── bun/flake.nix
@@ -124,7 +126,7 @@ The root flake exposes these templates:
 
 | Template | Purpose |
 | --- | --- |
-| `hello` | Minimal package and Git development shell; the default template |
+| `hello` | GNU Hello package, smoke check, formatter, and Git shell; the default template |
 | `rust` | Latest stable and nightly Rust shells with WebAssembly tooling |
 | `python` | Python and pytest development shell |
 | `bun` | Bun and TypeScript development shell |
@@ -146,6 +148,21 @@ cd my-project
 nix flake init --template ~/.nix#rust
 nix develop
 ```
+
+The default `hello` template demonstrates the standard package, check,
+formatter, and development-shell workflows:
+
+```bash
+nix build
+nix run
+nix develop
+nix flake check
+nix fmt
+```
+
+When initializing inside an existing Git repository, stage the generated
+`flake.nix` and `.gitignore` before running Nix commands. The template ignores
+local `result` links and `.direnv/` state.
 
 Use the named stable Rust shell with:
 
@@ -178,7 +195,8 @@ Run the unified check before activation:
 ```
 
 It checks Git whitespace, Nix formatting, the template registry, the complete
-Darwin configuration, merged Zsh syntax, and every development template.
+Darwin configuration, merged Zsh syntax, and every development template,
+including any checks declared by a template.
 Development templates currently have no lock files, so their first check needs
 network access to resolve inputs; the script does not write those temporary
 locks.

@@ -3,9 +3,23 @@
 
   outputs =
     { ... }:
+    let
+      helloTemplate = {
+        path = ./nix-dev/hello;
+        description = "GNU Hello package, smoke check, formatter, and Git shell for Apple Silicon macOS.";
+        welcomeText = ''
+          # Getting started
+
+          - In a Git repository, stage `flake.nix` and `.gitignore` before evaluating the flake.
+          - Run `nix flake lock` and commit the generated `flake.lock`.
+          - Run `nix build`, `nix run`, or `nix develop`.
+          - Run `nix flake check` and `nix fmt` before committing changes.
+        '';
+      };
+    in
     {
-      templates = rec {
-        default = hello;
+      templates = {
+        default = helloTemplate;
 
         nix-darwin = {
           path = ./nix-darwin;
@@ -27,10 +41,7 @@
           path = ./nix-dev/node;
           description = "A Node.js 24 development environment with pnpm.";
         };
-        hello = {
-          path = ./nix-dev/hello;
-          description = "A very basic flake.";
-        };
+        hello = helloTemplate;
       };
     };
 }

@@ -1,38 +1,34 @@
 {
-  description = "A very basic flake";
+  description = "GNU Hello package with a Git development shell for Apple Silicon macOS";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-  };
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
   outputs =
     {
-      self,
       nixpkgs,
-      flake-utils,
+      ...
     }:
-    flake-utils.lib.eachSystem [ "aarch64-darwin" ] (
-      system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in
-      {
-        packages = {
-          hello = pkgs.hello;
-          default = self.packages.${system}.hello;
-        };
+    let
+      system = "aarch64-darwin";
+      pkgs = nixpkgs.legacyPackages.${system};
+      hello = pkgs.hello;
+    in
+    {
+      packages.${system} = {
+        inherit hello;
+        default = hello;
+      };
 
-        devShells.default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            git
-          ];
+      checks.${system}.hello = pkgs.runCommand "hello-smoke-test" { } ''
+        export LC_ALL=C
+        test "$(${hello}/bin/hello)" = "Hello, world!"
+        touch "$out"
+      '';
 
-          shellHook = ''
-            echo "🚀 Welcome to the Hello development shell!"
-            echo "Git version: $(git --version)"
-          '';
-        };
-      }
-    );
+      devShells.${system}.default = pkgs.mkShellNoCC {
+        packages = [ pkgs.git ];
+      };
+
+      formatter.${system} = pkgs.nixfmt-tree;
+    };
 }

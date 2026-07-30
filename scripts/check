@@ -59,7 +59,6 @@ for template_flake in "$repository_root"/nix-dev/*/flake.nix; do
   template_directory="${template_flake:h}"
   print -r -- "==> Checking ${template_directory:t} template"
   nix flake check \
-    --no-build \
     --all-systems \
     --no-write-lock-file \
     "path:$template_directory"
