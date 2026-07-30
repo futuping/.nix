@@ -70,7 +70,9 @@ Other important assumptions:
     ├── hello/
     │   ├── flake.nix
     │   └── .gitignore
-    ├── rust/flake.nix
+    ├── rust/
+    │   ├── flake.nix
+    │   └── .gitignore
     ├── python/flake.nix
     ├── bun/flake.nix
     └── node/flake.nix
@@ -127,7 +129,7 @@ The root flake exposes these templates:
 | Template | Purpose |
 | --- | --- |
 | `hello` | GNU Hello package, smoke check, formatter, and Git shell; the default template |
-| `rust` | Latest stable and nightly Rust shells with WebAssembly tooling |
+| `rust` | Stable-by-default Rust shell, optional nightly, and target examples |
 | `python` | Python and pytest development shell |
 | `bun` | Bun and TypeScript development shell |
 | `node` | Node.js and pnpm development shell |
@@ -136,7 +138,8 @@ The root flake exposes these templates:
 Development templates expose only `aarch64-darwin`, matching this M1 setup.
 
 The system-level Node.js, Python, and Go installations are fallbacks for agents
-and temporary scripts. A project's flake or development template owns its
+and temporary scripts. Rust is intentionally project-scoped instead of being a
+Darwin system package. A project's flake or development template owns its
 runtime version; commit the project `flake.lock` and language dependency lock
 files.
 
@@ -146,8 +149,15 @@ Initialize a project from the root template registry:
 mkdir my-project
 cd my-project
 nix flake init --template ~/.nix#rust
+nix flake lock
 nix develop
 ```
+
+For a new Rust package, run `cargo init .` after entering the development
+shell. The project `flake.nix` owns the Rust channel, components, and optional
+cross-compilation targets; `flake.lock` pins the Nixpkgs and rust-overlay
+revisions. `Cargo.toml` and `Cargo.lock` remain the source of truth for Rust
+crate dependencies.
 
 The default `hello` template demonstrates the standard package, check,
 formatter, and development-shell workflows:
@@ -164,11 +174,24 @@ When initializing inside an existing Git repository, stage the generated
 `flake.nix` and `.gitignore` before running Nix commands. The template ignores
 local `result` links and `.direnv/` state.
 
-Use the named stable Rust shell with:
+Use the optional nightly Rust shell with:
 
 ```bash
-nix develop .#stable
+nix develop .#nightly
 ```
+
+The nightly shell uses rust-overlay's latest nightly that contains the
+configured components and targets; the committed `flake.lock` pins the selected
+rust-overlay snapshot. The template uses the minimal profile and adds the
+development components explicitly, so it does not install the offline
+`rust-docs` component. Comments beside `rustTargets` show common macOS,
+Windows, Linux, iOS, Android, browser WebAssembly, and WASI target triples.
+Uncomment only those required by the project.
+
+The generic template deliberately does not inject native libraries. When a
+crate actually needs them, add build tools such as `pkgs.pkg-config` to
+`nativeBuildInputs` and linked libraries such as `pkgs.openssl` to
+`buildInputs` in that project's shell.
 
 For direnv:
 
@@ -180,9 +203,10 @@ direnv allow
 After the Darwin configuration has installed the custom Zsh functions,
 `nix-direnv [template]` combines those steps. In a directory without
 `flake.nix`, it initializes `~/.nix#<template>` (default: `hello`), creates a
-basic `.envrc` if needed, and allows direnv. Its argument selects a template,
-not a named development shell; use `use flake .#stable` for the stable Rust
-shell.
+basic `.envrc` if needed, and allows direnv. Use `nix-direnv rust` for the
+default stable shell. The convenience selector `nix-direnv rust-nightly`
+initializes the same Rust template but writes `use flake .#nightly` to a new
+`.envrc`. An existing `.envrc` is never overwritten.
 
 Commit the `flake.lock` generated in each initialized project.
 

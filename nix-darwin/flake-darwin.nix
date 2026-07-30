@@ -322,9 +322,23 @@ in
         }
 
         nix-direnv() {
-          local template="$1"
-          if [[ -z "$template" ]]; then
-            template="hello"
+          local requested="$1"
+          if [[ -z "$requested" ]]; then
+            requested="hello"
+          fi
+
+          local template="$requested"
+          local dev_shell=""
+          case "$requested" in
+            rust-nightly)
+              template="rust"
+              dev_shell="nightly"
+              ;;
+          esac
+
+          local envrc_line="use flake"
+          if [[ -n "$dev_shell" ]]; then
+            envrc_line+=" .#$dev_shell"
           fi
 
           if [[ ! -f "flake.nix" ]]; then
@@ -336,8 +350,8 @@ in
           fi
 
           if [[ ! -f ".envrc" ]]; then
-            echo "📝 Creating new .envrc with: use flake"
-            if ! printf '%s\n' "use flake" > .envrc; then
+            echo "📝 Creating new .envrc with: $envrc_line"
+            if ! printf '%s\n' "$envrc_line" > .envrc; then
               echo "⚠️ .envrc creation interrupted or failed"
               return 1
             fi

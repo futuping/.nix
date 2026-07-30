@@ -27,7 +27,17 @@
         };
         rust = {
           path = ./nix-dev/rust;
-          description = "A template for rust development setup.";
+          description = "Pinned stable Rust development shell with an optional nightly shell.";
+          welcomeText = ''
+            # Getting started
+
+            - Run `nix flake lock` and commit `flake.lock`.
+            - Run `nix develop` for stable Rust or `nix develop .#nightly` for nightly.
+            - Configure components and cross-compilation targets in `flake.nix`.
+            - With the custom Zsh helper, use `nix-direnv rust-nightly` for nightly.
+            - For a new package, enter the shell and run `cargo init .`.
+            - Keep Rust dependencies in `Cargo.toml` and commit `Cargo.lock`.
+          '';
         };
         python = {
           path = ./nix-dev/python;
