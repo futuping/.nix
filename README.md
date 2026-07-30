@@ -408,7 +408,8 @@ If direnv does not activate, check the project's `.envrc`, then run
 | System packages, Zsh, macOS defaults | `nix-darwin/flake-darwin.nix` |
 | Home Manager and per-user Git settings | `nix-darwin/flake-home.nix` |
 | Homebrew casks | `nix-darwin/flake-brew.nix` |
-| Motrix Next and WeType enablement | `nix-darwin/flake-brew.nix` |
+| Motrix Next package selection | `nix-darwin/flake-brew.nix` |
+| WeType enablement | `nix-darwin/flake-brew.nix` |
 | Cask normalization and lifecycle | [`futuping/brew-nix-extra`](https://github.com/futuping/brew-nix-extra) |
 | Mac App Store application IDs | `nix-darwin/flake-mas.nix` |
 | Fonts | `nix-darwin/flake-fonts.nix` |

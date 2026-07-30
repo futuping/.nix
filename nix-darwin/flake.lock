@@ -68,11 +68,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785442792,
-        "narHash": "sha256-mIwFvt0W8EReIhD3SuOyDr/K9mcPJySHbP7V7taqMVY=",
+        "lastModified": 1785443499,
+        "narHash": "sha256-RYRB2jXZuz9lbHmckMYNvXG+oJo6cT/zHYrhhp3J2L0=",
         "owner": "futuping",
         "repo": "brew-nix-extra",
-        "rev": "487dd1e212c972f35b3bb98aac94263103a194b4",
+        "rev": "d751f059e4193fc47e4a4aeedfb955080d4bddf9",
         "type": "github"
       },
       "original": {

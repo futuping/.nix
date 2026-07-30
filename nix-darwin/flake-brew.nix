@@ -16,7 +16,6 @@ in
 
   brew-nix.enable = true;
 
-  programs.motrix-next.enable = true;
   programs.wetype.enable = true;
 
   environment.systemPackages = with pkgs.brewCasks; [
@@ -31,6 +30,7 @@ in
     dbx
 
     # Web, files, and media
+    motrix-next
     (google-chrome.overrideAttrs (_: {
       version = googleChromeVersion;
       src = pkgs.fetchurl {
