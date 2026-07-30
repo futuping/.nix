@@ -69,7 +69,6 @@ Other important assumptions:
 │   ├── flake-darwin.nix         # Packages, defaults, and Zsh
 │   ├── flake-home.nix           # Home Manager and per-user Git configuration
 │   ├── flake-brew.nix           # Homebrew casks
-│   ├── flake-wetype.nix         # WeType input method
 │   ├── flake-mas.nix            # Native Mac App Store management
 │   ├── flake-fonts.nix          # System fonts
 │   └── packages/
@@ -406,7 +405,8 @@ If direnv does not activate, check the project's `.envrc`, then run
 | System packages, Zsh, macOS defaults | `nix-darwin/flake-darwin.nix` |
 | Home Manager and per-user Git settings | `nix-darwin/flake-home.nix` |
 | Homebrew casks | `nix-darwin/flake-brew.nix` |
-| WeType input method | `nix-darwin/flake-wetype.nix` |
+| WeType enablement | `nix-darwin/flake-brew.nix` |
+| WeType packaging and lifecycle | [`futuping/brew-nix-extra`](https://github.com/futuping/brew-nix-extra) |
 | Mac App Store application IDs | `nix-darwin/flake-mas.nix` |
 | Fonts | `nix-darwin/flake-fonts.nix` |
 | Template names and paths | `flake.nix` |

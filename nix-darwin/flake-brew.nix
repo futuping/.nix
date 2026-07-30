@@ -16,10 +16,10 @@ let
   };
   # The upstream app is not Developer ID signed. Normalize its linker-generated
   # ad-hoc signature into a valid signature for the complete application bundle.
-  motrixNext = thirdPartyBrewCasks."motrix-next".overrideAttrs (oldAttrs: {
+  motrix-next = thirdPartyBrewCasks."motrix-next".overrideAttrs (oldAttrs: {
     installPhase = oldAttrs.installPhase + ''
       /usr/bin/codesign --force --deep --sign - \
-        "$out/Applications/MotrixNext.app"
+      "$out/Applications/MotrixNext.app"
     '';
   });
 in
@@ -29,6 +29,8 @@ in
   ];
 
   brew-nix.enable = true;
+
+  programs.wetype.enable = true;
 
   environment.systemPackages = with pkgs.brewCasks; [
     # Communication
@@ -42,7 +44,7 @@ in
     dbx
 
     # Web, files, and media
-    motrixNext
+    motrix-next
     (google-chrome.overrideAttrs (_: {
       version = googleChromeVersion;
       src = pkgs.fetchurl {

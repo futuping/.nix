@@ -23,6 +23,8 @@
       inputs.brew-api.follows = "brew-api";
     };
 
+    brew-nix-extra.url = "github:futuping/brew-nix-extra";
+
     brew-api = {
       url = "github:BatteredBunny/brew-api";
       flake = false;
@@ -63,8 +65,8 @@
             ./flake-darwin.nix
             home-manager.darwinModules.home-manager
             ./flake-home.nix
+            inputs.brew-nix-extra.darwinModules.wetype
             ./flake-brew.nix
-            ./flake-wetype.nix
             ./flake-mas.nix
             ./flake-fonts.nix
           ];
