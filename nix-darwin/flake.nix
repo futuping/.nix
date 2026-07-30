@@ -72,6 +72,7 @@
 
           modules = [
             inputs.nix-packages.darwinModules.lite-xl-app
+            ./flake-nixpkgs.nix
             ./flake-darwin.nix
             home-manager.darwinModules.home-manager
             ./flake-home.nix
@@ -79,7 +80,6 @@
             inputs.brew-nix-extra.darwinModules.wetype
             ./flake-brew.nix
             ./flake-mas.nix
-            ./flake-fonts.nix
           ];
         };
       };
