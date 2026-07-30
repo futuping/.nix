@@ -71,7 +71,9 @@ Other important assumptions:
 │   ├── flake-brew.nix           # Homebrew casks
 │   ├── flake-wetype.nix         # WeType input method
 │   ├── flake-mas.nix            # Native Mac App Store management
-│   └── flake-fonts.nix          # System fonts
+│   ├── flake-fonts.nix          # System fonts
+│   └── packages/
+│       └── lite-xl-app.nix      # Official Lite XL macOS application
 └── nix-dev/
     ├── hello/
     │   ├── flake.nix

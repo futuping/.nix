@@ -53,7 +53,11 @@ in
     # google-drive
     # c0re100-qbittorrent
 
-    # Productivity and automation
+    # Productivity and utilities
+    launchbar
+    monarch
+    quakenotch
+    maccy
     typora
     # keyboard-maestro
     # hammerspoon
