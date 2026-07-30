@@ -80,7 +80,9 @@ Other important assumptions:
     │   ├── flake.nix
     │   └── .gitignore
     ├── python/flake.nix
-    ├── bun/flake.nix
+    ├── bun/
+    │   ├── flake.nix
+    │   └── .gitignore
     └── node/
         ├── flake.nix
         └── .gitignore
@@ -139,7 +141,7 @@ The root flake exposes these templates:
 | `hello` | GNU Hello package, smoke check, formatter, and Git shell; the default template |
 | `rust` | Stable-by-default Rust shell, optional nightly, and target examples |
 | `python` | Nix-managed Python 3.12 and uv development shell |
-| `bun` | Bun and TypeScript development shell |
+| `bun` | Nix-managed Bun shell for JavaScript and TypeScript projects |
 | `node` | Node.js 24 and pnpm 11 shell for frontend and browser-extension development |
 | `nix-darwin` | Copy of the macOS configuration |
 
@@ -247,6 +249,54 @@ libraries. Add build tools such as `pkgs.pkg-config` to `nativeBuildInputs` and
 linked libraries such as `pkgs.openssl` to `buildInputs` only when a project
 requires them. Add Python runtime and development packages with `uv add`, not
 `python.withPackages`.
+
+The Bun template keeps a similar boundary: Nix provides Bun and pins its exact
+release through `flake.lock`; Bun owns the JavaScript dependency graph through
+`package.json` and `bun.lock`. Initialize the environment and project with:
+
+```bash
+mkdir my-bun-project
+cd my-bun-project
+nix-direnv bun
+bun init
+```
+
+`bun init` creates the project files, configures TypeScript editor support, and
+installs `@types/bun`. Bun can directly execute TypeScript, but its transpiler
+and bundler do not replace `tsc` for type checking or declaration generation.
+When a project needs an explicit type-checking step, add TypeScript locally and
+run it through a package script:
+
+```bash
+bun add --dev typescript
+bun pm pkg set scripts.typecheck="tsc --noEmit"
+bun run typecheck
+```
+
+Keep TypeScript, linters, formatters, frameworks, and application dependencies
+in `package.json`; do not add them to the Nix shell. Commit both `flake.lock`
+and the text-based `bun.lock`. Use `bun ci` in CI so dependency installation
+fails rather than changing an absent or stale lock file.
+
+Bun does not execute arbitrary dependency lifecycle scripts. If a dependency
+genuinely requires one, inspect the blocked scripts with `bun pm untrusted` and
+trust only the specific package with `bun pm trust <package>`. Do not broadly
+disable this protection. Bun also loads `.env` files automatically, so the
+template ignores local variants while allowing `.env.example` and
+`.env.template` to be committed.
+
+These choices follow Bun's official documentation for
+[`bun init`](https://bun.com/docs/runtime/templating/init),
+[TypeScript configuration](https://bun.com/docs/typescript),
+[lock files](https://bun.com/docs/pm/lockfile), and
+[frozen CI installs and trusted dependencies](https://bun.com/docs/pm/cli/install).
+Because the runtime is installed by Nix, update the Nixpkgs input and commit the
+resulting `flake.lock` instead of running `bun upgrade`.
+
+Like the other generic shells, the Bun template does not inject native
+libraries. Add build tools such as `pkgs.pkg-config` or `pkgs.python3` to
+`nativeBuildInputs`, and linked libraries such as `pkgs.openssl` to
+`buildInputs`, only when the project requires them.
 
 The Node template uses the same shell for conventional frontend and Chrome
 Extension development. Both workflows use Node.js and pnpm at build time;

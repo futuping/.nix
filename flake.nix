@@ -56,7 +56,18 @@
         };
         bun = {
           path = ./nix-dev/bun;
-          description = "A Bun development environment with TypeScript support.";
+          description = "A Nix-managed Bun development environment for JavaScript and TypeScript projects.";
+          welcomeText = ''
+            # Getting started
+
+            - Run `nix flake lock` and commit `flake.lock`.
+            - Run `nix develop`, or initialize with the custom `nix-direnv bun` helper.
+            - Enter the shell and run `bun init` to scaffold a project.
+            - Keep TypeScript, @types/bun, linters, frameworks, and application dependencies in `package.json`.
+            - Commit `bun.lock`; use `bun ci` for frozen installs in CI.
+            - Update Bun through the Nix flake input instead of running `bun upgrade`.
+            - Add native tools and libraries to `flake.nix` only when the project needs them.
+          '';
         };
         node = {
           path = ./nix-dev/node;
