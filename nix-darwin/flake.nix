@@ -71,6 +71,7 @@
           };
 
           modules = [
+            inputs.nix-packages.darwinModules.ego-lite
             inputs.nix-packages.darwinModules.lite-xl-app
             ./flake-nixpkgs.nix
             ./flake-darwin.nix
