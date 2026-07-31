@@ -14,7 +14,6 @@
     jq
     yq-go
     nixfmt
-    docker
 
     # Language runtimes
     nodejs_24
