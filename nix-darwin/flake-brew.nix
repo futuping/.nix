@@ -22,6 +22,7 @@
     claude
     chatgpt
     dbx
+    orbstack
 
     # Web, files, and media
     motrix-next

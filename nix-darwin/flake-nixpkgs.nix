@@ -15,7 +15,6 @@
     yq-go
     nixfmt
     docker
-    colima
 
     # Language runtimes
     nodejs_24
