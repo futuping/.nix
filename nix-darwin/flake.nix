@@ -79,6 +79,7 @@
             inputs.brew-nix-extra.darwinModules.google-chrome
             inputs.brew-nix-extra.darwinModules.motrix-next
             inputs.brew-nix-extra.darwinModules.wetype
+            inputs.brew-nix-extra.darwinModules.neteasemusic
             ./flake-brew.nix
             ./flake-mas.nix
           ];

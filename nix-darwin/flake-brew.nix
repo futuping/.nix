@@ -25,6 +25,7 @@
 
     # Web, files, and media
     motrix-next
+    neteasemusic
     google-chrome
     # google-drive
     # c0re100-qbittorrent
