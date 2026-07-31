@@ -25,9 +25,7 @@
     go
 
     # AI and development applications
-    ego-lite
     ghostty-bin
-    lite-xl-app
     # claude-code
     # codex
     # vscode

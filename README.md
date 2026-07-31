@@ -74,6 +74,7 @@ Other important assumptions:
 │   ├── flake.nix                # Host, platform, inputs, and module wiring
 │   ├── flake.lock               # Locked Darwin dependencies
 │   ├── flake-nixpkgs.nix        # Nixpkgs configuration and system packages
+│   ├── nix-packages.nix         # Non-Homebrew, non-nixpkgs applications
 │   ├── flake-darwin.nix         # macOS defaults, system fonts, and Zsh
 │   ├── flake-home.nix           # Home Manager and per-user Git configuration
 │   ├── flake-brew.nix           # Homebrew casks
@@ -404,13 +405,14 @@ If direnv does not activate, check the project's `.envrc`, then run
 | --- | --- |
 | Host, platform, inputs, modules | `nix-darwin/flake.nix` |
 | Nixpkgs configuration and system packages | `nix-darwin/flake-nixpkgs.nix` |
+| Non-Homebrew, non-nixpkgs package selection | `nix-darwin/nix-packages.nix` |
 | Zsh, macOS defaults, system fonts | `nix-darwin/flake-darwin.nix` |
 | Home Manager and per-user Git settings | `nix-darwin/flake-home.nix` |
 | Homebrew casks | `nix-darwin/flake-brew.nix` |
 | Motrix Next package selection | `nix-darwin/flake-brew.nix` |
 | WeType enablement | `nix-darwin/flake-brew.nix` |
 | Cask normalization and lifecycle | [`futuping/brew-nix-extra`](https://github.com/futuping/brew-nix-extra) |
-| Non-Homebrew packages and updates | [`futuping/nix-packages`](https://github.com/futuping/nix-packages) |
+| Non-Homebrew package definitions and updates | [`futuping/nix-packages`](https://github.com/futuping/nix-packages) |
 | Mac App Store application IDs | `nix-darwin/flake-mas.nix` |
 | System fonts | `nix-darwin/flake-darwin.nix` |
 | Template names and paths | `flake.nix` |
