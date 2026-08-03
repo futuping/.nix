@@ -10,7 +10,10 @@
 
   brew-nix.enable = true;
 
-  programs.wetype.enable = true;
+  programs = {
+    awesun.enable = true;
+    wetype.enable = true;
+  };
 
   environment.systemPackages = with pkgs.brewCasks; [
     # Communication
