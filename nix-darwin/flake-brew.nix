@@ -11,14 +11,16 @@
   brew-nix.enable = true;
 
   programs = {
-    awesun.enable = true;
+    # awesun.enable = false;
     wetype.enable = true;
   };
 
   environment.systemPackages = with pkgs.brewCasks; [
     # Communication
     wechat
+    tencent-meeting
     ayugram
+    uuremote
     # telegram
 
     # AI and development
