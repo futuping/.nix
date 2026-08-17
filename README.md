@@ -146,7 +146,7 @@ The root flake exposes these templates:
 | Template | Purpose |
 | --- | --- |
 | `hello` | GNU Hello package, smoke check, formatter, and Git shell; the default template |
-| `rust` | Stable-by-default Rust shell, optional nightly, and target examples |
+| `rust` | Pinned stable Rust shell and target examples |
 | `python` | Nix-managed Python 3.12 and uv development shell |
 | `bun` | Nix-managed Bun shell for JavaScript and TypeScript projects |
 | `node` | Node.js 24 and pnpm 11 shell for frontend and browser-extension development |
@@ -191,19 +191,12 @@ When initializing inside an existing Git repository, stage the generated
 `flake.nix` and `.gitignore` before running Nix commands. The template ignores
 local `result` links and `.direnv/` state.
 
-Use the optional nightly Rust shell with:
-
-```bash
-nix develop .#nightly
-```
-
-The nightly shell uses rust-overlay's latest nightly that contains the
-configured components and targets; the committed `flake.lock` pins the selected
-rust-overlay snapshot. The template uses the minimal profile and adds the
-development components explicitly, so it does not install the offline
-`rust-docs` component. Comments beside `rustTargets` show common macOS,
-Windows, Linux, iOS, Android, browser WebAssembly, and WASI target triples.
-Uncomment only those required by the project.
+The Rust template uses rust-overlay's stable toolchain with the minimal profile
+and adds the development components explicitly, so it does not install the
+offline `rust-docs` component. The committed `flake.lock` pins the selected
+Nixpkgs and rust-overlay revisions. Comments beside `rustTargets` show common
+macOS, Windows, Linux, iOS, Android, browser WebAssembly, and WASI target
+triples. Uncomment only those required by the project.
 
 The generic template deliberately does not inject native libraries. When a
 crate actually needs them, add build tools such as `pkgs.pkg-config` to
@@ -336,11 +329,6 @@ to preserve the upstream package manager and lock file.
 [WXT documents `pnpm dlx wxt@latest init`](https://wxt.dev/guide/installation.html)
 and [uses Vite internally](https://wxt.dev/guide/essentials/config/vite).
 
-There is no `node-extension` selector analogous to `rust-nightly`: Rust nightly
-changes the compiler toolchain, whereas Vite and WXT are project dependencies
-running on the same Node.js shell. Add another Node dev shell only when a
-project genuinely needs a different Node major version or platform SDK.
-
 For direnv:
 
 ```bash
@@ -354,10 +342,8 @@ After the Darwin configuration has installed the custom Zsh functions,
 basic `.envrc` and `flake.lock`, stages those generated files, and allows
 direnv. If it also initializes Git, it creates an initial commit when Git
 identity is configured; an existing repository is never automatically
-committed. Use `nix-direnv rust` for the default stable shell. The convenience
-selector `nix-direnv rust-nightly` initializes the same Rust template but writes
-`use flake .#nightly` to a new `.envrc`. An existing `.envrc` is never
-overwritten.
+committed. Use `nix-direnv rust` for the stable Rust shell. The helper never
+overwrites an existing `.envrc`.
 
 ## Validate and maintain
 

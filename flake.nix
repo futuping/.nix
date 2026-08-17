@@ -27,14 +27,13 @@
         };
         rust = {
           path = ./nix-dev/rust;
-          description = "Pinned stable Rust development shell with an optional nightly shell.";
+          description = "Pinned stable Rust development shell for Apple Silicon macOS.";
           welcomeText = ''
             # Getting started
 
             - Run `nix flake lock` and commit `flake.lock`.
-            - Run `nix develop` for stable Rust or `nix develop .#nightly` for nightly.
+            - Run `nix develop` to enter the stable Rust shell.
             - Configure components and cross-compilation targets in `flake.nix`.
-            - With the custom Zsh helper, use `nix-direnv rust-nightly` for nightly.
             - For a new package, enter the shell and run `cargo init .`.
             - Keep Rust dependencies in `Cargo.toml` and commit `Cargo.lock`.
           '';

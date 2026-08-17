@@ -158,18 +158,7 @@ in
           fi
 
           local template="$requested"
-          local dev_shell=""
-          case "$requested" in
-            rust-nightly)
-              template="rust"
-              dev_shell="nightly"
-              ;;
-          esac
-
           local envrc_line="use flake"
-          if [[ -n "$dev_shell" ]]; then
-            envrc_line+=" .#$dev_shell"
-          fi
 
           local initialized_flake=0
           local initialized_envrc=0

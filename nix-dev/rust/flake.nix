@@ -71,10 +71,6 @@
       # independently of the rust-overlay revision in flake.lock.
       stableToolchain = mkRustToolchain pkgs.rust-bin.stable.latest;
 
-      # For a nightly-only project, a dated toolchain can instead be selected
-      # with `mkRustToolchain pkgs.rust-bin.nightly."YYYY-MM-DD"`.
-      nightlyToolchain = pkgs.rust-bin.selectLatestNightlyWith (toolchain: mkRustToolchain toolchain);
-
       mkRustShell =
         { toolchain }:
         pkgs.mkShell {
@@ -99,10 +95,6 @@
       devShells.${system} = {
         default = mkRustShell {
           toolchain = stableToolchain;
-        };
-
-        nightly = mkRustShell {
-          toolchain = nightlyToolchain;
         };
       };
 
