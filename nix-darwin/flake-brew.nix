@@ -3,12 +3,6 @@
   inputs,
   ...
 }:
-let
-  thirdPartyBrewCasks = import "${inputs.brew-nix}/casks.nix" {
-    inherit pkgs;
-    brew-api = inputs.brew-api-extra.outPath;
-  };
-in
 {
   imports = [
     inputs.brew-nix.darwinModules.default
@@ -48,7 +42,7 @@ in
     quakenotch
     maccy
     typora
-    thirdPartyBrewCasks.tinycast
+    tinycast
     # keyboard-maestro
     # hammerspoon
   ];

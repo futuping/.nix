@@ -78,7 +78,7 @@
             ./flake-home.nix
             inputs.brew-nix-extra.darwinModules.awesun
             inputs.brew-nix-extra.darwinModules.google-chrome
-            inputs.brew-nix-extra.darwinModules.motrix-next
+            inputs.brew-nix-extra.darwinModules.third-party-casks
             inputs.brew-nix-extra.darwinModules.wetype
             inputs.brew-nix-extra.darwinModules.neteasemusic
             ./flake-brew.nix
