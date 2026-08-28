@@ -2,9 +2,7 @@
   description = "Modular Darwin system configuration with Homebrew integration";
 
   inputs = {
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin";
@@ -71,15 +69,16 @@
           };
 
           modules = [
+            # System and package sources
             ./nix-packages.nix
             ./flake-nixpkgs.nix
             ./flake-darwin.nix
+
+            # User environment
             home-manager.darwinModules.home-manager
             ./flake-home.nix
-            inputs.brew-nix-extra.darwinModules.google-chrome
-            inputs.brew-nix-extra.darwinModules.third-party-casks
-            inputs.brew-nix-extra.darwinModules.wetype
-            inputs.brew-nix-extra.darwinModules.neteasemusic
+
+            # Application integrations
             ./flake-brew.nix
             ./flake-mas.nix
           ];

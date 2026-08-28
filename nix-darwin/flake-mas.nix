@@ -5,8 +5,8 @@
     update = false;
 
     packages = {
-      Infuse = 1136220934;
       # List every Mac App Store application that should be preserved.
+      Infuse = 1136220934;
     };
   };
 }

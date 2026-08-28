@@ -1,9 +1,7 @@
 { pkgs, ... }:
 
 {
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
+  nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
     # Agent and development CLI tools
@@ -24,7 +22,7 @@
     ))
     go
 
-    # AI and development applications
+    # Terminal
     ghostty-bin
 
     # Productivity applications

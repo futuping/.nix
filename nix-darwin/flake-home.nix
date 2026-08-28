@@ -11,7 +11,7 @@
       programs.git = {
         enable = true;
 
-        # Git is already installed system-wide by nix-darwin.
+        # Git is already installed system-wide through environment.systemPackages.
         package = null;
 
         settings = {

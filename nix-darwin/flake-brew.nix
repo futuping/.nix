@@ -1,18 +1,21 @@
 {
-  pkgs,
   inputs,
+  pkgs,
   ...
 }:
+
 {
   imports = [
     inputs.brew-nix.darwinModules.default
+    inputs.brew-nix-extra.darwinModules.google-chrome
+    inputs.brew-nix-extra.darwinModules.third-party-casks
+    inputs.brew-nix-extra.darwinModules.wetype
+    inputs.brew-nix-extra.darwinModules.neteasemusic
   ];
 
   brew-nix.enable = true;
 
-  programs = {
-    wetype.enable = true;
-  };
+  programs.wetype.enable = true;
 
   environment.systemPackages = with pkgs.brewCasks; [
     # Communication

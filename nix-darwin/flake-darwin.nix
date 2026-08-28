@@ -24,14 +24,8 @@ let
   };
 in
 {
+  # The Nix installation is managed outside nix-darwin.
   nix.enable = false;
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    download-buffer-size = 524288000;
-  };
 
   networking.hostName = machine.hostName;
 
