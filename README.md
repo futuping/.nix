@@ -29,9 +29,11 @@ services, macOS defaults, casks, App Store applications, and fonts.
 
 Other important assumptions:
 
-- Nix or Lix must already be installed with flakes enabled.
-- `nix.enable = true`, so nix-darwin manages the Nix installation, daemon, and
-  `/etc/nix/nix.conf` after the first activation.
+- The current host uses Determinate Nix, which must already be installed with
+  flakes enabled.
+- `nix.enable = false`, so Determinate Nix—not nix-darwin—owns the Nix
+  installation, daemon, and `/etc/nix/nix.conf`. The adjacent commented
+  `nix.settings` block documents the future handoff to upstream C++ Nix.
 - Unfree packages are allowed.
 - The configuration expects the repository at `/Users/level/.nix` unless
   `machine.configurationDirectory` is changed.
@@ -62,7 +64,10 @@ Other important assumptions:
 - Non-Homebrew application packages are pinned through
   [`futuping/nix-packages`](https://github.com/futuping/nix-packages). Its
   updater follows official upstream releases, while the local rebuild wrapper
-  receives published revisions through the existing full flake update.
+  receives published revisions through the existing full flake update. The
+  Neomacs overlay module remains imported, but its bare package selection is
+  commented out, so the current Darwin system does not install it; it is
+  intentionally disabled because its first installation builds from source.
 
 ## Repository layout
 
@@ -154,10 +159,13 @@ The root flake exposes these templates:
 
 Development templates expose only `aarch64-darwin`, matching this M1 setup.
 
-The system-level Node.js, Python, and Go installations are fallbacks for agents
-and temporary scripts. Rust is intentionally project-scoped instead of being a
-Darwin system package. A project's flake or development template owns its
-runtime version; commit the project `flake.lock` and language dependency lock
+Node.js, Python (including PyYAML), Go, and Rust are intentionally not installed
+as Darwin system packages. The commented declarations in
+`flake-nixpkgs.nix` are examples for an explicitly needed global fallback and
+have no effect. Long-lived projects should use a committed flake or a matching
+`nix-dev` template. Ad-hoc agent tasks without a trusted runnable environment
+should use a locked task-local `.codex-env/` rather than a global or profile
+installer. Commit each project's `flake.lock` and language dependency lock
 files.
 
 Initialize a project from the root template registry:

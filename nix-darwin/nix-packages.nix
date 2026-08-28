@@ -13,7 +13,8 @@
 
   environment.systemPackages = with pkgs; [
     ego-lite
-    neomacs
+    # Temporarily disabled because the first install builds Neomacs from source.
+    # neomacs
     shardx-launcher
   ];
 }
