@@ -76,7 +76,6 @@
             ./flake-darwin.nix
             home-manager.darwinModules.home-manager
             ./flake-home.nix
-            inputs.brew-nix-extra.darwinModules.awesun
             inputs.brew-nix-extra.darwinModules.google-chrome
             inputs.brew-nix-extra.darwinModules.third-party-casks
             inputs.brew-nix-extra.darwinModules.wetype

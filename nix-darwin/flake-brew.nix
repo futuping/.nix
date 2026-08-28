@@ -11,7 +11,6 @@
   brew-nix.enable = true;
 
   programs = {
-    # awesun.enable = false;
     wetype.enable = true;
   };
 
@@ -21,7 +20,6 @@
     tencent-meeting
     ayugram
     uuremote
-    # telegram
 
     # AI and development
     claude
@@ -33,17 +31,9 @@
     motrix-next
     neteasemusic
     google-chrome
-    # google-drive
-    # c0re100-qbittorrent
 
     # Productivity and utilities
-    launchbar
-    monarch
-    quakenotch
-    maccy
     typora
     tinycast
-    # keyboard-maestro
-    # hammerspoon
   ];
 }
