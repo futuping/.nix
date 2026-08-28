@@ -11,9 +11,13 @@
     inputs.nix-packages.darwinModules.shardx-launcher
   ];
 
-  environment.systemPackages = with pkgs; [
-    ego-lite
-    lite-xl-app
-    shardx-launcher
-  ];
+  environment.systemPackages =
+    (with pkgs; [
+      ego-lite
+      lite-xl-app
+      shardx-launcher
+    ])
+    ++ [
+      inputs.nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.neomacs
+    ];
 }
