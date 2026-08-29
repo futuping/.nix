@@ -19,11 +19,11 @@
     "brew-api-extra": {
       "flake": false,
       "locked": {
-        "lastModified": 1787839720,
-        "narHash": "sha256-nG4M2YFeMVGlBW2gAZdS+OnWZ3j68RLeI+KCpyJVplU=",
+        "lastModified": 1787970670,
+        "narHash": "sha256-ryQXGakvpWx7mqb/bDmZEWtlrpRXdPiWd0MkfOXDUvY=",
         "owner": "futuping",
         "repo": "brew-api-extra",
-        "rev": "3376d96b8fa95507cd1bb717e9fb9be92dd71c8e",
+        "rev": "59701509028a6cd330d46b3ddb6393b4e0242d3a",
         "type": "github"
       },
       "original": {
@@ -68,11 +68,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787943295,
-        "narHash": "sha256-EsizYjidbBEeNXgJ1tLHDMLltf4Y2VEWyoZ0J7DYFSA=",
+        "lastModified": 1787970777,
+        "narHash": "sha256-E/rUm0QyOziT0LEcPhj4uIMVVyRQ0mCdP1LHBMMz1M8=",
         "owner": "futuping",
         "repo": "brew-nix-extra",
-        "rev": "73c8fe1f9ab33dc71b9c51bca2a013b9f86e953e",
+        "rev": "8f5f4540492857e0646b3f00afcedc0c12dccbab",
         "type": "github"
       },
       "original": {
@@ -169,11 +169,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787942316,
-        "narHash": "sha256-CxqsrkdtvghjuW1bF1HhrsTTelugCZf2WLDNbGyx8JA=",
+        "lastModified": 1787972378,
+        "narHash": "sha256-jXnk9oyqYJHLGJll6iLEitGxEzBpxlLFPHn9cfh8iRc=",
         "owner": "futuping",
         "repo": "nix-packages",
-        "rev": "17f90b957ff0b02ce27967e696eb74ce540a5b65",
+        "rev": "736add065ced1f4fff4c6df92d70e8c7b8d44467",
         "type": "github"
       },
       "original": {

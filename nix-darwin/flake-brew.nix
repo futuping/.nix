@@ -37,6 +37,5 @@
 
     # Productivity and utilities
     typora
-    tinycast
   ];
 }
