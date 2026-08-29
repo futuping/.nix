@@ -24,22 +24,15 @@ let
   };
 in
 {
-  # Determinate Nix currently owns the Nix installation, daemon, and
-  # /etc/nix/nix.conf, so nix-darwin must not manage them.
-  #
-  # Future migration to upstream C++ Nix (CppNix):
-  # 1. Complete the handoff from Determinate Nix.
-  # 2. Set nix.enable = true.
-  # 3. Uncomment the desired nix.settings below.
-  nix.enable = false;
+  nix.enable = true;
 
-  # nix.settings = {
-  #   experimental-features = [
-  #     "nix-command"
-  #     "flakes"
-  #   ];
-  #   download-buffer-size = 524288000; # 500 MiB
-  # };
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    download-buffer-size = 524288000; # 500 MiB
+  };
 
   networking.hostName = machine.hostName;
 

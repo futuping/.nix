@@ -29,11 +29,8 @@ services, macOS defaults, casks, App Store applications, and fonts.
 
 Other important assumptions:
 
-- The current host uses Determinate Nix, which must already be installed with
-  flakes enabled.
-- `nix.enable = false`, so Determinate Nix—not nix-darwin—owns the Nix
-  installation, daemon, and `/etc/nix/nix.conf`. The adjacent commented
-  `nix.settings` block documents the future handoff to upstream C++ Nix.
+- nix-darwin manages upstream C++ Nix, its daemon, and `/etc/nix/nix.conf`;
+  flakes are enabled through `nix.settings`.
 - Unfree packages are allowed.
 - The configuration expects the repository at `/Users/level/.nix` unless
   `machine.configurationDirectory` is changed.
