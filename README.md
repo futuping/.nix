@@ -29,8 +29,10 @@ services, macOS defaults, casks, App Store applications, and fonts.
 
 Other important assumptions:
 
-- nix-darwin manages upstream C++ Nix, its daemon, and `/etc/nix/nix.conf`;
-  flakes are enabled through `nix.settings`.
+- The current host uses Determinate Nix with `nix.enable = false`;
+  `/etc/nix/nix.custom.conf` supplies its custom cache settings. The
+  `nix.settings` block is retained for a later switch to upstream C++ Nix and
+  does not configure the current daemon.
 - Unfree packages are allowed.
 - The configuration expects the repository at `/Users/level/.nix` unless
   `machine.configurationDirectory` is changed.
@@ -60,11 +62,42 @@ Other important assumptions:
   Chrome cask's mutable Stable DMG.
 - Non-Homebrew application packages are pinned through
   [`futuping/nix-packages`](https://github.com/futuping/nix-packages). Its
-  updater follows official upstream releases, while the local rebuild wrapper
-  receives published revisions through the existing full flake update. The
-  Neomacs overlay module remains imported, but its bare package selection is
-  commented out, so the current Darwin system does not install it; it is
-  intentionally disabled because its first installation builds from source.
+  binary updaters follow official upstream releases, while Neomacs intentionally
+  tracks validated development revisions of upstream `main`. The local rebuild
+  wrapper receives published revisions through the existing full flake update.
+  Neomacs is enabled by its bare package name and includes a Finder-launchable
+  app with text-file associations. Its GitHub CI publishes validated binaries
+  to the public `utitsoga` Cachix cache, avoiding a local source build when the
+  exact locked outputs are available. The app launcher uses the same pinned
+  dependencies as CI even when the consumer follows a different nixpkgs pin.
+
+### Neomacs binary cache
+
+For the current Determinate Nix installation, retain the following additive
+settings in `/etc/nix/nix.custom.conf` (not its managed `nix.conf`):
+
+```conf
+extra-substituters = https://utitsoga.cachix.org
+extra-trusted-public-keys = utitsoga.cachix.org-1:vEIve6o6RwvjUotznYxEDqQmBPV8SWaOupBsA2GAq4k=
+```
+
+The corresponding declarations in `nix-darwin/flake-darwin.nix` are ready for
+CppNix when `nix.enable` is enabled after the installer migration. Back up and
+migrate the existing custom configuration as part of that future switch;
+do not remove it while Determinate Nix still uses it. Keep signature checking
+enabled and retain the default Nix caches. Public cache reads need neither a
+token nor a globally installed Cachix CLI.
+
+The GitHub repository owns the cache write secret. CI validates before uploading
+Neomacs and its required runtime/IFD outputs; a fresh runner verifies downloads
+with all builders disabled. Cache eviction or changed inputs can still cause a
+cache miss. Updating a lock or filling a cache does not activate a new system;
+`darwin-rebuild switch` remains an explicit installation step.
+
+The current upstream pdump images retain build-environment references, so the
+package closure also includes build tools and dependency artifacts. The cache
+avoids local compilation but does not itself reduce that existing closure;
+cleaning the runtime images is a separate packaging optimization.
 
 ## Repository layout
 

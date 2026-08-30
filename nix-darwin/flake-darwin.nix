@@ -26,12 +26,18 @@ in
 {
   nix.enable = false;
 
+  # Used when CppNix is enabled. Determinate Nix reads the same cache settings
+  # from /etc/nix/nix.custom.conf while nix.enable remains false.
   nix.settings = {
     experimental-features = [
       "nix-command"
       "flakes"
     ];
     download-buffer-size = 524288000; # 500 MiB
+    extra-substituters = [ "https://utitsoga.cachix.org" ];
+    extra-trusted-public-keys = [
+      "utitsoga.cachix.org-1:vEIve6o6RwvjUotznYxEDqQmBPV8SWaOupBsA2GAq4k="
+    ];
   };
 
   networking.hostName = machine.hostName;
