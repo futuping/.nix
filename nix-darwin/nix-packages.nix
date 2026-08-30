@@ -15,8 +15,7 @@
   environment.systemPackages = with pkgs; [
     ego-lite
     flogravity
-    # Temporarily disabled because the first install builds Neomacs from source.
-    # neomacs
+    neomacs
     shardx-launcher
   ];
 }

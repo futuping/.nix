@@ -13,7 +13,6 @@
     inputs.brew-nix-extra.darwinModules.neteasemusic
   ];
 
-  # Required to expose the official catalog as pkgs.brewCasks below.
   brew-nix.enable = true;
 
   programs.wetype.enable = true;
@@ -30,6 +29,7 @@
     chatgpt
     dbx
     orbstack
+    vimr
 
     # Web, files, and media
     motrix-next

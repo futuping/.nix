@@ -24,7 +24,7 @@ let
   };
 in
 {
-  nix.enable = true;
+  nix.enable = false;
 
   nix.settings = {
     experimental-features = [
