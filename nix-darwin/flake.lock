@@ -166,11 +166,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788124110,
-        "narHash": "sha256-Bs9zqatMzqAbXawIXZq6raIOdP9Ja+rmLqgnqx+jFCs=",
+        "lastModified": 1788162875,
+        "narHash": "sha256-6dQJnJc1thxhlAA7Io5dX8tGSmf63OwwBFXDH5qbmAs=",
         "owner": "futuping",
         "repo": "nix-packages",
-        "rev": "ca8817fe302e0739dea38139816882764320768b",
+        "rev": "a6db541df01a0b72a92d9d97421f299d8ace7c1e",
         "type": "github"
       },
       "original": {
