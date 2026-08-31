@@ -30,7 +30,9 @@
     coteditor
     dbx
     orbstack
+    sublime-text
     vimr
+    zed
 
     # Web, files, and media
     motrix-next
