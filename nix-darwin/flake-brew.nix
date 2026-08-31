@@ -27,6 +27,7 @@
     # AI and development
     claude
     chatgpt
+    coteditor
     dbx
     orbstack
     vimr
