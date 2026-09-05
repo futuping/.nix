@@ -20,7 +20,7 @@ The current Darwin configuration contains these personal defaults:
 | Configuration and host name | `MacBook-Pro` | `nix-darwin/flake.nix` |
 | Platform | `aarch64-darwin` | `nix-darwin/flake.nix` |
 | Primary user | `level` | `nix-darwin/flake.nix` |
-| Repository path used by Zsh helpers | `/Users/level/.nix` | `nix-darwin/flake.nix` |
+| Repository path used by Zsh helpers | `~/.nix` | `nix-darwin/flake.nix` |
 | Git commit identity | `Tuping Fu <45912467+futuping@users.noreply.github.com>` | `nix-darwin/flake-home.nix` |
 | Home Manager state version | `26.05` | `nix-darwin/flake-home.nix` |
 
@@ -34,7 +34,7 @@ Other important assumptions:
   `nix.settings` block is retained for a later switch to upstream C++ Nix and
   does not configure the current daemon.
 - Unfree packages are allowed.
-- The configuration expects the repository at `/Users/level/.nix` unless
+- The configuration expects the repository at `~/.nix` unless
   `machine.configurationDirectory` is changed.
 - Home Manager is integrated as a nix-darwin module and owns the primary
   user's global Git configuration.
@@ -197,10 +197,12 @@ Node.js, Python (including PyYAML), Go, and Rust are intentionally not installed
 as Darwin system packages. The commented declarations in
 `flake-nixpkgs.nix` are examples for an explicitly needed global fallback and
 have no effect. Long-lived projects should use a committed flake or a matching
-`nix-dev` template. Ad-hoc agent tasks without a trusted runnable environment
-should use a locked task-local `.codex-env/` rather than a global or profile
-installer. Commit each project's `flake.lock` and language dependency lock
-files.
+`nix-dev` template. Simple ad-hoc tasks can use `nix run` or
+`nix shell --command`, preferably with an existing locked input, without
+creating a new project. Complex or reusable task environments should use a
+locked task-local `.codex-env/` or an independent temporary directory,
+initialized through `nix-direnv <target>`. Commit each project's `flake.lock`
+and language dependency lock files.
 
 Initialize a project from the root template registry:
 
@@ -252,7 +254,7 @@ language server. Initialize a new environment and module with:
 mkdir my-go-project
 cd my-go-project
 nix-direnv go
-go mod init example.com/my-go-project
+direnv exec . go mod init example.com/my-go-project
 ```
 
 After adding source files, run `go mod tidy` to resolve dependencies and
@@ -264,9 +266,10 @@ The project `flake.nix` owns Go, gopls, and native dependencies, while
 
 The shell sets `GOTOOLCHAIN=local` to use the Nix-provided compiler, following
 Go's [toolchain selection rules](https://go.dev/doc/toolchain).
-If a module requires a newer Go release, update the Nixpkgs input and commit
-the resulting `flake.lock`. Add native build tools and libraries for cgo only
-when a project needs them. Run `nix flake check` to verify the tooling and
+If a module requires a newer Go release, first select a compatible Nix Go
+package; update the relevant input and `flake.lock` only if needed.
+Add native build tools and libraries for cgo only when a project needs them.
+Run `nix flake check` to verify the tooling and
 compile and execute a small Go program.
 
 The Python template follows the same boundary as the Rust template: the
@@ -411,6 +414,25 @@ identity is configured; an existing repository is never automatically
 committed. Use `nix-direnv rust` for the stable Rust shell. The helper never
 overwrites an existing `.envrc`.
 
+## Global agent instructions
+
+The complete shared English policy lives in
+[`nix-darwin/dotfiles/agents/AGENTS.md`](nix-darwin/dotfiles/agents/AGENTS.md).
+It covers project setup, existing-environment migration, one-off Nix commands,
+dependency ownership, and Rust, Go, Python, Node.js, and Bun conventions.
+
+Home Manager deploys `~/.codex/AGENTS.md` and `~/.claude/CLAUDE.md` as
+out-of-store links to the same source. The source path is derived from
+`machine.configurationDirectory`; the module does not hardcode a username.
+These are the default agent configuration locations; a custom `CODEX_HOME`
+or Claude configuration directory needs a corresponding target adjustment.
+
+After the initial activation, edit the repository source rather than replacing
+either entry-point link. New agent sessions read the edited content without
+another system rebuild. Git manages the content history; rolling back a Nix
+generation does not roll back the mutable instruction source. Preserve any
+existing entry-point files before the first deployment.
+
 ## Validate and maintain
 
 Run the unified check before activation:
@@ -459,7 +481,8 @@ If direnv does not activate, check the project's `.envrc`, then run
 | Nixpkgs configuration and system packages | `nix-darwin/flake-nixpkgs.nix` |
 | Non-Homebrew, non-nixpkgs package selection | `nix-darwin/flake-packages.nix` |
 | Zsh, macOS defaults, system fonts | `nix-darwin/flake-darwin.nix` |
-| Home Manager and per-user Git settings | `nix-darwin/flake-home.nix` |
+| Home Manager, per-user Git, and global agent links | `nix-darwin/flake-home.nix` |
+| Shared Codex and Claude Code instructions | `nix-darwin/dotfiles/agents/AGENTS.md` |
 | Homebrew casks | `nix-darwin/flake-brew.nix` |
 | Motrix Next package selection | `nix-darwin/flake-brew.nix` |
 | WeType enablement | `nix-darwin/flake-brew.nix` |
