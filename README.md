@@ -109,7 +109,7 @@ cleaning the runtime images is a separate packaging optimization.
 │   ├── flake.nix                # Host, platform, inputs, and module wiring
 │   ├── flake.lock               # Locked Darwin dependencies
 │   ├── flake-nixpkgs.nix        # Nixpkgs configuration and system packages
-│   ├── nix-packages.nix         # Non-Homebrew, non-nixpkgs applications
+│   ├── flake-packages.nix       # Non-Homebrew, non-nixpkgs applications
 │   ├── flake-darwin.nix         # macOS defaults, system fonts, and Zsh
 │   ├── flake-home.nix           # Home Manager and per-user Git configuration
 │   ├── flake-brew.nix           # Homebrew casks
@@ -119,6 +119,9 @@ cleaning the runtime images is a separate packaging optimization.
     │   ├── flake.nix
     │   └── .gitignore
     ├── rust/
+    │   ├── flake.nix
+    │   └── .gitignore
+    ├── go/
     │   ├── flake.nix
     │   └── .gitignore
     ├── python/flake.nix
@@ -182,6 +185,7 @@ The root flake exposes these templates:
 | --- | --- |
 | `hello` | GNU Hello package, smoke check, formatter, and Git shell; the default template |
 | `rust` | Pinned stable Rust shell and target examples |
+| `go` | Nix-managed Go shell with gopls and a compiler smoke check |
 | `python` | Nix-managed Python 3.12 and uv development shell |
 | `bun` | Nix-managed Bun shell for JavaScript and TypeScript projects |
 | `node` | Node.js 24 and pnpm 11 shell for frontend and browser-extension development |
@@ -240,6 +244,30 @@ The generic template deliberately does not inject native libraries. When a
 crate actually needs them, add build tools such as `pkgs.pkg-config` to
 `nativeBuildInputs` and linked libraries such as `pkgs.openssl` to
 `buildInputs` in that project's shell.
+
+The Go template provides the compiler (including `gofmt`) and the `gopls`
+language server. Initialize a new environment and module with:
+
+```bash
+mkdir my-go-project
+cd my-go-project
+nix-direnv go
+go mod init example.com/my-go-project
+```
+
+After adding source files, run `go mod tidy` to resolve dependencies and
+`go test ./...` to test the project. Commit `go.mod` and `go.sum` when generated;
+Go maintains module requirements and dependency checksums in these files, as
+described in its [dependency management guide](https://go.dev/doc/modules/managing-dependencies).
+The project `flake.nix` owns Go, gopls, and native dependencies, while
+`flake.lock` pins their exact Nixpkgs revision.
+
+The shell sets `GOTOOLCHAIN=local` to use the Nix-provided compiler, following
+Go's [toolchain selection rules](https://go.dev/doc/toolchain).
+If a module requires a newer Go release, update the Nixpkgs input and commit
+the resulting `flake.lock`. Add native build tools and libraries for cgo only
+when a project needs them. Run `nix flake check` to verify the tooling and
+compile and execute a small Go program.
 
 The Python template follows the same boundary as the Rust template: the
 project flake owns the interpreter and native dependencies, while the language
@@ -429,7 +457,7 @@ If direnv does not activate, check the project's `.envrc`, then run
 | --- | --- |
 | Host, platform, inputs, modules | `nix-darwin/flake.nix` |
 | Nixpkgs configuration and system packages | `nix-darwin/flake-nixpkgs.nix` |
-| Non-Homebrew, non-nixpkgs package selection | `nix-darwin/nix-packages.nix` |
+| Non-Homebrew, non-nixpkgs package selection | `nix-darwin/flake-packages.nix` |
 | Zsh, macOS defaults, system fonts | `nix-darwin/flake-darwin.nix` |
 | Home Manager and per-user Git settings | `nix-darwin/flake-home.nix` |
 | Homebrew casks | `nix-darwin/flake-brew.nix` |

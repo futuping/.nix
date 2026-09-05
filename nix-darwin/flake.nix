@@ -70,7 +70,7 @@
 
           modules = [
             # System and package sources
-            ./nix-packages.nix
+            ./flake-packages.nix
             ./flake-nixpkgs.nix
             ./flake-darwin.nix
 

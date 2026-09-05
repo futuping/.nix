@@ -38,6 +38,21 @@
             - Keep Rust dependencies in `Cargo.toml` and commit `Cargo.lock`.
           '';
         };
+        go = {
+          path = ./nix-dev/go;
+          description = "Nix-managed Go development shell with gopls for Apple Silicon macOS.";
+          welcomeText = ''
+            # Getting started
+
+            - Run `nix flake lock` and commit `flake.lock`.
+            - Run `nix develop`, or initialize with the custom `nix-direnv go` helper.
+            - For a new module, run `go mod init <module-path>` after entering the shell.
+            - Keep project dependencies in `go.mod` and commit `go.sum` when generated.
+            - Run `go mod tidy` after changing dependencies and `go test ./...` to test the project.
+            - Update Go through the Nix flake input; automatic toolchain downloads are disabled.
+            - Add native tools and libraries to `flake.nix` only when the project needs them.
+          '';
+        };
         python = {
           path = ./nix-dev/python;
           description = "Nix-managed Python 3.12 and uv development environment.";
