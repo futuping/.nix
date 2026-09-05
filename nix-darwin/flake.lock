@@ -3,11 +3,11 @@
     "brew-api": {
       "flake": false,
       "locked": {
-        "lastModified": 1788070535,
-        "narHash": "sha256-Ba/oMsQikPioEMmX04uYr2QQPwziKAd1Ze4udb/Pxes=",
+        "lastModified": 1788438995,
+        "narHash": "sha256-cT9EbiHnOadfxJ8glYM6vDLB6W/BaegiiYDXDUodxyQ=",
         "owner": "BatteredBunny",
         "repo": "brew-api",
-        "rev": "9e9635516bbecc47cd3e5d1e31c35bf357942f77",
+        "rev": "cc863922ae1444dd87da4f7ef7b375fa409d2690",
         "type": "github"
       },
       "original": {
@@ -45,11 +45,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787595493,
-        "narHash": "sha256-bgIC3LxTa1x8QXihLnGRo5MXOyNhRPyIUNa56bsucHU=",
+        "lastModified": 1788248927,
+        "narHash": "sha256-SwecqtpdObqSTsEW0Es5ZDUrZ1Rxu1DxCzfxxTzH5BQ=",
         "owner": "BatteredBunny",
         "repo": "brew-nix",
-        "rev": "c262c772ab66ec5ec78aa0e32f648963e9dda499",
+        "rev": "16131ae4126c54b1502aa7eaf6573d7fbf16b656",
         "type": "github"
       },
       "original": {
@@ -68,11 +68,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787970777,
-        "narHash": "sha256-E/rUm0QyOziT0LEcPhj4uIMVVyRQ0mCdP1LHBMMz1M8=",
+        "lastModified": 1788350834,
+        "narHash": "sha256-cu5wc3U8OswefFR5y+/Z/X0TKXjhiafSObbSUbOYtuM=",
         "owner": "futuping",
         "repo": "brew-nix-extra",
-        "rev": "8f5f4540492857e0646b3f00afcedc0c12dccbab",
+        "rev": "b271fe570aa298e71c77be432f16e95f0b8c7387",
         "type": "github"
       },
       "original": {
@@ -96,6 +96,28 @@
         "type": "github"
       }
     },
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": [
+          "nix-packages",
+          "neomacs",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787559586,
+        "narHash": "sha256-onL0VLf9vPllmT0H/OlURIU5r5t5WIEl7t4tVNKT0Nw=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "9d0d87172c374f89da73c1cfe6d81ae62feac1f1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -103,11 +125,33 @@
         ]
       },
       "locked": {
-        "lastModified": 1787797243,
-        "narHash": "sha256-8+Q7NOB7RPajRjA4pbCDLzqH+MTjnG9x6LUPLfL2joA=",
+        "lastModified": 1788355065,
+        "narHash": "sha256-gAz5oTI7ur34CfuakQduiQd/2ZhO62Bn2XXg08nZYYQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "99c9ec63390f1d8c14d95d9e8b17cc29cfbd4e11",
+        "rev": "d9d750e4fc11c10cab2da677bdd31e427f3a3a71",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "home-manager_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nix-packages",
+          "neomacs",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788229478,
+        "narHash": "sha256-G0F2rFORVcFkEvVdE/qWQTnYekIc77YP5/vRF9nZlxU=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "1dc2d1f720ab17fc7981e087346bf54b26d284b1",
         "type": "github"
       },
       "original": {
@@ -119,16 +163,18 @@
     "neomacs": {
       "inputs": {
         "crane": "crane",
+        "flake-parts": "flake-parts",
+        "home-manager": "home-manager_2",
         "nix-wpe-webkit": "nix-wpe-webkit",
         "nixpkgs": "nixpkgs_2",
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1788091935,
-        "narHash": "sha256-O5bxwjmZF0KydcF04Y8IAZlmxRT4MlvoL3Wh3BZU920=",
+        "lastModified": 1788435607,
+        "narHash": "sha256-D3DqGsD6pDH+WqxrCuFOxeXi6EE2Mku5Ax884f+XkZc=",
         "owner": "eval-exec",
         "repo": "neomacs",
-        "rev": "57c77eff73e893903299bc38064d3f18563a64af",
+        "rev": "eb8860ef9d4958d95b09dc41ecc1c5b402438da7",
         "type": "github"
       },
       "original": {
@@ -166,11 +212,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788162875,
-        "narHash": "sha256-6dQJnJc1thxhlAA7Io5dX8tGSmf63OwwBFXDH5qbmAs=",
+        "lastModified": 1788438052,
+        "narHash": "sha256-diRfWE7PE2Bp050rsYgtCCqqawNp0zlvADuj5Q0Lydk=",
         "owner": "futuping",
         "repo": "nix-packages",
-        "rev": "a6db541df01a0b72a92d9d97421f299d8ace7c1e",
+        "rev": "bba26d56a328b7bfea3d34ec0650df01a5699c07",
         "type": "github"
       },
       "original": {
@@ -231,27 +277,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1744536153,
-        "narHash": "sha256-awS2zRgF4uTwrOKwwiJcByDzDOdo3Q1rPZbiHQg/N38=",
+        "lastModified": 1788372231,
+        "narHash": "sha256-7aqErvrAEz/5OcPA5p3M+tVOqeYc4oJXkNIPXfCqxAw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "18dd725c29603f582cf1900e0d25f9f1063dbf11",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_4": {
-      "locked": {
-        "lastModified": 1787964612,
-        "narHash": "sha256-0N9nghg3nwzX6b6qc77EzjR9cu/Z+UR66FlfsCqiURs=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "e8be7818e19ada32105a8af937a6a473b38167ca",
+        "rev": "9387b3fcc0c23c86661636da63faabad4235a0a6",
         "type": "github"
       },
       "original": {
@@ -270,12 +300,16 @@
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
         "nix-packages": "nix-packages",
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs_3"
       }
     },
     "rust-overlay": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": [
+          "nix-packages",
+          "neomacs",
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1784091390,

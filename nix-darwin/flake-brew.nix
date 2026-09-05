@@ -35,6 +35,7 @@
     zed
 
     # Web, files, and media
+    iina
     motrix-next
     neteasemusic
     google-chrome
