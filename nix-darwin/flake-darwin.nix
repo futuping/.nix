@@ -24,10 +24,8 @@ let
   };
 in
 {
-  nix.enable = false;
+  nix.enable = true;
 
-  # Used when CppNix is enabled. Determinate Nix reads the same cache settings
-  # from /etc/nix/nix.custom.conf while nix.enable remains false.
   nix.settings = {
     experimental-features = [
       "nix-command"
@@ -143,6 +141,14 @@ in
             return 1
           fi
 
+          # The old hook can reference a store path removed by garbage collection.
+          local direnv_hook
+          if ! direnv_hook=$(/run/current-system/sw/bin/direnv hook zsh); then
+            echo "⚠️ System switched, but refreshing the direnv hook failed"
+            return 1
+          fi
+          eval "$direnv_hook"
+
           echo "🧹 Deleting old system generations"
           if ! sudo -H nix-env --delete-generations old --profile /nix/var/nix/profiles/system; then
             echo "⚠️ Old generation deletion interrupted or failed"
@@ -151,7 +157,7 @@ in
 
           echo "🗑️ Collecting garbage"
           if ! nix-collect-garbage -d; then
-            echo "⚠️ Garbage collection interrupted or failed"
+            echo "⚠️ System switched successfully; garbage collection interrupted or failed"
             return 1
           fi
 

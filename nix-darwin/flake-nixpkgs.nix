@@ -12,22 +12,17 @@
     jq
     yq-go
     nixfmt
-
-    # Language runtimes are project-scoped. Keep these declarations as
-    # examples for restoring a global fallback when one is explicitly needed.
-    # nodejs_24
-    # (python312.withPackages (
-    #   pythonPackages: with pythonPackages; [
-    #     pyyaml
-    #   ]
-    # ))
-    # go
+    nodejs_24
+    (python312.withPackages (
+      pythonPackages: with pythonPackages; [
+        pyyaml
+      ]
+    ))
 
     # Terminal
-    ghostty-bin
+    warp-terminal
 
     # Productivity applications
-    raycast
     zotero
 
     # Network diagnostics

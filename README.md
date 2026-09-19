@@ -19,7 +19,7 @@ The current Darwin configuration contains these personal defaults:
 | --- | --- | --- |
 | Configuration and host name | `MacBook-Pro` | `nix-darwin/flake.nix` |
 | Platform | `aarch64-darwin` | `nix-darwin/flake.nix` |
-| Primary user | `level` | `nix-darwin/flake.nix` |
+| Primary user | Selected by `machine.userName` | `nix-darwin/flake.nix` |
 | Repository path used by Zsh helpers | `~/.nix` | `nix-darwin/flake.nix` |
 | Git commit identity | `Tuping Fu <45912467+futuping@users.noreply.github.com>` | `nix-darwin/flake-home.nix` |
 | Home Manager state version | `26.05` | `nix-darwin/flake-home.nix` |
@@ -29,10 +29,8 @@ services, macOS defaults, casks, App Store applications, and fonts.
 
 Other important assumptions:
 
-- The current host uses Determinate Nix with `nix.enable = false`;
-  `/etc/nix/nix.custom.conf` supplies its custom cache settings. The
-  `nix.settings` block is retained for a later switch to upstream C++ Nix and
-  does not configure the current daemon.
+- The configuration enables nix-darwin's Nix management with
+  `nix.enable = true`; cache settings are declared in `nix.settings`.
 - Unfree packages are allowed.
 - The configuration expects the repository at `~/.nix` unless
   `machine.configurationDirectory` is changed.
@@ -65,28 +63,38 @@ Other important assumptions:
   binary updaters follow official upstream releases, while Neomacs intentionally
   tracks validated development revisions of upstream `main`. The local rebuild
   wrapper receives published revisions through the existing full flake update.
-  Neomacs is enabled by its bare package name and includes a Finder-launchable
+  Neomacs is not selected in the current configuration. When selected by its
+  bare package name, it includes a Finder-launchable
   app with text-file associations. Its GitHub CI publishes validated binaries
   to the public `utitsoga` Cachix cache, avoiding a local source build when the
   exact locked outputs are available. The app launcher uses the same pinned
   dependencies as CI even when the consumer follows a different nixpkgs pin.
 
+### Rayburst
+
+Rayburst replaces the former Motrix Next selection in `flake-brew.nix` through
+the shared third-party cask module. The catalog pins the explicitly selected
+[`4.0.0-beta.2` release](https://github.com/AnInsomniacy/rayburst/releases/tag/v4.0.0-beta.2)
+because the upstream Homebrew tap still describes beta.1. Adopting another
+release requires a reviewed catalog change and consumer lock update.
+
+The renamed application uses a new bundle identifier and does not import
+Motrix Next settings, tasks, or history. Keep existing downloaded files.
+Updating this configuration does not activate the system or remove user data.
+
 ### Neomacs binary cache
 
-For the current Determinate Nix installation, retain the following additive
-settings in `/etc/nix/nix.custom.conf` (not its managed `nix.conf`):
+The current configuration declares this optional cache in `nix.settings`.
+For a separate host using Determinate Nix, the equivalent additive settings
+belong in `/etc/nix/nix.custom.conf` (not its managed `nix.conf`):
 
 ```conf
 extra-substituters = https://utitsoga.cachix.org
 extra-trusted-public-keys = utitsoga.cachix.org-1:vEIve6o6RwvjUotznYxEDqQmBPV8SWaOupBsA2GAq4k=
 ```
 
-The corresponding declarations in `nix-darwin/flake-darwin.nix` are ready for
-CppNix when `nix.enable` is enabled after the installer migration. Back up and
-migrate the existing custom configuration as part of that future switch;
-do not remove it while Determinate Nix still uses it. Keep signature checking
-enabled and retain the default Nix caches. Public cache reads need neither a
-token nor a globally installed Cachix CLI.
+Keep signature checking enabled and retain the default Nix caches. Public
+cache reads need neither a token nor a globally installed Cachix CLI.
 
 The GitHub repository owns the cache write secret. CI validates before uploading
 Neomacs and its required runtime/IFD outputs; a fresh runner verifies downloads
@@ -193,10 +201,9 @@ The root flake exposes these templates:
 
 Development templates expose only `aarch64-darwin`, matching this M1 setup.
 
-Node.js, Python (including PyYAML), Go, and Rust are intentionally not installed
-as Darwin system packages. The commented declarations in
-`flake-nixpkgs.nix` are examples for an explicitly needed global fallback and
-have no effect. Long-lived projects should use a committed flake or a matching
+The current system package list includes Node.js 24 and Python 3.12 with
+PyYAML. Go and Rust remain project-scoped. Long-lived projects should still
+use a committed flake or a matching
 `nix-dev` template. Simple ad-hoc tasks can use `nix run` or
 `nix shell --command`, preferably with an existing locked input, without
 creating a new project. Complex or reusable task environments should use a
@@ -414,6 +421,28 @@ identity is configured; an existing repository is never automatically
 committed. Use `nix-direnv rust` for the stable Rust shell. The helper never
 overwrites an existing `.envrc`.
 
+## GitHub CLI preferences
+
+Home Manager generates `~/.config/gh/config.yml` from `programs.gh.settings`
+in `nix-darwin/flake-home.nix`. The declarations preserve the existing HTTPS
+protocol, prompts, editor and pager fallbacks, display preferences, and
+`co = pr checkout` alias. The `gh` executable remains in the system package
+set; the Home Manager module references the same Nix package.
+
+Edit the Nix settings and activate Home Manager to change these preferences.
+The generated file is read-only, so commands such as `gh config set` and
+`gh alias set` should not be used to modify the managed configuration.
+Home Manager backs up existing unmanaged files with the `.hm-backup` suffix
+before taking ownership. For GitHub CLI, this creates
+`~/.config/gh/config.yml.hm-backup`. If that backup already exists, activation
+stops so it can be preserved before retrying.
+
+Account state and credentials remain local and managed by `gh`; `hosts.yml`
+is not declared in Nix. The module's Git credential helper is explicitly
+disabled to preserve the existing Git authentication setup. Its legacy
+account-migration activation is also disabled because the existing CLI
+configuration already uses schema version 1.
+
 ## Global agent instructions
 
 The complete shared English policy lives in
@@ -464,6 +493,11 @@ consecutive actions:
 3. Delete old system generations.
 4. Run `nix-collect-garbage -d`.
 
+After activation, the wrapper refreshes the current shell's direnv hook through
+`/run/current-system/sw/bin/direnv` before cleanup can remove the old executable.
+Other open terminals can refresh their hook with
+`eval "$(/run/current-system/sw/bin/direnv hook zsh)"`.
+
 The flake update receives the verified Google Chrome source pin published by
 `futuping/brew-nix-extra`. Review and commit any resulting lock-file changes.
 
@@ -481,10 +515,10 @@ If direnv does not activate, check the project's `.envrc`, then run
 | Nixpkgs configuration and system packages | `nix-darwin/flake-nixpkgs.nix` |
 | Non-Homebrew, non-nixpkgs package selection | `nix-darwin/flake-packages.nix` |
 | Zsh, macOS defaults, system fonts | `nix-darwin/flake-darwin.nix` |
-| Home Manager, per-user Git, and global agent links | `nix-darwin/flake-home.nix` |
+| Home Manager, Git, GitHub CLI preferences, and global agent links | `nix-darwin/flake-home.nix` |
 | Shared Codex and Claude Code instructions | `nix-darwin/dotfiles/agents/AGENTS.md` |
 | Homebrew casks | `nix-darwin/flake-brew.nix` |
-| Motrix Next package selection | `nix-darwin/flake-brew.nix` |
+| Rayburst package selection (formerly Motrix Next) | `nix-darwin/flake-brew.nix` |
 | WeType enablement | `nix-darwin/flake-brew.nix` |
 | Cask normalization and lifecycle | [`futuping/brew-nix-extra`](https://github.com/futuping/brew-nix-extra) |
 | Non-Homebrew package definitions and updates | [`futuping/nix-packages`](https://github.com/futuping/nix-packages) |

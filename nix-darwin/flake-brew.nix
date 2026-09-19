@@ -27,20 +27,18 @@
     # AI and development
     claude
     chatgpt
-    coteditor
     dbx
-    orbstack
-    sublime-text
-    vimr
+    # orbstack
     zed
 
     # Web, files, and media
     iina
-    motrix-next
+    rayburst
     neteasemusic
-    google-chrome
+    # google-chrome
 
     # Productivity and utilities
-    typora
+    macshot
+    # typora
   ];
 }

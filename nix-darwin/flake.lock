@@ -3,11 +3,11 @@
     "brew-api": {
       "flake": false,
       "locked": {
-        "lastModified": 1788438995,
-        "narHash": "sha256-cT9EbiHnOadfxJ8glYM6vDLB6W/BaegiiYDXDUodxyQ=",
+        "lastModified": 1789026731,
+        "narHash": "sha256-0gvvXlH9UWl3TVpreh2jdImOTFyWP6ecv1JV5lW+h38=",
         "owner": "BatteredBunny",
         "repo": "brew-api",
-        "rev": "cc863922ae1444dd87da4f7ef7b375fa409d2690",
+        "rev": "c6c3cb9554ca9ce598a28793fe46ff65329eaac8",
         "type": "github"
       },
       "original": {
@@ -19,11 +19,11 @@
     "brew-api-extra": {
       "flake": false,
       "locked": {
-        "lastModified": 1787977187,
-        "narHash": "sha256-sQ0OyDO/StXqcYHmiq315r0YJDPUiyFFdXqRlTxfLyE=",
+        "lastModified": 1789795608,
+        "narHash": "sha256-jqzKqDhAhhb7TnwjI7S59JfYxkO4Img/vZVJv+ZSqWs=",
         "owner": "futuping",
         "repo": "brew-api-extra",
-        "rev": "1e9f918f0aa2ca368946817351293467565c42cb",
+        "rev": "67f7c3d23b484975cd422fe7f6c8fb55e5afab3a",
         "type": "github"
       },
       "original": {
@@ -65,14 +65,17 @@
         ],
         "brew-nix": [
           "brew-nix"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1788350834,
-        "narHash": "sha256-cu5wc3U8OswefFR5y+/Z/X0TKXjhiafSObbSUbOYtuM=",
+        "lastModified": 1789795705,
+        "narHash": "sha256-Gx4FwDUGZxk1MQz1P3Vfbl0t43xSf1O4Qcq5rKSd1ms=",
         "owner": "futuping",
         "repo": "brew-nix-extra",
-        "rev": "b271fe570aa298e71c77be432f16e95f0b8c7387",
+        "rev": "8041aeb49e71942f2c7f23497935f054647870a6",
         "type": "github"
       },
       "original": {
@@ -125,11 +128,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788355065,
-        "narHash": "sha256-gAz5oTI7ur34CfuakQduiQd/2ZhO62Bn2XXg08nZYYQ=",
+        "lastModified": 1789012927,
+        "narHash": "sha256-+h1H0g2XMGXK0fNUlX4ajCmCz8u05IR7k0Cj2MJviBY=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "d9d750e4fc11c10cab2da677bdd31e427f3a3a71",
+        "rev": "df044b78fd9ec60d0e54752169666e6e1d393798",
         "type": "github"
       },
       "original": {
@@ -170,11 +173,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1788435607,
-        "narHash": "sha256-D3DqGsD6pDH+WqxrCuFOxeXi6EE2Mku5Ax884f+XkZc=",
+        "lastModified": 1788952838,
+        "narHash": "sha256-aSwlIosGqGQnrCCO4pWptg2NJtiAz4lR4BQkqNRk/NM=",
         "owner": "eval-exec",
         "repo": "neomacs",
-        "rev": "eb8860ef9d4958d95b09dc41ecc1c5b402438da7",
+        "rev": "b9fb522841f9bc7f788e68e2c5a99e8b62097fad",
         "type": "github"
       },
       "original": {
@@ -212,11 +215,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788438052,
-        "narHash": "sha256-diRfWE7PE2Bp050rsYgtCCqqawNp0zlvADuj5Q0Lydk=",
+        "lastModified": 1788956815,
+        "narHash": "sha256-p61CnC5seIGemia7gQP0MoyUiLDJOjmzf5Q1J8xhUYM=",
         "owner": "futuping",
         "repo": "nix-packages",
-        "rev": "bba26d56a328b7bfea3d34ec0650df01a5699c07",
+        "rev": "5599bce2cdf18bc3559288b233e96d49ef08c321",
         "type": "github"
       },
       "original": {
@@ -277,11 +280,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1788372231,
-        "narHash": "sha256-7aqErvrAEz/5OcPA5p3M+tVOqeYc4oJXkNIPXfCqxAw=",
+        "lastModified": 1788982683,
+        "narHash": "sha256-PJCTsE4I20CrJJPcye9/z6brRFysG5+aygr/dZK097k=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9387b3fcc0c23c86661636da63faabad4235a0a6",
+        "rev": "5052d7ccbcfb7e4ae1586cb2ecf95a2e3707dce9",
         "type": "github"
       },
       "original": {

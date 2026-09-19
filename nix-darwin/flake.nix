@@ -23,6 +23,7 @@
 
     brew-nix-extra = {
       url = "github:futuping/brew-nix-extra";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.brew-nix.follows = "brew-nix";
       inputs.brew-api-extra.follows = "brew-api-extra";
     };
@@ -54,7 +55,7 @@
       machine = rec {
         hostName = "MacBook-Pro";
         system = "aarch64-darwin";
-        userName = "level";
+        userName = "noon";
         homeDirectory = "/Users/${userName}";
         configurationDirectory = "${homeDirectory}/.nix";
       };
