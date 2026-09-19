@@ -55,6 +55,9 @@ nix eval \
 
 /bin/zsh -n "$zsh_init_file"
 
+print -r -- "==> Checking MAS activation regression cases"
+python3 "$repository_root/scripts/check-mas.py"
+
 for template_flake in "$repository_root"/nix-dev/*/flake.nix; do
   template_directory="${template_flake:h}"
   print -r -- "==> Checking ${template_directory:t} template"

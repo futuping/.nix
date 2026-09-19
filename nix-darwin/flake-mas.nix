@@ -1,4 +1,6 @@
 {
+  imports = [ ./modules/mas-list-fix.nix ];
+
   programs.mas = {
     enable = true;
     cleanup = true;

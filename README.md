@@ -48,6 +48,10 @@ Other important assumptions:
 - `programs.mas.cleanup = true` removes installed Mac App Store applications
   that are absent from both `programs.mas.packages` and `homebrew.masApps`.
   Keep every desired App Store application in one of those lists.
+  A local compatibility patch accepts only numeric application rows from
+  `mas list` and skips cleanup if that query fails. This prevents mas 7's
+  empty-list/Spotlight warnings from being treated as applications. The patch
+  requires review if an input update changes the affected upstream code.
 - Custom Homebrew casks and fonts may have their own license and redistribution
   terms. Verify them before reusing or redistributing this configuration.
 - Third-party cask metadata is pinned separately through
@@ -471,11 +475,20 @@ Run the unified check before activation:
 ```
 
 It checks Git whitespace, Nix formatting, the template registry, the complete
-Darwin configuration, merged Zsh syntax, and every development template,
-including any checks declared by a template.
+Darwin configuration, merged Zsh syntax, MAS activation, and every development
+template, including any checks declared by a template.
 Development templates currently have no lock files, so their first check needs
 network access to resolve inputs; the script does not write those temporary
 locks.
+
+The MAS regression check runs generated activation scripts against a fake
+`sudo`, covering empty-list diagnostics, malformed rows, failed queries, and
+preservation of both native and Homebrew app IDs without changing installed apps:
+
+```bash
+nix shell --inputs-from ~/.nix/nix-darwin --no-update-lock-file \
+  nixpkgs#python312 nixpkgs#bash --command python3 ~/.nix/scripts/check-mas.py
+```
 
 For a rebuild with a trace:
 
