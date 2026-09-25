@@ -25,6 +25,7 @@
     uuremote
 
     # AI and development
+    arcbox
     claude
     chatgpt
     dbx
