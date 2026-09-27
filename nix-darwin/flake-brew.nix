@@ -33,6 +33,7 @@
     zed
 
     # Web, files, and media
+    search
     iina
     rayburst
     neteasemusic
