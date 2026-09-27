@@ -47,6 +47,7 @@ in
 
     packages = {
       # Infuse = 1136220934;
+      Shadowrocket = 932747118;
     };
   };
 }
