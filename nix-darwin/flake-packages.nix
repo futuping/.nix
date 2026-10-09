@@ -6,6 +6,7 @@
 
 {
   imports = [
+    ./flake-impeccable.nix
     inputs.nix-packages.darwinModules.ego-lite
     inputs.nix-packages.darwinModules.shardx-launcher
   ];
