@@ -22,9 +22,6 @@
     # Terminal
     warp-terminal
 
-    # Productivity applications
-    zotero
-
     # Network diagnostics
     mtr
     iperf3

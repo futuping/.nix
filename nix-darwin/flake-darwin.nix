@@ -42,7 +42,7 @@ in
 
   users.users.${machine.userName}.home = machine.homeDirectory;
 
-  time.timeZone = "Pacific/Honolulu";
+  time.timeZone = "Asia/Taipei";
 
   security.pam.services.sudo_local = {
     touchIdAuth = true;
@@ -159,9 +159,19 @@ in
             return 1
           fi
 
+          echo "🧹 Deleting old user generations"
+          # Keep the user's profile discovery, but defer store deletion to the
+          # foreground root process so macOS uses the terminal's App Management permission.
+          if ! nix-collect-garbage --delete-old --max-freed 0; then
+            echo "⚠️ Old user generation deletion interrupted or failed"
+            return 1
+          fi
+
           echo "🗑️ Collecting garbage"
-          if ! nix-collect-garbage -d; then
+          if ! sudo -H nix-collect-garbage --store local; then
             echo "⚠️ System switched successfully; garbage collection interrupted or failed"
+            echo "   If macOS denied access to an .app, enable App Management for this terminal in System Settings > Privacy & Security."
+            echo "   Retry cleanup only: sudo -H nix-collect-garbage --store local"
             return 1
           fi
 
@@ -213,6 +223,12 @@ in
 
             local -a environment_files
             environment_files=(flake.nix)
+            # Git-backed flake evaluation ignores untracked files. Include a
+            # lock copied by the template before running nix flake lock, so
+            # initializing the environment preserves its pinned inputs.
+            if [[ -f "flake.lock" ]]; then
+              environment_files+=(flake.lock)
+            fi
             if (( ! gitignore_was_present )) && [[ -f ".gitignore" ]]; then
               environment_files+=(.gitignore)
             fi

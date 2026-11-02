@@ -1,0 +1,14 @@
+# Nix
+/.direnv/
+/result
+/result-*
+
+# SwiftPM and local build output
+/.build/
+/.swiftpm/
+/DerivedData/
+/dist/
+
+# Per-user Xcode state
+xcuserdata/
+*.xcuserstate

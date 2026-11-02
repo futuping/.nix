@@ -48,6 +48,9 @@ in
     packages = {
       # Infuse = 1136220934;
       Shadowrocket = 932747118;
+      # This declares the App Store ID, not a pinned Xcode release.
+      # Xcode 27 needs macOS >= 26.6; see README.md for older-system setup.
+      Xcode = 497799835;
     };
   };
 }

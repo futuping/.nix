@@ -25,6 +25,7 @@
       url = "github:futuping/brew-nix-extra";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.brew-nix.follows = "brew-nix";
+      inputs.brew-api.follows = "brew-api";
       inputs.brew-api-extra.follows = "brew-api-extra";
     };
 
@@ -71,6 +72,7 @@
 
           modules = [
             # System and package sources
+            inputs.nix-packages.darwinModules.default
             ./flake-packages.nix
             ./flake-nixpkgs.nix
             ./flake-darwin.nix

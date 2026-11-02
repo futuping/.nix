@@ -38,6 +38,21 @@
             - Keep Rust dependencies in `Cargo.toml` and commit `Cargo.lock`.
           '';
         };
+        swift = {
+          path = ./nix-dev/swift;
+          description = "Nix-managed Swift, SwiftPM, and macOS SDK environment for Apple Silicon.";
+          welcomeText = ''
+            # Getting started
+
+            - Initialize with the custom `nix-direnv swift` helper.
+            - The template lock pins the Swift compiler, SwiftPM, and macOS SDK together.
+            - Run `direnv exec . swift --version` and `nix flake check`.
+            - Keep application dependencies in `Package.swift` and commit `Package.resolved`.
+            - For a new package, enter the shell and run `swift package init`.
+            - Use the Nix-provided `swift`; `xcrun swift` can select a different toolchain.
+            - Full Xcode is a separate system application for Apple-specific IDE and UI-test workflows.
+          '';
+        };
         go = {
           path = ./nix-dev/go;
           description = "Nix-managed Go development shell with gopls for Apple Silicon macOS.";

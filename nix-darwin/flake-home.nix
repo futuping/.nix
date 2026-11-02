@@ -12,6 +12,7 @@
       { config, lib, ... }:
       let
         sharedAgentInstructions = config.lib.file.mkOutOfStoreSymlink "${machine.configurationDirectory}/nix-darwin/dotfiles/agents/AGENTS.md";
+        soloLifecycleSkill = config.lib.file.mkOutOfStoreSymlink "${machine.homeDirectory}/agent-skills/skills/solo-lifecycle";
       in
       {
         home.stateVersion = "26.05";
@@ -19,6 +20,14 @@
         # Keep one editable source for both agents; content changes need no switch.
         home.file.".codex/AGENTS.md".source = sharedAgentInstructions;
         home.file.".claude/CLAUDE.md".source = sharedAgentInstructions;
+
+        # Discover the versioned lifecycle skill in Codex without copying it.
+        home.file.".agents/skills/solo-lifecycle".source = soloLifecycleSkill;
+
+        # Keep Go's workspace and dependency cache in a hidden home directory.
+        home.file."Library/Application Support/go/env".text = ''
+          GOPATH=${machine.homeDirectory}/.go
+        '';
 
         programs.gh = {
           enable = true;

@@ -11,6 +11,7 @@
     inputs.brew-nix-extra.darwinModules.third-party-casks
     inputs.brew-nix-extra.darwinModules.wetype
     inputs.brew-nix-extra.darwinModules.neteasemusic
+    inputs.brew-nix-extra.darwinModules.uuremote
   ];
 
   brew-nix.enable = true;
@@ -31,6 +32,7 @@
     dbx
     # orbstack
     zed
+    android-studio
 
     # Web, files, and media
     search
@@ -41,6 +43,8 @@
 
     # Productivity and utilities
     macshot
+    zotero
+    wordcraft
     # typora
   ];
 }
